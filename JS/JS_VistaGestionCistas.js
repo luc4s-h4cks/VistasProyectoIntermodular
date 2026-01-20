@@ -4,11 +4,17 @@ d.addEventListener("click", (e) => {
   if (e.target.matches("#solicitudes")) {
     d.getElementById("content-solicitudes").classList.remove("hidden");
     d.getElementById("content-notificaciones").classList.add("hidden");
+    d.getElementById("solicitudes").classList.add("bg-gray-300")
+    d.getElementById("notificaciones").classList.remove("bg-gray-300")
+    d.getElementById("notificaciones").classList.add("bg-gray-200")
   }
 
   if (e.target.matches("#notificaciones")) {
     d.getElementById("content-notificaciones").classList.remove("hidden");
     d.getElementById("content-solicitudes").classList.add("hidden");
+    d.getElementById("solicitudes").classList.add("bg-gray-200")
+    d.getElementById("solicitudes").classList.remove("bg-gray-300")
+    d.getElementById("notificaciones").classList.add("bg-gray-300")
   }
 });
 
