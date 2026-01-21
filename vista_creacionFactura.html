@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Factura Taller</title>
+  </head>
+
+  <body class="bg-[var(--color-background)] text-[var(--color-text)] min-h-screen">
+    <!-- NAVBAR -->
+    <header class="bg-[var(--color-secondary)] px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <div class="bg-white px-4 py-1 rounded font-semibold">LOGO</div>
+        <button class="font-medium">Citas</button>
+      </div>
+
+      <input type="text" placeholder="Buscar..." class="w-1/3 px-4 py-1 rounded-full outline-none" />
+
+      <div class="flex items-center gap-4">
+        <button class="font-medium">Mi taller</button>
+        <button class="bg-white px-4 py-1 rounded">Login</button>
+      </div>
+    </header>
+
+    <!-- CONTENIDO -->
+    <div class="flex">
+      <!-- SIDEBAR -->
+      <aside class="w-56 bg-red-50 p-4 space-y-3">
+        <a href="vista_Suscripcion.html" class="block">
+          <button class="w-full bg-red-200 py-2 rounded">Suscripción</button>
+        </a>
+        <a href="vitsa_personalizar_Taller.html" class="block">
+          <button class="w-full bg-red-200 py-2 rounded">Página taller</button>
+        </a>
+        <a href="vista_gestionCitas.html" class="block">
+          <button class="w-full bg-red-200 py-2 rounded">Gestión citas</button>
+        </a>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="flex-1 p-6 space-y-6 text-lg">
+        <section class="bg-white border p-8 mx-auto space-y-10">
+          <!-- TÍTULO -->
+          <h2 class="text-2xl font-bold text-center">Creación de la factura</h2>
+
+          <!-- DATOS DEL VEHÍCULO -->
+          <div class="grid grid-cols-2 gap-6 text-base">
+            <div>
+              <label class="block font-semibold">Usuario:</label>
+              <input type="text" class="w-full p-2 border rounded bg-gray-200" value="Juan Pérez" readonly />
+            </div>
+            <div>
+              <label class="block font-semibold">Marca:</label>
+              <input type="text" class="w-full p-2 border rounded bg-gray-200" value="MV Agusta" readonly />
+            </div>
+            <div>
+              <label class="block font-semibold">Modelo:</label>
+              <input type="text" class="w-full p-2 border rounded bg-gray-200" value="F3 675" readonly />
+            </div>
+            <div>
+              <label class="block font-semibold">Motivo de la solicitud:</label>
+              <input type="text" class="w-full p-2 border rounded bg-gray-200" value="Revisión general" readonly />
+            </div>
+          </div>
+
+          <!-- DESGLOSE DE COSTES -->
+          <div class="space-y-4">
+            <h3 class="text-lg font-semibold">Desglose de costes</h3>
+            <table class="w-full text-left border">
+              <thead>
+                <tr class="bg-gray-200">
+                  <th class="p-2">Concepto</th>
+                  <th class="p-2">Precio (€)</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-costes">
+                <!-- Filas dinámicas -->
+              </tbody>
+            </table>
+            <button onclick="agregarFila()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+              Añadir precio
+            </button>
+          </div>
+
+          <!-- EXPLICACIÓN DEL MECÁNICO -->
+          <div class="space-y-2">
+            <label class="block font-semibold">Qué se le ha realizado al vehículo:</label>
+            <textarea rows="4" class="w-full p-2 border rounded" placeholder="Explicación del mecánico..."></textarea>
+          </div>
+
+          <!-- MÉTODO DE PAGO -->
+          <div class="space-y-2">
+            <label class="block font-semibold">Métodos de pago:</label>
+            <select class="w-full p-2 border rounded">
+              <option>Por la Reservapp</option>
+              <option>Efectivo</option>
+            </select>
+          </div>
+
+          <!-- TOTAL -->
+          <div class="space-y-2">
+            <label class="block font-semibold">Total + IVA:</label>
+            <div id="total" class="text-xl font-bold">0.00 €</div>
+          </div>
+
+          <!-- BOTÓN FINAL -->
+          <button class="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 text-xl">
+            Enviar factura
+          </button>
+        </section>
+      </main>
+    </div>
+  </body>
+  <script src="JS/JS_VistaGestionCistas.js"></script>
+</html>
