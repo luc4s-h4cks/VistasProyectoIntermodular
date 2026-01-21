@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- reviasr la adicion de coches y posible uso de templates -->
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .coche-item {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body class="bg-[var(--color-background)] text-[var(--color-text)] min-h-screen">
+    <!-- NAVBAR -->
+    <header class="bg-secondary px-6 py-3 flex items-center justify-between text-white">
+        <div class="flex items-center gap-4">
+            <div class="bg-white px-4 py-1 rounded font-semibold">LOGO</div>
+            <button class="font-medium">Citas</button>
+        </div>
+
+        <input type="text" placeholder="Buscar..." class="w-1/3 px-4 py-1 rounded-full outline-none" />
+
+        <div class="flex items-center gap-4">
+            <button class="font-medium">Mi taller</button>
+            <button class="bg-white px-4 py-1 rounded">Login</button>
+        </div>
+    </header>
+
+    <!-- CONTENIDO -->
+    <div class="flex">
+        <!-- SIDEBAR -->
+        <aside class="w-56 p-4 space-y-3">
+            <a href="vista_UsuarioPerfil.html" class="block w-full btn-secondary py-2 rounded text-center">Mis datos</a>
+            <a href="vista_UsuarioCitas.html" class="block w-full btn-secondary py-2 rounded text-center">Citas</a>
+            <a href="vista_UsuarioCoches.html" class="block w-full btn-secondary py-2 rounded text-center">Mis coches</a>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="flex-1 p-6">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-2xl font-semibold mb-6">Mis coches</h1>
+
+                <!-- Buscador -->
+                <div class="flex gap-2 mb-6">
+                    <input type="text" placeholder="Buscador" class="flex-1 border rounded px-4 py-2" />
+                    <button class="btn-primary px-6 py-2 rounded">Buscar</button>
+                </div>
+
+                <!-- Lista de coches -->
+                <div class="space-y-6">
+                    <!-- Coche 1 -->
+                    <div class="coche-item">
+                        <div class="flex-1">
+                            <label class="block mb-2">
+                                <span class="font-medium">Matrícula</span>
+                                <input type="text" value="0000AAA" class="w-64 border rounded px-2 py-1 mt-1" readonly />
+                            </label>
+                            <div class="flex gap-2">
+                                <button class="btn-primary px-4 py-1 rounded text-sm edit-coche">Editar</button>
+                                <button class="btn-accent text-white px-4 py-1 rounded text-sm btn-borrar-coche">Borrar</button>
+                            </div>
+                        </div>
+                        <div class="w-[420px] h-40 bg-gray-400 rounded flex items-center justify-center text-white font-medium">
+                            Foto vehiculo
+                        </div>
+                    </div>
+
+                    <!-- Coche 2 -->
+                    <div class="coche-item">
+                        <div class="flex-1">
+                            <label class="block mb-2">
+                                <span class="font-medium">Matrícula</span>
+                                <input type="text" value="0000AAA" class="w-64 border rounded px-2 py-1 mt-1" readonly />
+                            </label>
+                            <div class="flex gap-2">
+                                <button class="btn-primary px-4 py-1 rounded text-sm edit-coche">Editar</button>
+                                <button class="btn-accent text-white px-4 py-1 rounded text-sm btn-borrar-coche">Borrar</button>
+                            </div>
+                        </div>
+                        <div class="w-[420px] h-40 bg-gray-400 rounded flex items-center justify-center text-white font-medium">
+                            Foto vehiculo
+                        </div>
+                    </div>
+
+                    <!-- Coche 3 -->
+                    <div class="coche-item">
+                        <div class="flex-1">
+                            <label class="block mb-2">
+                                <span class="font-medium">Matrícula</span>
+                                <input type="text" value="0000AAA" class="w-64 border rounded px-2 py-1 mt-1" readonly />
+                            </label>
+                            <div class="flex gap-2">
+                                <button class="btn-primary px-4 py-1 rounded text-sm edit-coche">Editar</button>
+                                <button class="btn-accent text-white px-4 py-1 rounded text-sm btn-borrar-coche">Borrar</button>
+                            </div>
+                        </div>
+                        <div class="w-[420px] h-40 bg-gray-400 rounded flex items-center justify-center text-white font-medium">
+                            Foto vehiculo
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón Nuevo coche -->
+                <button id="btnNuevoCoche" class="w-full btn-primary py-3 rounded mt-8 font-medium">Nuevo coche</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de confirmación de borrado -->
+    <div id="modalBorrarCoche" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 w-[90vw] max-w-2xl">
+            <h2 class="text-xl font-semibold mb-4">¿Está seguro de que quiere eliminar su vehiculo?</h2>
+            
+            <div class="mb-6">
+                <label class="block mb-2">
+                    <span class="font-medium">Matrícula</span>
+                    <input type="text" id="matriculaBorrar" class="w-full border rounded px-3 py-2 mt-2" readonly />
+                </label>
+            </div>
+
+            <div class="w-full h-40 bg-gray-400 rounded flex items-center justify-center text-white font-medium mb-6">
+                Foto vehiculo
+            </div>
+
+            <div class="flex gap-4 justify-center">
+                <button onclick="cancelarBorrado()" class="btn-primary px-6 py-2 rounded">No</button>
+                <button onclick="confirmarBorrado()" class="btn-accent px-6 py-2 rounded">Sí</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal editar coche -->
+    <div id="modalEditarCoche" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-[90vw] max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
+            <!-- Encabezado -->
+            <div class="mb-4 flex items-center justify-between">
+                <h3 class="font-semibold text-xl">Modificar / Guardar coche</h3>
+                <button onclick="cerrarModalCoche()" class="btn-secondary px-3 py-1 rounded text-sm">Cerrar</button>
+            </div>
+
+            <!-- Campos del formulario -->
+            <div class="space-y-3 mb-4">
+                <label class="block">
+                    <span class="font-medium">Matrícula</span>
+                    <input type="text" id="inputMatricula" placeholder="0000AAA" class="w-full border rounded px-2 py-1 mt-1" />
+                </label>
+
+                <label class="block">
+                    <span class="font-medium">Marca</span>
+                    <input type="text" id="inputMarca" placeholder="marca" class="w-full border rounded px-2 py-1 mt-1" />
+                </label>
+
+                <label class="block">
+                    <span class="font-medium">Modelo</span>
+                    <input type="text" id="inputModelo" placeholder="modelo" class="w-full border rounded px-2 py-1 mt-1" />
+                </label>
+
+                <label class="block">
+                    <span class="font-medium">nº bastidor</span>
+                    <input type="text" id="inputBastidor" placeholder="nº bastidor" class="w-full border rounded px-2 py-1 mt-1" />
+                </label>
+            </div>
+
+            <!-- Foto del vehículo -->
+            <div class="mb-4">
+                <button class="text-red-500 text-sm mb-2">Cambiar foto Coche</button>
+                <div class="w-full h-48 bg-gray-400 rounded flex items-center justify-center text-white font-medium">
+                    Foto vehiculo
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="flex justify-end items-center">
+                <button onclick="confirmarEdicion()" class="btn-primary px-4 py-2 rounded">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cocheABorrar = null;
+        let cocheEnEdicion = null;
+
+        function abrirModalCoche(matricula, marca = '', modelo = '', bastidor = '') {
+            cocheEnEdicion = event.target.closest('.coche-item');
+            document.getElementById('inputMatricula').value = matricula;
+            document.getElementById('inputMarca').value = marca;
+            document.getElementById('inputModelo').value = modelo;
+            document.getElementById('inputBastidor').value = bastidor;
+            document.querySelector('#modalEditarCoche button[onclick="confirmarEdicion()"]').textContent = 'Confirmar';
+            document.getElementById('modalEditarCoche').classList.remove('hidden');
+            document.getElementById('modalEditarCoche').classList.add('flex');
+        }
+
+        function cerrarModalCoche() {
+            document.getElementById('modalEditarCoche').classList.add('hidden');
+            document.getElementById('modalEditarCoche').classList.remove('flex');
+            cocheEnEdicion = null;
+        }
+
+        function confirmarEdicion() {
+            const matricula = document.getElementById('inputMatricula').value;
+            const marca = document.getElementById('inputMarca').value;
+            const modelo = document.getElementById('inputModelo').value;
+            const bastidor = document.getElementById('inputBastidor').value;
+            
+            if (cocheEnEdicion) {
+                cocheEnEdicion.querySelector('input[type="text"]').value = matricula;
+            } else {
+                // Crear nuevo coche
+                const listaCoches = document.querySelector('.space-y-6');
+                const nuevoCoche = document.createElement('div');
+                nuevoCoche.className = 'coche-item';
+                nuevoCoche.innerHTML = `
+                    <div class="flex-1">
+                        <label class="block mb-2">
+                            <span class="font-medium">Matrícula</span>
+                            <input type="text" value="${matricula}" class="w-64 border rounded px-2 py-1 mt-1" readonly />
+                        </label>
+                        <div class="flex gap-2">
+                            <button class="btn-primary px-4 py-1 rounded text-sm edit-coche">Editar</button>
+                            <button class="btn-accent text-white px-4 py-1 rounded text-sm btn-borrar-coche">Borrar</button>
+                        </div>
+                    </div>
+                    <div class="w-[420px] h-40 bg-gray-400 rounded flex items-center justify-center text-white font-medium">
+                        Foto vehiculo
+                    </div>
+                `;
+                listaCoches.appendChild(nuevoCoche);
+                agregarListeners();
+            }
+            
+            console.log('Datos guardados:', { matricula, marca, modelo, bastidor });
+            cerrarModalCoche();
+        }
+
+        function agregarListeners() {
+            // Agregar listeners a los botones Editar de coches
+            document.querySelectorAll('.coche-item .edit-coche').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const matricula = this.closest('.coche-item').querySelector('input[type="text"]').value;
+                    abrirModalCoche(matricula);
+                });
+            });
+
+            // Agregar listeners a los botones Borrar de coches
+            document.querySelectorAll('.coche-item .btn-borrar-coche').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const matricula = this.closest('.coche-item').querySelector('input[type="text"]').value;
+                    const cocheElement = this.closest('.coche-item');
+                    abrirModalBorrar(matricula, cocheElement);
+                });
+            });
+        }
+
+        // Botón Nuevo coche
+        document.getElementById('btnNuevoCoche').addEventListener('click', function() {
+            cocheEnEdicion = null;
+            document.getElementById('inputMatricula').value = '';
+            document.getElementById('inputMarca').value = '';
+            document.getElementById('inputModelo').value = '';
+            document.getElementById('inputBastidor').value = '';
+            document.querySelector('#modalEditarCoche button[onclick="confirmarEdicion()"]').textContent = 'Añadir';
+            document.getElementById('modalEditarCoche').classList.remove('hidden');
+            document.getElementById('modalEditarCoche').classList.add('flex');
+        });
+
+        function abrirModalBorrar(matricula, elemento) {
+            cocheABorrar = elemento;
+            document.getElementById('matriculaBorrar').value = matricula;
+            document.getElementById('modalBorrarCoche').classList.remove('hidden');
+            document.getElementById('modalBorrarCoche').classList.add('flex');
+        }
+
+        function cancelarBorrado() {
+            document.getElementById('modalBorrarCoche').classList.add('hidden');
+            document.getElementById('modalBorrarCoche').classList.remove('flex');
+            cocheABorrar = null;
+        }
+
+        function confirmarBorrado() {
+            if (cocheABorrar) {
+                cocheABorrar.remove();
+                console.log('Coche eliminado');
+                cancelarBorrado();
+            }
+        }
+
+        // Inicializar listeners
+        agregarListeners();
+    </script>
+</body>
+<script src="JS/JS_VistaGestionCistas.js"></script>
+
+</html>

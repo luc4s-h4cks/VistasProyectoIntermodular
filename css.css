@@ -6,3 +6,57 @@
   --color-secondary: #ffb400;
   --color-accent: #ff6f3c;
 }
+
+/* Clases personalizadas usando variables de color */
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary);
+}
+
+.bg-accent {
+  background-color: var(--color-accent);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+.btn-accent {
+  background-color: var(--color-accent);
+  color: white;
+}
+
+/* Navbar personalizado */
+header {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header button,
+header .font-medium {
+  color: white;
+}
+
+header .bg-white {
+  background-color: white;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* Sidebar personalizado */
+aside {
+  background-color: #f0f0f0 !important;
+  border-right: 3px solid var(--color-secondary);
+}
