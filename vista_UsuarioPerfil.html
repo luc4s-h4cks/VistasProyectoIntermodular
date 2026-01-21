@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+</head>
+
+<body class="bg-[var(--color-background)] text-[var(--color-text)] min-h-screen">
+    <!-- NAVBAR -->
+    <header class="bg-secondary px-6 py-3 flex items-center justify-between text-white">
+        <div class="flex items-center gap-4">
+            <div class="bg-white px-4 py-1 rounded font-semibold">LOGO</div>
+            <button class="font-medium">Citas</button>
+        </div>
+
+        <input type="text" placeholder="Buscar..." class="w-1/3 px-4 py-1 rounded-full outline-none" />
+
+        <div class="flex items-center gap-4">
+            <button class="font-medium">Mi taller</button>
+            <button class="bg-white px-4 py-1 rounded">Login</button>
+        </div>
+    </header>
+
+    <!-- CONTENIDO -->
+    <div class="flex">
+        <!-- SIDEBAR -->
+        <aside class="w-56 p-4 space-y-3">
+            <a href="vista_UsuarioPerfil.html" class="block w-full btn-secondary py-2 rounded text-center">Mis datos</a>
+            <a href="vista_UsuarioCitas.html" class="block w-full btn-secondary py-2 rounded text-center">Citas</a>
+            <a href="vista_UsuarioCoches.html" class="block w-full btn-secondary py-2 rounded text-center">Mis coches</a>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="flex-1 p-6">
+            <div class="max-w-4xl mx-auto">
+                <!-- Datos personales -->
+                <section class="space-y-4" data-section="personal">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-lg font-semibold">Datos personales</h2>
+                        <button class="px-3 py-1 btn-primary rounded text-sm edit-btn" data-section="personal">Editar</button>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="flex items-center gap-4">
+                            <span class="w-28">Nombre</span>
+                            <input type="text" value="Persona" class="flex-1 border rounded px-2 py-1" readonly />
+                        </label>
+
+                        <label class="flex items-center gap-4">
+                            <span class="w-28">Apellidos</span>
+                            <input type="text" value="Apellido Persona" class="flex-1 border rounded px-2 py-1" readonly />
+                        </label>
+
+                        <label class="flex items-center gap-4">
+                            <span class="w-28">Fecha nac</span>
+                            <input type="text" placeholder="dd/mm/yyyy" class="flex-1 border rounded px-2 py-1" readonly />
+                        </label>
+
+                        <label class="flex items-center gap-4">
+                            <span class="w-28">telefono</span>
+                            <input type="text" placeholder="dd/mm/yyyy" class="flex-1 border rounded px-2 py-1" readonly />
+                        </label>
+
+                        <label class="flex items-center gap-4">
+                            <span class="w-28">email</span>
+                            <input type="text" value="email@email.com" class="flex-1 border rounded px-2 py-1" readonly />
+                        </label>
+                    </div>
+                </section>
+
+                <div class="border-t border-dotted border-gray-300 my-6"></div>
+
+                <!-- Cuenta -->
+                <section class="space-y-3">
+                    <h2 class="text-lg font-semibold">Cuenta</h2>
+
+                    <!-- nombre_usuario -->
+                    <div class="flex items-center justify-between" data-section="username">
+                        <div class="flex-1">
+                            <label class="flex items-center gap-4">
+                                <span class="w-28">nombre_usuario</span>
+                                <input type="text" value="email@email.com" class="flex-1 border rounded px-2 py-1" readonly />
+                            </label>
+                        </div>
+                        <button class="px-3 py-1 btn-primary rounded text-sm edit-btn" data-section="username">Editar</button>
+                    </div>
+
+                    <!-- Contraseña -->
+                    <div class="flex items-center justify-between" data-section="password">
+                        <div class="flex-1">
+                            <label class="flex items-center gap-4">
+                                <span class="w-28">Contraseña</span>
+                                <input type="password" value="Persona" class="flex-1 border rounded px-2 py-1" readonly />
+                            </label>
+                        </div>
+                        <button class="px-3 py-1 btn-primary rounded text-sm edit-btn" data-section="password">Editar</button>
+                    </div>
+                </section>
+
+                <div class="border-t border-dotted border-gray-300 my-6"></div>
+
+                <!-- Foto de perfil -->
+                <section class="flex items-start gap-6">
+                    <div class="w-36 h-36 rounded-full border-2 border-blue-300 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A9 9 0 1118.878 6.196 9 9 0 015.12 17.804z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+
+                    <div class="flex-1">
+                        <button class="px-3 py-1 btn-primary rounded text-sm">Cambiar foto perfil</button>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <script>
+            (function(){
+                function setReadonly(container, value){
+                    container.querySelectorAll('input').forEach(i=>{
+                        if(value) i.setAttribute('readonly',''); else i.removeAttribute('readonly');
+                    });
+                }
+
+                document.querySelectorAll('.edit-btn').forEach(btn=>{
+                    btn.addEventListener('click', function(){
+                        const sectionKey = this.dataset.section;
+                        const container = document.querySelector('[data-section="'+sectionKey+'"]');
+                        if(!container) return;
+
+                        const isEditing = this.dataset.mode === 'editing';
+
+                        if(!isEditing){
+                            setReadonly(container, false);
+                            this.textContent = 'Guardar';
+                            this.dataset.mode = 'editing';
+                            this.className = 'px-3 py-1 btn-primary text-white rounded text-sm edit-btn';
+                            const cancel = document.createElement('button');
+                            cancel.textContent = 'Cancelar';
+                            cancel.className = 'mr-2 px-3 py-1 bg-gray-500 text-white rounded text-sm cancel-btn';
+                            cancel.type = 'button';
+                            cancel.addEventListener('click', function(){
+                                setReadonly(container, true);
+                                btn.textContent = 'Editar';
+                                btn.dataset.mode = '';
+                                btn.className = 'px-3 py-1 btn-primary rounded text-sm edit-btn';
+                                cancel.remove();
+                            });
+                            // insert cancel BEFORE the save button to invert order
+                            this.insertAdjacentElement('beforebegin', cancel);
+                            // focus first input
+                            const first = container.querySelector('input'); if(first) first.focus();
+                        } else {
+                            // guardar: aquí puedes añadir llamada fetch/XHR para persistir
+                            setReadonly(container, true);
+                            this.textContent = 'Editar';
+                            this.dataset.mode = '';
+                            this.className = 'px-3 py-1 btn-primary rounded text-sm edit-btn';
+                            const prev = this.previousElementSibling; if(prev && prev.classList.contains('cancel-btn')) prev.remove();
+                            console.log('Datos guardados para sección:', sectionKey);
+                        }
+                    });
+                });
+
+                // Inicial: asegurar inputs readonly
+                document.querySelectorAll('[data-section]').forEach(s=> setReadonly(s, true));
+            })();
+        </script>
+    </div>
+</body>
+<script src="JS/JS_VistaGestionCistas.js"></script>
+
+</html>
