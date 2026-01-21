@@ -19,7 +19,6 @@ d.addEventListener("click", (e) => {
 });
 
 function crearCalendario() {
-  console.log("hola");
   let calendario = d.getElementById("calendario");
   for (let i = 1; i < 31; i++) {
     let dia = d.createElement("button");

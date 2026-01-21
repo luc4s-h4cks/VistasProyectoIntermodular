@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+  </head>
+
+  <body
+    class="bg-[var(--color-background)] text-[var(--color-text)] min-h-screen"
+  >
+    <!-- NAVBAR -->
+    <header
+      class="bg-[var(--color-secondary)] px-6 py-3 flex items-center justify-between"
+    >
+      <div class="flex items-center gap-4">
+        <div class="bg-white px-4 py-1 rounded font-semibold">LOGO</div>
+        <button class="font-medium">Citas</button>
+      </div>
+
+      <input
+        type="text"
+        placeholder="Buscar..."
+        class="w-1/3 px-4 py-1 rounded-full outline-none"
+      />
+
+      <div class="flex items-center gap-4">
+        <button class="font-medium">Mi taller</button>
+        <button class="bg-white px-4 py-1 rounded">Login</button>
+      </div>
+    </header>
+
+    <!-- CONTENIDO -->
+    <div class="flex">
+      <!-- SIDEBAR -->
+      <aside class="w-56 bg-red-50 p-4 space-y-3">
+        <a href="vista_Suscripcion.html" class="block">
+          <button class="w-full bg-red-200 py-2 rounded">Suscripción</button>
+        </a>
+
+        <a href="vitsa_personalizar_Taller.html" class="block">
+          <button class="w-full bg-red-200 py-2 rounded">
+            Página taller
+          </button>
+        </a>
+
+        <a href="vista_gestionCitas.html" class="block">
+          <button class="w-full bg-red-200 py-2 rounded">Gestión citas</button>
+        </a>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="flex-1 p-6 space-y-6">
+        <div
+          class="max-w-5xl mx-auto p-6 space-y-8 bg-gray-50 rounded-lg shadow-md"
+        >
+          <!-- Nombre del taller -->
+          <div>
+            <label class="block text-lg font-semibold mb-2"
+              >Nombre del taller</label
+            >
+            <input
+              type="text"
+              placeholder="Escribe el nombre del taller"
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+            />
+          </div>
+
+          <!-- Datos sobre el taller -->
+          <div>
+            <label class="block text-lg font-semibold mb-2"
+              >Datos sobre el taller</label
+            >
+            <textarea
+              placeholder="Descripción, ubicación, horarios..."
+              class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+            ></textarea>
+          </div>
+
+          <!-- Imagen del taller -->
+          <div>
+            <label class="block text-lg font-semibold mb-2"
+              >Imagen del taller</label
+            >
+            <input
+              type="file"
+              class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+            />
+          </div>
+
+          <!-- Calendario (no editable) -->
+          <div>
+            <label class="block text-lg font-semibold mb-2">Calendario</label>
+            <div
+              class="w-full h-64 bg-gray-200 flex items-center justify-center text-gray-500 rounded-md"
+            >
+              Aquí estaría el calendario (no editable)
+            </div>
+          </div>
+
+          <!-- Especialidades -->
+          <div>
+            <label class="block text-lg font-semibold mb-4"
+              >Especialidades</label
+            >
+            <div class="grid grid-cols-2 gap-4">
+              <label class="flex items-center space-x-2"
+                ><input type="checkbox" class="form-checkbox" />
+                <span>Frenos y suspensión</span></label
+              >
+              <label class="flex items-center space-x-2"
+                ><input type="checkbox" class="form-checkbox" />
+                <span>Mantenimiento</span></label
+              >
+              <label class="flex items-center space-x-2"
+                ><input type="checkbox" class="form-checkbox" />
+                <span>Diagnosis</span></label
+              >
+              <label class="flex items-center space-x-2"
+                ><input type="checkbox" class="form-checkbox" />
+                <span>Coches</span></label
+              >
+              <label class="flex items-center space-x-2"
+                ><input type="checkbox" class="form-checkbox" />
+                <span>Reparación de motor</span></label
+              >
+              <label class="flex items-center space-x-2"
+                ><input type="checkbox" class="form-checkbox" />
+                <span>Electricidad automotriz</span></label
+              >
+              <label class="flex items-center space-x-2"
+                ><input type="checkbox" class="form-checkbox" />
+                <span>Motos</span></label
+              >
+              <label class="flex items-center space-x-2"
+                ><input type="checkbox" class="form-checkbox" />
+                <span>Camiones</span></label
+              >
+            </div>
+          </div>
+
+          <!-- Contacto -->
+          <div>
+            <label class="block text-lg font-semibold mb-4">Contacto</label>
+            <div class="space-y-4">
+              <div>
+                <label class="block mb-1">Imagen de contacto</label>
+                <input
+                  type="file"
+                  class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+                />
+              </div>
+              <div>
+                <label class="block mb-1">Motivos para llamar</label>
+                <textarea
+                  placeholder="Ej: presupuestos, urgencias, citas..."
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-green-300"
+                ></textarea>
+              </div>
+              <div>
+                <label class="block mb-1">Email y teléfono</label>
+                <input
+                  type="text"
+                  placeholder="ejemplo@correo.com / 123456789"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-green-300"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+  <script src="JS/JS_VistaGestionCistas.js"></script>
+</html>
