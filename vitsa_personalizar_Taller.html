@@ -13,46 +13,75 @@
   >
     <!-- NAVBAR -->
     <header
-      class="bg-[var(--color-secondary)] px-6 py-3 flex items-center justify-between"
+      class="bg-[var(--color-secondary)] px-4 py-3 flex items-center justify-between"
     >
+      <!-- IZQUIERDA -->
       <div class="flex items-center gap-4">
         <div class="bg-white px-4 py-1 rounded font-semibold">LOGO</div>
-        <button class="font-medium">Citas</button>
+
+        <button class="font-medium">
+          <span class="md:hidden">📅</span>
+          <span class="hidden md:inline">Citas</span>
+        </button>
       </div>
 
+      <!-- BUSCADOR (oculto en móvil) -->
       <input
         type="text"
         placeholder="Buscar..."
         class="w-1/3 px-4 py-1 rounded-full outline-none"
       />
 
+      <!-- DERECHA -->
       <div class="flex items-center gap-4">
-        <button class="font-medium">Mi taller</button>
-        <button class="bg-white px-4 py-1 rounded">Login</button>
+        <button class="font-medium">
+          <span class="md:hidden">🛠</span>
+          <span class="hidden md:inline">Mi taller</span>
+        </button>
+
+        <button class="bg-white px-3 py-1 rounded">
+          <span class="md:hidden">👤</span>
+          <span class="hidden md:inline">Login</span>
+        </button>
       </div>
     </header>
 
     <!-- CONTENIDO -->
     <div class="flex">
       <!-- SIDEBAR -->
-      <aside class="w-56 bg-red-50 p-4 space-y-3">
+      <aside
+        class="fixed bottom-0 left-0 right-0 bg-red-50 p-2 flex justify-around md:static md:w-56 md:flex-col md:justify-start md:space-y-2 md:p-4"
+      >
         <a href="vista_Suscripcion.html" class="block">
-          <button class="w-full bg-red-200 py-2 rounded">Suscripción</button>
+          <button
+            class="bg-red-200 py-2 px-3 rounded text-sm md:w-full flex flex-col md:flex-row items-center gap-1 md:gap-2"
+          >
+            💳
+            <span>Suscripción</span>
+          </button>
         </a>
 
         <a href="vitsa_personalizar_Taller.html" class="block">
-          <button class="w-full bg-red-200 py-2 rounded">
-            Página taller
+          <button
+            class="bg-red-200 py-2 px-3 rounded text-sm md:w-full flex flex-col md:flex-row items-center gap-1 md:gap-2"
+          >
+            🛠
+            <span>Página taller</span>
           </button>
         </a>
 
         <a href="vista_gestionCitas.html" class="block">
-          <button class="w-full bg-red-200 py-2 rounded">Gestión citas</button>
+          <button
+            class="bg-red-200 py-2 px-3 rounded text-sm md:w-full flex flex-col md:flex-row items-center gap-1 md:gap-2"
+          >
+            📅
+            <span>Gestión citas</span>
+          </button>
         </a>
       </aside>
 
       <!-- MAIN -->
-      <main class="flex-1 p-6 space-y-6">
+      <main class="flex-1 p-4 sm:p-6 space-y-6 pb-28 md:pb-6">
         <div
           class="max-w-5xl mx-auto p-6 space-y-8 bg-gray-50 rounded-lg shadow-md"
         >
@@ -101,43 +130,64 @@
           </div>
 
           <!-- Especialidades -->
+          <!-- Especialidades y tipos de vehículo -->
           <div>
             <label class="block text-lg font-semibold mb-4"
               >Especialidades</label
             >
-            <div class="grid grid-cols-2 gap-4">
-              <label class="flex items-center space-x-2"
-                ><input type="checkbox" class="form-checkbox" />
-                <span>Frenos y suspensión</span></label
-              >
-              <label class="flex items-center space-x-2"
-                ><input type="checkbox" class="form-checkbox" />
-                <span>Mantenimiento</span></label
-              >
-              <label class="flex items-center space-x-2"
-                ><input type="checkbox" class="form-checkbox" />
-                <span>Diagnosis</span></label
-              >
-              <label class="flex items-center space-x-2"
-                ><input type="checkbox" class="form-checkbox" />
-                <span>Coches</span></label
-              >
-              <label class="flex items-center space-x-2"
-                ><input type="checkbox" class="form-checkbox" />
-                <span>Reparación de motor</span></label
-              >
-              <label class="flex items-center space-x-2"
-                ><input type="checkbox" class="form-checkbox" />
-                <span>Electricidad automotriz</span></label
-              >
-              <label class="flex items-center space-x-2"
-                ><input type="checkbox" class="form-checkbox" />
-                <span>Motos</span></label
-              >
-              <label class="flex items-center space-x-2"
-                ><input type="checkbox" class="form-checkbox" />
-                <span>Camiones</span></label
-              >
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <!-- COLUMNA ESPECIALIDADES -->
+              <div>
+                <h3 class="font-medium mb-3">Servicios</h3>
+                <div class="space-y-3">
+                  <label class="flex items-center gap-2">
+                    <input type="checkbox" class="form-checkbox" />
+                    <span>Frenos y suspensión</span>
+                  </label>
+
+                  <label class="flex items-center gap-2">
+                    <input type="checkbox" class="form-checkbox" />
+                    <span>Mantenimiento</span>
+                  </label>
+
+                  <label class="flex items-center gap-2">
+                    <input type="checkbox" class="form-checkbox" />
+                    <span>Diagnosis</span>
+                  </label>
+
+                  <label class="flex items-center gap-2">
+                    <input type="checkbox" class="form-checkbox" />
+                    <span>Reparación de motor</span>
+                  </label>
+
+                  <label class="flex items-center gap-2">
+                    <input type="checkbox" class="form-checkbox" />
+                    <span>Electricidad automotriz</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- COLUMNA TIPOS DE VEHÍCULO -->
+              <div>
+                <h3 class="font-medium mb-3">Tipos de vehículo</h3>
+                <div class="space-y-3">
+                  <label class="flex items-center gap-2">
+                    <input type="checkbox" class="form-checkbox" />
+                    <span>Coches</span>
+                  </label>
+
+                  <label class="flex items-center gap-2">
+                    <input type="checkbox" class="form-checkbox" />
+                    <span>Motos</span>
+                  </label>
+
+                  <label class="flex items-center gap-2">
+                    <input type="checkbox" class="form-checkbox" />
+                    <span>Camiones</span>
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
 
