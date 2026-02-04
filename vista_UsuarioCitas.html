@@ -6,41 +6,212 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css.css" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Document</title>
+    <title>Mis Citas</title>
+    <style>
+        .tarjetaCita {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            border: solid 1px;
+            border-color: var(--color-primary);
+            border-radius: 4px;
+            background-color: white;
+            gap: 32px;
+        }
+    </style>
 </head>
 
 <body class="bg-[var(--color-background)] text-[var(--color-text)] min-h-screen">
     <!-- NAVBAR -->
-    <header class="bg-secondary px-6 py-3 flex items-center justify-between text-white">
-        <div class="flex items-center gap-4">
-            <div class="bg-white px-4 py-1 rounded font-semibold">LOGO</div>
-            <button class="font-medium">Citas</button>
-        </div>
+    <header
+      class="bg-[var(--color-secondary)] px-4 py-3 flex items-center justify-between"
+    >
+      <!-- IZQUIERDA -->
+      <div class="flex items-center gap-4">
+        <div class="bg-white px-4 py-1 rounded font-semibold">LOGO</div>
 
-        <input type="text" placeholder="Buscar..." class="w-1/3 px-4 py-1 rounded-full outline-none" />
+        <button class="font-medium">
+          <span class="md:hidden">📅</span>
+          <span class="hidden md:inline">Citas</span>
+        </button>
+      </div>
 
-        <div class="flex items-center gap-4">
-            <button class="font-medium">Mi taller</button>
-            <button class="bg-white px-4 py-1 rounded">Login</button>
-        </div>
+      <!-- BUSCADOR (oculto en móvil) -->
+      <input
+        type="text"
+        placeholder="Buscar..."
+        class="w-1/3 px-4 py-1 rounded-full outline-none"
+      />
+
+      <!-- DERECHA -->
+      <div class="flex items-center gap-4">
+        <button class="font-medium">
+          <span class="md:hidden">🛠</span>
+          <span class="hidden md:inline">Mi taller</span>
+        </button>
+
+        <button class="bg-white px-3 py-1 rounded">
+          <span class="md:hidden">👤</span>
+          <span class="hidden md:inline">Login</span>
+        </button>
+      </div>
     </header>
+
+    
 
     <!-- CONTENIDO -->
     <div class="flex">
         <!-- SIDEBAR -->
-        <aside class="w-56 p-4 space-y-3">
-            <a href="vista_UsuarioPerfil.html" class="block w-full btn-secondary py-2 rounded text-center">Mis datos</a>
-            <a href="vista_UsuarioCitas.html" class="block w-full btn-secondary py-2 rounded text-center">Citas</a>
-            <a href="vista_UsuarioCoches.html" class="block w-full btn-secondary py-2 rounded text-center">Mis coches</a>
-        </aside>
+        <aside
+        class="fixed bottom-0 left-0 right-0 bg-red-50 p-2 flex justify-around md:static md:w-56 md:flex-col md:justify-start md:space-y-2 md:p-4"
+        >
+        <a href="vista_UsuarioPerfil.html" class="block">
+          <button
+            class="bg-red-200 py-2 px-3 rounded text-sm md:w-full flex flex-col md:flex-row items-center gap-1 md:gap-2"
+          >
+            💳
+            <span>Mis datos</span>
+          </button>
+        </a>
+
+        <a href="vista_UsuarioCitas.html" class="block">
+          <button
+            class="bg-red-200 py-2 px-3 rounded text-sm md:w-full flex flex-col md:flex-row items-center gap-1 md:gap-2"
+          >
+            🛠
+            <span>Mis Citas</span>
+          </button>
+        </a>
+
+        <a href="vista_UsuarioCoches.html" class="block">
+          <button
+            class="bg-red-200 py-2 px-3 rounded text-sm md:w-full flex flex-col md:flex-row items-center gap-1 md:gap-2"
+          >
+            📅
+            <span>Mis coches</span>
+          </button>
+        </a>
+      </aside>
 
         <!-- MAIN -->
         <main class="flex-1 p-6">
-            <div class="max-w-3xl mx-auto">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold mb-6">Gestión de Citas</h2>
+                <div id="listaCitas" class="space-y-4">
+                    
+                    <div class="tarjetaCita">
+                        <div class="flex">
+                            <div class="flex-1">Nombre del taller<br>[nombre]</div>
+                            <div class="flex-1">Fecha: <br>[00-00-0000]</div>
+                        </div>
+                        <div class="flex">
+                            <div class="flex-1">Estado: Listo para recogida</div>
+                            <div class="flex-1"><button class="btn-primary px-4 py-1 rounded text-sm">Pagar</button></div>
+                        </div>
+                    </div>
+                    <div class="tarjetaCita">
+                        <div class="flex">
+                            <div class="flex-1">Nombre del taller<br>[nombre]</div>
+                            <div class="flex-1">Fecha: <br>[00-00-0000]</div>
+                        </div>
+                        <div class="flex">
+                            <div class="flex-1">Estado: Pendiente</div>
+                            <div class="flex-1"><button class="btn-accent px-4 py-1 rounded text-sm">Cancelar</button></div>
+                        </div>
+                    </div>
+
+
+                    <div class="tarjetaCita">
+                        <div class="flex">
+                            <div class="flex-1">Nombre del taller<br>[nombre]</div>
+                            <div class="flex-1">Fecha: <br>[00-00-0000]</div>
+                        </div>
+                        <div class="flex">
+                            <div class="flex-1"><button class="btn-primary px-4 py-1 rounded text-sm">Pagar</button></div>
+                            <div class="flex-1">Estado: Listo para recogida</div>
+                        </div>
+                    </div>
+                    <div class="tarjetaCita">
+                        <div class="flex">
+                            <div class="flex-1">Nombre del taller<br>[nombre]</div>
+                            <div class="flex-1">Fecha: <br>[00-00-0000]</div>
+                        </div>
+                        <div class="flex">
+                            <div class="flex-1"><button class="btn-accent px-4 py-1 rounded text-sm btn-nf">Nueva fecha</button></div>
+                            <div class="flex-1">Estado: Nueva fecha</div>
+                        </div>
+                    </div>
+                    
+
+                </div>
             </div>
         </main>
     </div>
+
+    <!-- MODAL NUEVA FECHA -->
+    <div id="modalNuevaFecha" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4 border-2 border-gray-300">
+            <h2 class="text-xl font-bold text-center mb-2">Taller</h2>
+            <p class="text-center text-gray-600 mb-6" id="nombreTallerModal">Nombre Taller</p>
+            
+            <div class="mb-6">
+                <label class="block text-center text-gray-700 font-medium mb-2">Nueva fecha</label>
+                <p id="fechaModal" class="w-full px-4 py-2 border border-gray-300 rounded text-center bg-gray-100 font-medium">dd/m/yy</p>
+            </div>
+            
+            <div class="flex gap-4">
+                <button id="btnAceptar" class="flex-1 bg-green-300 hover:bg-green-400 text-black font-bold py-2 px-4 rounded">
+                    Aceptar
+                </button>
+                <button id="btnRechazar" class="flex-1 bg-red-300 hover:bg-red-400 text-black font-bold py-2 px-4 rounded">
+                    Rechazar Cita
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event listeners para los botones "Nueva fecha"
+            document.querySelectorAll('.btn-nf').forEach(btn => {
+                if (btn.textContent.trim() === 'Nueva fecha') {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        // Obtener el nombre del taller y la fecha de la tarjeta
+                        const tarjeta = this.closest('.tarjetaCita');
+                        const allDivs = tarjeta.querySelectorAll('.flex-1');
+                        const nombreTaller = allDivs[0].textContent.replace('Nombre del taller', '').trim();
+                        const fechaText = allDivs[1].textContent.replace('Fecha:', '').trim();
+                        
+                        // Mostrar el modal con la fecha actual
+                        document.getElementById('modalNuevaFecha').classList.remove('hidden');
+                        document.getElementById('nombreTallerModal').textContent = nombreTaller || '[nombre]';
+                        document.getElementById('fechaModal').textContent = fechaText || '[00-00-0000]';
+                    });
+                }
+            });
+
+            // Botón Aceptar
+            document.getElementById('btnAceptar').addEventListener('click', function() {
+                const fecha = document.getElementById('fechaModal').textContent;
+                console.log('Nueva fecha confirmada:', fecha);
+                document.getElementById('modalNuevaFecha').classList.add('hidden');
+            });
+
+            // Botón Rechazar
+            document.getElementById('btnRechazar').addEventListener('click', function() {
+                console.log('Se ha rechazado la cita');
+                document.getElementById('modalNuevaFecha').classList.add('hidden');
+            });
+
+            // Cerrar modal al hacer click fuera de él
+            document.getElementById('modalNuevaFecha').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.add('hidden');
+                }
+            });
+        });
+    </script>
 </body>
-<script src="JS/JS_VistaGestionCistas.js"></script>
 
 </html>
