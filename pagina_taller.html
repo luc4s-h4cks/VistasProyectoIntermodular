@@ -31,7 +31,7 @@
                 </svg>
             </button>
             <button class="font-medium hidden md:block">Mi taller</button>
-            <button class="bg-white px-3 md:px-4 py-1 rounded text-sm md:text-base">Boton login</button>
+            <button onclick="abrirLogin()" class="bg-white px-3 md:px-4 py-1 rounded text-sm md:text-base">Boton login</button>
         </div>
     </header>
 
@@ -183,7 +183,105 @@
         </div>
     </div>
 
+    <!-- ==================== MODALES DE AUTENTICACIÓN ==================== -->
+
+    <!-- MODAL: Inicio de sesión -->
+    <div id="modalLogin" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-red-100 rounded-xl p-8 w-[90vw] max-w-md shadow-2xl relative">
+            <button onclick="cerrarModalesAuth()" class="absolute top-3 right-4 text-gray-500 hover:text-black text-2xl font-bold">×</button>
+            <h2 class="text-2xl font-bold mb-6">Inicio de sesión</h2>
+            <form onsubmit="enviarLogin(event)">
+                <label class="block text-sm font-medium mb-1">Usuario o email</label>
+                <input id="loginUsuario" type="text" placeholder="emaildeejemplo@yahoo.es" class="w-full px-4 py-2 mb-4 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <label class="block text-sm font-medium mb-1">Contraseña</label>
+                <input id="loginPassword" type="password" placeholder="XXXXXXXXX" class="w-full px-4 py-2 mb-2 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <a href="#" onclick="abrirRecuperarPassword()" class="text-sm text-gray-700 hover:underline block mb-2">Recuperar contraseña</a>
+                <p class="text-sm text-gray-600 mb-4">¿No tienes cuenta? <a href="#" onclick="abrirRegistro()" class="text-blue-700 hover:underline">Crea una</a></p>
+                <button type="submit" class="w-full bg-red-400 hover:bg-red-500 text-white font-bold py-2 rounded transition-colors">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Crear cuenta -->
+    <div id="modalRegistro" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-red-100 rounded-xl p-8 w-[90vw] max-w-md shadow-2xl relative">
+            <button onclick="cerrarModalesAuth()" class="absolute top-3 right-4 text-gray-500 hover:text-black text-2xl font-bold">×</button>
+            <h2 class="text-2xl font-bold mb-6">Crea tu cuenta</h2>
+            <form onsubmit="enviarRegistro(event)">
+                <label class="block text-sm font-medium mb-1">Nombre de usuario</label>
+                <input id="registroNombre" type="text" placeholder="nameuser" class="w-full px-4 py-2 mb-4 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <label class="block text-sm font-medium mb-1">Contraseña</label>
+                <input id="registroPassword" type="password" placeholder="XXXXXXXXX" class="w-full px-4 py-2 mb-4 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <label class="block text-sm font-medium mb-1">Repite la contraseña</label>
+                <input id="registroPasswordRepetir" type="password" placeholder="XXXXXXXXX" class="w-full px-4 py-2 mb-4 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <label class="block text-sm font-medium mb-1">Email</label>
+                <input id="registroEmail" type="email" placeholder="emaildeejemplo@yahoo.es" class="w-full px-4 py-2 mb-2 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <p class="text-sm text-gray-600 mb-4">Tengo una cuenta (<a href="#" onclick="abrirLogin()" class="text-blue-700 hover:underline">link a inicio de sesión</a>)</p>
+                <label class="flex items-center gap-2 mb-4 cursor-pointer">
+                    <input id="registroEsTaller" type="checkbox" class="w-4 h-4" />
+                    <span class="text-sm">Soy taller</span>
+                </label>
+                <button type="submit" class="w-full bg-red-400 hover:bg-red-500 text-white font-bold py-2 rounded transition-colors">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Recuperar contraseña -->
+    <div id="modalRecuperarPassword" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-red-100 rounded-xl p-8 w-[90vw] max-w-md shadow-2xl relative">
+            <button onclick="cerrarModalesAuth()" class="absolute top-3 right-4 text-gray-500 hover:text-black text-2xl font-bold">×</button>
+            <h2 class="text-2xl font-bold mb-6">Recuperar contraseña</h2>
+            <form onsubmit="enviarRecuperarPassword(event)">
+                <label class="block text-sm font-medium mb-1">Usuario o email</label>
+                <input id="recuperarUsuario" type="text" placeholder="emaildeejemplo@yahoo.es" class="w-full px-4 py-2 mb-4 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <p class="text-sm text-gray-600 mb-6">Te vamos a enviar un código al email de tu cuenta para verificar que eres tú.</p>
+                <button type="submit" class="w-full bg-red-400 hover:bg-red-500 text-white font-bold py-2 rounded transition-colors">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Código de verificación -->
+    <div id="modalCodigoVerificacion" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-red-100 rounded-xl p-8 w-[90vw] max-w-md shadow-2xl relative">
+            <button onclick="cerrarModalesAuth()" class="absolute top-3 right-4 text-gray-500 hover:text-black text-2xl font-bold">×</button>
+            <h2 class="text-2xl font-bold mb-4">Código de verificación</h2>
+            <p class="text-sm text-gray-600 mb-6">Introduzca el código de verificación</p>
+            <form onsubmit="obtenerCodigoCompleto(); enviarCodigoVerificacion(event)">
+                <div class="flex items-center justify-center gap-2 mb-4">
+                    <input id="codigo1" type="text" maxlength="1" oninput="moverFocoCodigo(this, 1)" class="w-12 h-12 text-center text-xl font-bold rounded bg-gray-300 outline-none" />
+                    <input id="codigo2" type="text" maxlength="1" oninput="moverFocoCodigo(this, 2)" class="w-12 h-12 text-center text-xl font-bold rounded bg-gray-300 outline-none" />
+                    <input id="codigo3" type="text" maxlength="1" oninput="moverFocoCodigo(this, 3)" class="w-12 h-12 text-center text-xl font-bold rounded bg-gray-300 outline-none" />
+                    <span class="text-2xl font-bold">–</span>
+                    <input id="codigo4" type="text" maxlength="1" oninput="moverFocoCodigo(this, 4)" class="w-12 h-12 text-center text-xl font-bold rounded bg-gray-300 outline-none" />
+                    <input id="codigo5" type="text" maxlength="1" oninput="moverFocoCodigo(this, 5)" class="w-12 h-12 text-center text-xl font-bold rounded bg-gray-300 outline-none" />
+                    <input id="codigo6" type="text" maxlength="1" oninput="moverFocoCodigo(this, 6)" class="w-12 h-12 text-center text-xl font-bold rounded bg-gray-300 outline-none" />
+                </div>
+                <input type="hidden" id="codigoVerificacion" />
+                <a href="#" onclick="abrirRecuperarPassword()" class="text-sm text-gray-700 hover:underline block mb-4">Volver atrás</a>
+                <button type="submit" class="w-full bg-red-400 hover:bg-red-500 text-white font-bold py-2 rounded transition-colors">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Cambiar contraseña -->
+    <div id="modalCambiarPassword" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-red-100 rounded-xl p-8 w-[90vw] max-w-md shadow-2xl relative">
+            <button onclick="cerrarModalesAuth()" class="absolute top-3 right-4 text-gray-500 hover:text-black text-2xl font-bold">×</button>
+            <h2 class="text-2xl font-bold mb-6">Cambio de contraseña</h2>
+            <form onsubmit="enviarCambiarPassword(event)">
+                <label class="block text-sm font-medium mb-1">Contraseña nueva</label>
+                <input id="cambiarPasswordNueva" type="password" placeholder="XXXXXXXXX" class="w-full px-4 py-2 mb-4 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <label class="block text-sm font-medium mb-1">Repite la contraseña</label>
+                <input id="cambiarPasswordRepetir" type="password" placeholder="XXXXXXXXX" class="w-full px-4 py-2 mb-2 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <a href="#" onclick="abrirRecuperarPassword()" class="text-sm text-gray-700 hover:underline block mb-2">Recuperar contraseña</a>
+                <p class="text-sm text-gray-600 mb-4">¿No tienes cuenta? <a href="#" onclick="abrirRegistro()" class="text-blue-700 hover:underline">Crea una</a></p>
+                <button type="submit" class="w-full bg-red-400 hover:bg-red-500 text-white font-bold py-2 rounded transition-colors">Enviar</button>
+            </form>
+        </div>
+    </div>
+
     <script src="JS/JS_PaginaTaller.js"></script>
+    <script src="JS/JS_Auth.js"></script>
 </body>
 
 </html>
