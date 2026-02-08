@@ -13,7 +13,7 @@
   >
     <!-- NAVBAR -->
     <header
-      class="bg-[var(--color-secondary)] px-4 py-3 flex items-center justify-between"
+      class="bg-[var(--color-primary)] px-4 py-3 flex items-center justify-between"
     >
       <!-- IZQUIERDA -->
       <div class="flex items-center gap-4">
@@ -49,35 +49,27 @@
     <!-- CONTENIDO -->
     <div class="flex">
       <!-- SIDEBAR -->
-      <aside
-        class="fixed bottom-0 left-0 right-0 bg-red-50 p-2 flex justify-around md:static md:w-56 md:flex-col md:justify-start md:space-y-2 md:p-4"
-      >
-        <a href="vista_Suscripcion.html" class="block">
-          <button
-            class="bg-red-200 py-2 px-3 rounded text-sm md:w-full flex flex-col md:flex-row items-center gap-1 md:gap-2"
-          >
-            💳
-            <span>Suscripción</span>
-          </button>
-        </a>
-
-        <a href="vitsa_personalizar_Taller.html" class="block">
-          <button
-            class="bg-red-200 py-2 px-3 rounded text-sm md:w-full flex flex-col md:flex-row items-center gap-1 md:gap-2"
-          >
-            🛠
-            <span>Página taller</span>
-          </button>
-        </a>
-
-        <a href="vista_gestionCitas.html" class="block">
-          <button
-            class="bg-red-200 py-2 px-3 rounded text-sm md:w-full flex flex-col md:flex-row items-center gap-1 md:gap-2"
-          >
-            📅
-            <span>Gestión citas</span>
-          </button>
-        </a>
+      <aside class="w-64 bg-white min-h-screen shadow-lg hidden md:block">
+        <nav class="p-4">
+          <h2 class="text-lg font-bold text-[var(--color-primary)] mb-4">Menú</h2>
+          <ul class="space-y-2">
+            <li>
+              <a href="vista_Suscripcion.html" class="flex items-center gap-3 px-4 py-3 bg-[var(--color-primary)] text-white rounded-lg">
+                💳 Suscripción
+              </a>
+            </li>
+            <li>
+              <a href="vitsa_personalizar_Taller.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition">
+                🛠 Página taller
+              </a>
+            </li>
+            <li>
+              <a href="vista_gestionCitas.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition">
+                📅 Gestión citas
+              </a>
+            </li>
+          </ul>
+        </nav>
       </aside>
 
       <!-- MAIN -->
