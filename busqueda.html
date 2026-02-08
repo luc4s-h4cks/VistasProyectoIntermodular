@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Talleres - Mecánico</title>
+</head>
+
+<body class="bg-[var(--color-background)] text-[var(--color-text)] min-h-screen">
+    <!-- NAVBAR -->
+    <header class="bg-[var(--color-primary)] px-4 md:px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2 md:gap-4">
+            <div class="bg-white px-3 md:px-4 py-1 rounded font-semibold text-sm md:text-base">logo</div>
+            <button class="font-medium hidden md:block">Citas</button>
+        </div>
+
+        <input type="text" placeholder="Barra busqueda" class="hidden md:block w-1/3 px-4 py-1 rounded-full outline-none" />
+        <button class="md:hidden">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+        </button>
+
+        <div class="flex items-center gap-2 md:gap-4">
+            <button class="font-medium hidden md:block">Mi taller</button>
+            <button onclick="abrirLogin()" class="bg-white px-3 md:px-4 py-1 rounded text-sm md:text-base">Boton login</button>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="container mx-auto px-4 md:px-6 py-4 md:py-6">
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- FILTROS LATERAL (DESKTOP) -->
+            <aside class="hidden md:block w-64 flex-shrink-0">
+                <div class="bg-white border-2 border-gray-300 rounded-lg p-4">
+                    <h3 class="font-bold text-lg mb-4">Filtros</h3>
+
+                    <!-- Tipo de vehículo -->
+                    <div class="mb-6">
+                        <h4 class="font-semibold mb-3 flex items-center justify-between cursor-pointer" onclick="toggleFiltro('filtroVehiculo')">
+                            Tipo de vehículo
+                            <span class="text-sm transition-transform" id="iconoVehiculo">-</span>
+                        </h4>
+                        <div id="filtroVehiculo" class="space-y-2 pl-2">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4" />
+                                <span>Coche</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4" />
+                                <span>Moto</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4" />
+                                <span>Camión</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Tipo de servicio -->
+                    <div class="mb-4">
+                        <h4 class="font-semibold mb-3 flex items-center justify-between cursor-pointer" onclick="toggleFiltro('filtroServicio')">
+                            Tipo de servicio
+                            <span class="text-sm transition-transform" id="iconoServicio">-</span>
+                        </h4>
+                        <div id="filtroServicio" class="space-y-2 pl-2">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4" />
+                                <span class="text-sm">Mantenimiento</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4" />
+                                <span class="text-sm">Reparación de motor</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4" />
+                                <span class="text-sm">Frenos y suspensiones</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4" />
+                                <span class="text-sm">Electricidad automotriz</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4" />
+                                <span class="text-sm">Diagnosis</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- CONTENIDO DE TARJETAS -->
+            <div class="flex-1">
+                <!-- BOTÓN FILTROS MÓVIL Y ORDENAR -->
+                <div class="flex items-center justify-between mb-6">
+                    <!-- Botón hamburguesa para móvil -->
+                    <button id="btnFiltrosMobile" class="md:hidden w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                    <div class="hidden md:block"></div>
+
+                    <!-- Ordenar por -->
+                    <div class="flex items-center gap-2">
+                        <label class="font-medium">Ordenar por</label>
+                        <select class="border border-gray-400 px-3 py-1 rounded outline-none bg-white">
+                            <option value="relevancia">relevancia</option>
+                            <option value="proximidad">proximidad</option>
+                            <option value="precio">precio</option>
+                        </select>
+                    </div>
+                </div>
+
+        <!-- TARJETAS DE TALLERES -->
+        <div class="space-y-6">
+            <!-- Tarjeta 1 -->
+            <div class="bg-[var(--color-primary)] border-4 border-black rounded-2xl overflow-hidden shadow-lg">
+                <!-- Nombre del Taller -->
+                <div class="bg-white px-6 py-3 border-b-4 border-[var(--color-primary)]">
+                    <h2 class="text-xl font-bold text-[var(--color-primary)]">Nombre Taller</h2>
+                </div>
+
+                <!-- Contenido de la tarjeta -->
+                <div class="p-6 flex flex-col md:flex-row gap-4">
+                    <!-- Imagen -->
+                    <div class="flex-shrink-0">
+                        <div class="w-full md:w-48 h-48 bg-white border-4 border-black rounded-lg flex items-center justify-center overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400" 
+                                 alt="Imagen del taller" 
+                                 class="w-full h-full object-cover" />
+                        </div>
+                    </div>
+
+                    <!-- Datos y botón -->
+                    <div class="flex-1 flex flex-col justify-between">
+                        <!-- Datos del taller -->
+                        <div class="bg-white border-4 border-black rounded-lg p-4 mb-4">
+                            <p class="text-sm md:text-base mb-1"><strong class="text-[var(--color-primary)]">Ubicación:</strong> Calle Principal 123, Madrid</p>
+                            <p class="text-sm md:text-base mb-1"><strong class="text-[var(--color-primary)]">Especialidad:</strong> Reparación de motos deportivas</p>
+                            <p class="text-sm md:text-base mb-1"><strong class="text-[var(--color-primary)]">Horario:</strong> Lunes a Viernes 9:00 - 18:00</p>
+                            <p class="text-sm md:text-base mb-1"><strong class="text-[var(--color-primary)]">Teléfono:</strong> 123 456 789</p>
+                            <p class="text-sm md:text-base"><strong class="text-[var(--color-primary)]">Valoración:</strong> ⭐⭐⭐⭐⭐ (4.8/5)</p>
+                        </div>
+
+                        <!-- Botón Detalles -->
+                        <button class="bg-white border-4 border-black rounded-full px-8 py-2 font-bold text-lg hover:bg-gray-100 transition-colors">
+                            Detalles
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjeta 2 -->
+            <div class="bg-[var(--color-primary)] border-4 border-black rounded-2xl overflow-hidden shadow-lg">
+                <!-- Nombre del Taller -->
+                <div class="bg-white px-6 py-3 border-b-4 border-[var(--color-primary)]">
+                    <h2 class="text-xl font-bold text-[var(--color-primary)]">Nombre Taller</h2>
+                </div>
+
+                <!-- Contenido de la tarjeta -->
+                <div class="p-6 flex flex-col md:flex-row gap-4">
+                    <!-- Imagen -->
+                    <div class="flex-shrink-0">
+                        <div class="w-full md:w-48 h-48 bg-white border-4 border-black rounded-lg flex items-center justify-center overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400" 
+                                 alt="Imagen del taller" 
+                                 class="w-full h-full object-cover" />
+                        </div>
+                    </div>
+
+                    <!-- Datos y botón -->
+                    <div class="flex-1 flex flex-col justify-between">
+                        <!-- Datos del taller -->
+                        <div class="bg-white border-4 border-black rounded-lg p-4 mb-4">
+                            <p class="text-sm md:text-base mb-1"><strong class="text-[var(--color-primary)]">Ubicación:</strong> Avenida Central 456, Barcelona</p>
+                            <p class="text-sm md:text-base mb-1"><strong class="text-[var(--color-primary)]">Especialidad:</strong> Mantenimiento integral de motocicletas</p>
+                            <p class="text-sm md:text-base mb-1"><strong class="text-[var(--color-primary)]">Horario:</strong> Lunes a Sábado 8:00 - 20:00</p>
+                            <p class="text-sm md:text-base mb-1"><strong class="text-[var(--color-primary)]">Teléfono:</strong> 987 654 321</p>
+                            <p class="text-sm md:text-base"><strong class="text-[var(--color-primary)]">Valoración:</strong> ⭐⭐⭐⭐ (4.5/5)</p>
+                        </div>
+
+                        <!-- Botón Detalles -->
+                        <button class="bg-white border-4 border-black rounded-full px-8 py-2 font-bold text-lg hover:bg-gray-100 transition-colors">
+                            Detalles
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjeta 3 -->
+            <div class="bg-[var(--color-primary)] border-4 border-black rounded-2xl overflow-hidden shadow-lg">
+                <!-- Nombre del Taller -->
+                <div class="bg-white px-6 py-3 border-b-4 border-[var(--color-primary)]">
+                    <h2 class="text-xl font-bold text-[var(--color-primary)]">Nombre Taller</h2>
+                </div>
+
+                <!-- Contenido de la tarjeta -->
+                <div class="p-6 flex flex-col md:flex-row gap-4">
+                    <!-- Imagen -->
+                    <div class="flex-shrink-0">
+                        <div class="w-full md:w-48 h-48 bg-white border-4 border-black rounded-lg flex items-center justify-center overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1599819177626-0eb1112fddd6?w=400" 
+                                 alt="Imagen del taller" 
+                                 class="w-full h-full object-cover" />
+                        </div>
+                    </div>
+
+                    <!-- Datos y botón -->
+                    <div class="flex-1 flex flex-col justify-between">
+                        <!-- Datos del taller -->
+                        <div class="bg-white border-4 border-black rounded-lg p-4 mb-4">
+                            <p class="text-sm md:text-base mb-1"><strong class="text-[var(--color-primary)]">Ubicación:</strong> Plaza Mayor 789, Valencia</p>
+                            <p class="text-sm md:text-base mb-1"><strong class="text-[var(--color-primary)]">Especialidad:</strong> Customización y tuning de motos</p>
+                            <p class="text-sm md:text-base mb-1"><strong class="text-[var(--color-primary)]">Horario:</strong> Martes a Domingo 10:00 - 19:00</p>
+                            <p class="text-sm md:text-base mb-1"><strong class="text-[var(--color-primary)]">Teléfono:</strong> 555 123 456</p>
+                            <p class="text-sm md:text-base"><strong class="text-[var(--color-primary)]">Valoración:</strong> ⭐⭐⭐⭐⭐ (5.0/5)</p>
+                        </div>
+
+                        <!-- Botón Detalles -->
+                        <button class="bg-white border-4 border-black rounded-full px-8 py-2 font-bold text-lg hover:bg-gray-100 transition-colors">
+                            Detalles
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL FILTROS MÓVIL -->
+    <div id="modalFiltros" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 md:hidden transition-opacity duration-300 opacity-0">
+        <div id="modalFiltrosContenido" class="bg-white rounded-lg w-[90vw] max-w-md max-h-[80vh] overflow-y-auto transform transition-all duration-300 scale-95 opacity-0">
+            <div class="sticky top-0 bg-white border-b-2 border-gray-300 p-4 flex items-center justify-between">
+                <h3 class="font-bold text-lg">Filtros</h3>
+                <button onclick="cerrarFiltros()" class="text-2xl font-bold text-gray-500 hover:text-black">
+                    ×
+                </button>
+            </div>
+
+            <div class="p-4">
+                <!-- Tipo de vehículo -->
+                <div class="mb-6">
+                    <h4 class="font-semibold mb-3 flex items-center justify-between cursor-pointer" onclick="toggleFiltro('filtroVehiculoModal')">
+                        Tipo de vehículo
+                        <span class="text-sm transition-transform" id="iconoVehiculoModal">-</span>
+                    </h4>
+                    <div id="filtroVehiculoModal" class="space-y-2 pl-2">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4" />
+                            <span>Coche</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4" />
+                            <span>Moto</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4" />
+                            <span>Camión</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Tipo de servicio -->
+                <div class="mb-4">
+                    <h4 class="font-semibold mb-3 flex items-center justify-between cursor-pointer" onclick="toggleFiltro('filtroServicioModal')">
+                        Tipo de servicio
+                        <span class="text-sm transition-transform" id="iconoServicioModal">-</span>
+                    </h4>
+                    <div id="filtroServicioModal" class="space-y-2 pl-2">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4" />
+                            <span class="text-sm">Mantenimiento</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4" />
+                            <span class="text-sm">Reparación de motor</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4" />
+                            <span class="text-sm">Frenos y suspensiones</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4" />
+                            <span class="text-sm">Electricidad automotriz</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4" />
+                            <span class="text-sm">Diagnosis</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Botón aplicar -->
+                <button onclick="cerrarFiltros()" class="w-full bg-[var(--color-secondary)] text-black font-bold py-3 rounded-lg hover:opacity-90 mt-6">
+                    Aplicar filtros
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODALES DE AUTENTICACIÓN ==================== -->
+
+    <!-- MODAL: Inicio de sesión -->
+    <div id="modalLogin" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-red-100 rounded-xl p-8 w-[90vw] max-w-md shadow-2xl relative">
+            <button onclick="cerrarModalesAuth()" class="absolute top-3 right-4 text-gray-500 hover:text-black text-2xl font-bold">×</button>
+            <h2 class="text-2xl font-bold mb-6">Inicio de sesión</h2>
+            <form onsubmit="enviarLogin(event)">
+                <label class="block text-sm font-medium mb-1">Usuario o email</label>
+                <input id="loginUsuario" type="text" placeholder="emaildeejemplo@yahoo.es" class="w-full px-4 py-2 mb-4 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <label class="block text-sm font-medium mb-1">Contraseña</label>
+                <input id="loginPassword" type="password" placeholder="XXXXXXXXX" class="w-full px-4 py-2 mb-2 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <a href="#" onclick="abrirRecuperarPassword()" class="text-sm text-gray-700 hover:underline block mb-2">Recuperar contraseña</a>
+                <p class="text-sm text-gray-600 mb-4">¿No tienes cuenta? <a href="#" onclick="abrirRegistro()" class="text-blue-700 hover:underline">Crea una</a></p>
+                <button type="submit" class="w-full bg-red-400 hover:bg-red-500 text-white font-bold py-2 rounded transition-colors">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Crear cuenta -->
+    <div id="modalRegistro" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-red-100 rounded-xl p-8 w-[90vw] max-w-md shadow-2xl relative">
+            <button onclick="cerrarModalesAuth()" class="absolute top-3 right-4 text-gray-500 hover:text-black text-2xl font-bold">×</button>
+            <h2 class="text-2xl font-bold mb-6">Crea tu cuenta</h2>
+            <form onsubmit="enviarRegistro(event)">
+                <label class="block text-sm font-medium mb-1">Nombre de usuario</label>
+                <input id="registroNombre" type="text" placeholder="nameuser" class="w-full px-4 py-2 mb-4 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <label class="block text-sm font-medium mb-1">Contraseña</label>
+                <input id="registroPassword" type="password" placeholder="XXXXXXXXX" class="w-full px-4 py-2 mb-4 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <label class="block text-sm font-medium mb-1">Repite la contraseña</label>
+                <input id="registroPasswordRepetir" type="password" placeholder="XXXXXXXXX" class="w-full px-4 py-2 mb-4 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <label class="block text-sm font-medium mb-1">Email</label>
+                <input id="registroEmail" type="email" placeholder="emaildeejemplo@yahoo.es" class="w-full px-4 py-2 mb-2 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <p class="text-sm text-gray-600 mb-4">Tengo una cuenta (<a href="#" onclick="abrirLogin()" class="text-blue-700 hover:underline">link a inicio de sesión</a>)</p>
+                <label class="flex items-center gap-2 mb-4 cursor-pointer">
+                    <input id="registroEsTaller" type="checkbox" class="w-4 h-4" />
+                    <span class="text-sm">Soy taller</span>
+                </label>
+                <button type="submit" class="w-full bg-red-400 hover:bg-red-500 text-white font-bold py-2 rounded transition-colors">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Recuperar contraseña -->
+    <div id="modalRecuperarPassword" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-red-100 rounded-xl p-8 w-[90vw] max-w-md shadow-2xl relative">
+            <button onclick="cerrarModalesAuth()" class="absolute top-3 right-4 text-gray-500 hover:text-black text-2xl font-bold">×</button>
+            <h2 class="text-2xl font-bold mb-6">Recuperar contraseña</h2>
+            <form onsubmit="enviarRecuperarPassword(event)">
+                <label class="block text-sm font-medium mb-1">Usuario o email</label>
+                <input id="recuperarUsuario" type="text" placeholder="emaildeejemplo@yahoo.es" class="w-full px-4 py-2 mb-4 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <p class="text-sm text-gray-600 mb-6">Te vamos a enviar un código al email de tu cuenta para verificar que eres tú.</p>
+                <button type="submit" class="w-full bg-red-400 hover:bg-red-500 text-white font-bold py-2 rounded transition-colors">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Código de verificación -->
+    <div id="modalCodigoVerificacion" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-red-100 rounded-xl p-8 w-[90vw] max-w-md shadow-2xl relative">
+            <button onclick="cerrarModalesAuth()" class="absolute top-3 right-4 text-gray-500 hover:text-black text-2xl font-bold">×</button>
+            <h2 class="text-2xl font-bold mb-4">Código de verificación</h2>
+            <p class="text-sm text-gray-600 mb-6">Introduzca el código de verificación</p>
+            <form onsubmit="obtenerCodigoCompleto(); enviarCodigoVerificacion(event)">
+                <div class="flex items-center justify-center gap-2 mb-4">
+                    <input id="codigo1" type="text" maxlength="1" oninput="moverFocoCodigo(this, 1)" class="w-12 h-12 text-center text-xl font-bold rounded bg-gray-300 outline-none" />
+                    <input id="codigo2" type="text" maxlength="1" oninput="moverFocoCodigo(this, 2)" class="w-12 h-12 text-center text-xl font-bold rounded bg-gray-300 outline-none" />
+                    <input id="codigo3" type="text" maxlength="1" oninput="moverFocoCodigo(this, 3)" class="w-12 h-12 text-center text-xl font-bold rounded bg-gray-300 outline-none" />
+                    <span class="text-2xl font-bold">–</span>
+                    <input id="codigo4" type="text" maxlength="1" oninput="moverFocoCodigo(this, 4)" class="w-12 h-12 text-center text-xl font-bold rounded bg-gray-300 outline-none" />
+                    <input id="codigo5" type="text" maxlength="1" oninput="moverFocoCodigo(this, 5)" class="w-12 h-12 text-center text-xl font-bold rounded bg-gray-300 outline-none" />
+                    <input id="codigo6" type="text" maxlength="1" oninput="moverFocoCodigo(this, 6)" class="w-12 h-12 text-center text-xl font-bold rounded bg-gray-300 outline-none" />
+                </div>
+                <input type="hidden" id="codigoVerificacion" />
+                <a href="#" onclick="abrirRecuperarPassword()" class="text-sm text-gray-700 hover:underline block mb-4">Volver atrás</a>
+                <button type="submit" class="w-full bg-red-400 hover:bg-red-500 text-white font-bold py-2 rounded transition-colors">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Cambiar contraseña -->
+    <div id="modalCambiarPassword" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-red-100 rounded-xl p-8 w-[90vw] max-w-md shadow-2xl relative">
+            <button onclick="cerrarModalesAuth()" class="absolute top-3 right-4 text-gray-500 hover:text-black text-2xl font-bold">×</button>
+            <h2 class="text-2xl font-bold mb-6">Cambio de contraseña</h2>
+            <form onsubmit="enviarCambiarPassword(event)">
+                <label class="block text-sm font-medium mb-1">Contraseña nueva</label>
+                <input id="cambiarPasswordNueva" type="password" placeholder="XXXXXXXXX" class="w-full px-4 py-2 mb-4 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <label class="block text-sm font-medium mb-1">Repite la contraseña</label>
+                <input id="cambiarPasswordRepetir" type="password" placeholder="XXXXXXXXX" class="w-full px-4 py-2 mb-2 rounded bg-gray-300 outline-none placeholder-gray-500" />
+                <a href="#" onclick="abrirRecuperarPassword()" class="text-sm text-gray-700 hover:underline block mb-2">Recuperar contraseña</a>
+                <p class="text-sm text-gray-600 mb-4">¿No tienes cuenta? <a href="#" onclick="abrirRegistro()" class="text-blue-700 hover:underline">Crea una</a></p>
+                <button type="submit" class="w-full bg-red-400 hover:bg-red-500 text-white font-bold py-2 rounded transition-colors">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="JS/JS_Busqueda.js"></script>
+    <script src="JS/JS_Auth.js"></script>
+</body>
+
+</html>
