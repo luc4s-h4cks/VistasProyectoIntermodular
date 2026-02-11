@@ -31,6 +31,11 @@ class Taller extends Model
         'suscripcion',
     ];
 
+    protected $casts = [
+        'tipo_vehiculo' => 'array',
+        'tipo_servicio' => 'array',
+    ];
+
 
     public function citas()
     {
