@@ -2,7 +2,7 @@
 
 namespace App\Concerns;
 
-use App\Models\User;
+use App\Models\Usuario;
 use Illuminate\Validation\Rule;
 
 trait ProfileValidationRules
@@ -15,7 +15,7 @@ trait ProfileValidationRules
     protected function profileRules(?int $userId = null): array
     {
         return [
-            'name' => $this->nameRules(),
+            'nombre' => $this->nameRules(),
             'email' => $this->emailRules($userId),
         ];
     }
@@ -43,8 +43,8 @@ trait ProfileValidationRules
             'email',
             'max:255',
             $userId === null
-                ? Rule::unique(User::class)
-                : Rule::unique(User::class)->ignore($userId),
+                ? Rule::unique(Usuario::class, 'email')
+                : Rule::unique(Usuario::class, 'email')->ignore($userId, 'id_usuario'),
         ];
     }
 }
