@@ -7,6 +7,14 @@ use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
+/**
+ * Componente para eliminar la cuenta del usuario
+ *
+ * Este componente está embebido en la página de Perfil.
+ * Permite al usuario eliminar permanentemente su cuenta verificando su contraseña.
+ *
+ * @see resources/views/livewire/settings/profile.blade.php
+ */
 class DeleteUserForm extends Component
 {
     use PasswordValidationRules;

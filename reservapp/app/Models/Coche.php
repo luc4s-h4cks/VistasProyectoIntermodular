@@ -9,6 +9,7 @@ class Coche extends Model
 {
     /** @use HasFactory<\Database\Factories\CocheFactory> */
     use HasFactory;
+
     protected $table = 'coche';
     protected $primaryKey = 'id_coche';
     public $timestamps = false;
@@ -20,6 +21,7 @@ class Coche extends Model
         'marca',
         'modelo',
         'tipo_conbustible',
+        'img_vehiculo',
     ];
 
     public function citas(){
