@@ -62,10 +62,10 @@ class CreateCoche extends Component
     {
         // Validar los datos
         $validated = $this->validate([
-            'matricula' => 'required|string|unique:coche,matricula',
+            'matricula' => 'required|string|unique:coches,matricula',
             'marca' => 'required|string|max:255',
             'modelo' => 'required|string|max:255',
-            'n_bastidor' => 'required|string|unique:coche,n_bastidor',
+            'n_bastidor' => 'required|string|unique:coches,n_bastidor',
             'tipo_conbustible' => 'required|string|max:255',
             'img_vehiculo' => 'nullable|image|max:2048',
         ]);
