@@ -1,15 +1,26 @@
+{{--
+    Componente de eliminación de cuenta de usuario
+
+    Este componente está embebido en la página de Perfil.
+    Muestra un modal de confirmación que requiere contraseña para eliminar la cuenta.
+
+    Lógica backend: App\Livewire\Settings\DeleteUserForm.php
+--}}
 <section class="mt-10 space-y-6">
+    {{-- Encabezado de la sección --}}
     <div class="relative mb-5">
         <flux:heading>{{ __('Delete account') }}</flux:heading>
         <flux:subheading>{{ __('Delete your account and all of its resources') }}</flux:subheading>
     </div>
 
+    {{-- Botón para abrir modal --}}
     <flux:modal.trigger name="confirm-user-deletion">
         <flux:button variant="danger" x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')">
             {{ __('Delete account') }}
         </flux:button>
     </flux:modal.trigger>
 
+    {{-- Modal de confirmación --}}
     <flux:modal name="confirm-user-deletion" :show="$errors->isNotEmpty()" focusable class="max-w-lg">
         <form method="POST" wire:submit="deleteUser" class="space-y-6">
             <div>

@@ -1,58 +1,61 @@
-<section class="w-full">
-    @include('partials.settings-heading')
-
-    <flux:heading class="sr-only">{{ __('Two-Factor Authentication Settings') }}</flux:heading>
-
-    <x-settings.layout
-        :heading="__('Two Factor Authentication')"
-        :subheading="__('Manage your two-factor authentication settings')"
-    >
-        <div class="flex flex-col w-full mx-auto space-y-6 text-sm" wire:cloak>
-            @if ($twoFactorEnabled)
-                <div class="space-y-4">
-                    <div class="flex items-center gap-3">
-                        <flux:badge color="green">{{ __('Enabled') }}</flux:badge>
-                    </div>
-
-                    <flux:text>
-                        {{ __('With two-factor authentication enabled, you will be prompted for a secure, random pin during login, which you can retrieve from the TOTP-supported application on your phone.') }}
-                    </flux:text>
-
-                    <livewire:settings.two-factor.recovery-codes :$requiresConfirmation/>
-
-                    <div class="flex justify-start">
-                        <flux:button
-                            variant="danger"
-                            icon="shield-exclamation"
-                            icon:variant="outline"
-                            wire:click="disable"
-                        >
-                            {{ __('Disable 2FA') }}
-                        </flux:button>
-                    </div>
+{{--
+    Componente de autenticación de dos factores (2FA)
+    
+    Este componente se utiliza como subcomponente embebido en profile.blade.php
+    mediante <livewire:settings.two-factor />. Proporciona la interfaz para:
+    - Mostrar el estado actual (habilitado/deshabilitado)
+    - Habilitar 2FA con código QR
+    - Deshabilitar 2FA
+    - Modal de configuración con verificación OTP
+    
+    Lógica backend: App\Livewire\Settings\TwoFactor.php
+--}}
+<div>
+    <div class="flex flex-col w-full mx-auto space-y-6 text-sm" wire:cloak>
+        @if ($twoFactorEnabled)
+            <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                    <flux:badge color="green">{{ __('Habilitado') }}</flux:badge>
                 </div>
-            @else
-                <div class="space-y-4">
-                    <div class="flex items-center gap-3">
-                        <flux:badge color="red">{{ __('Disabled') }}</flux:badge>
-                    </div>
 
-                    <flux:text variant="subtle">
-                        {{ __('When you enable two-factor authentication, you will be prompted for a secure pin during login. This pin can be retrieved from a TOTP-supported application on your phone.') }}
-                    </flux:text>
+                <flux:text>
+                    {{ __('Con la autenticación de dos factores habilitada, se te pedirá un código seguro durante el inicio de sesión, que puedes obtener desde la aplicación de autenticación en tu teléfono.') }}
+                </flux:text>
 
+                <livewire:settings.two-factor.recovery-codes :$requiresConfirmation/>
+
+                <div class="flex justify-start">
                     <flux:button
-                        variant="primary"
-                        icon="shield-check"
+                        variant="danger"
+                        icon="shield-exclamation"
                         icon:variant="outline"
-                        wire:click="enable"
+                        wire:click="disable"
                     >
-                        {{ __('Enable 2FA') }}
+                        {{ __('Deshabilitar 2FA') }}
                     </flux:button>
                 </div>
-            @endif
-        </div>
-    </x-settings.layout>
+            </div>
+        @else
+            <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                    <flux:badge color="red">{{ __('Deshabilitado') }}</flux:badge>
+                </div>
+
+                <flux:text variant="subtle">
+                    {{ __('Al habilitar la autenticación de dos factores, se te pedirá un código seguro durante el inicio de sesión. Este código se puede obtener desde una aplicación de autenticación en tu teléfono.') }}
+                </flux:text>
+
+                <flux:button
+                    variant="primary"
+                    icon="shield-check"
+                    icon:variant="outline"
+                    wire:click="enable"
+                >
+                    {{ __('Habilitar 2FA') }}
+                </flux:button>
+            </div>
+        @endif
+    </div>
 
     <flux:modal
         name="two-factor-setup-modal"
@@ -207,4 +210,4 @@
             @endif
         </div>
     </flux:modal>
-</section>
+</div>

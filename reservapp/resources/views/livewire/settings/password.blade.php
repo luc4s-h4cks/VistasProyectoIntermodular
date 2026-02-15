@@ -1,3 +1,12 @@
+{{--
+    ESTA VISTA YA NO SE USA
+    
+    La funcionalidad de cambio de contraseña ahora está integrada en:
+    - Vista: resources/views/livewire/settings/profile.blade.php (sección Cambiar contraseña)
+    - Lógica: App\Livewire\Settings\Profile::updatePassword()
+    
+    El componente Password.php está vacío.
+--}}
 <section class="w-full">
     @include('partials.settings-heading')
 
