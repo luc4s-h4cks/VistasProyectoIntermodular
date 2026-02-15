@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Taller;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+
 
 class TallerController extends Controller
 {
@@ -85,27 +88,62 @@ class TallerController extends Controller
             'nombre' => 'required|string|max:255',
         ]);
 
-        $usuario = Auth::user();
+        try {
+            $usuario = Auth::user();
+            $taller = $usuario->taller;
 
-        $vehiculos = $request->vehiculos;
-        $servicios = $request->servicios;
+            $vehiculos = $request->vehiculos;
+            $servicios = $request->servicios;
 
-        $usuario->taller()->updateOrCreate(
-            ['id_usuario' => $usuario->id_usuario],
-            [
+            $datos = [
                 'nombre' => $request->nombre,
                 'descripcion' => $request->descripcion,
                 'telefono' => $request->telefono,
                 'email' => $request->email,
-                'tipo_vehiculo' => $request->vehiculos,
-                'tipo_servicio' => $request->servicios,
+                'tipo_vehiculo' => $vehiculos,
+                'tipo_servicio' => $servicios,
                 'info_contacto' => $request->info_contacto,
-                'img_perfil' => null,
-                'img_sec' => null,
-            ]
-        );
+            ];
 
-        return back()->with('success', 'Taller guardado correctamente');
+            if ($request->hasFile('imagen_taller')) {
+
+                if ($taller && $taller->img_perfil) {
+                    Storage::delete('imgTalleres/' . $taller->img_perfil);
+                }
+
+                $nombreFoto_Taller = time() . '_' . $request->file('imagen_taller')->getClientOriginalName();
+
+                $request->file('imagen_taller')
+                    ->storeAs('imgTalleres', $nombreFoto_Taller, 'public');
+
+                $datos['img_perfil'] = $nombreFoto_Taller;
+            }
+
+
+            if ($request->hasFile('imagen_contacto')) {
+
+                if ($taller && $taller->img_sec) {
+                    Storage::delete('imgTalleres/' . $taller->img_sec);
+                }
+
+                $nombreFoto_Contacto = time() . '_' . $request->file('imagen_contacto')->getClientOriginalName();
+
+                $request->file('imagen_contacto')
+                    ->storeAs('imgTalleres', $nombreFoto_Contacto, 'public');
+
+                $datos['img_sec'] = $nombreFoto_Contacto;
+            }
+
+            $usuario->taller()->updateOrCreate(
+                ['id_usuario' => $usuario->id_usuario],
+                $datos
+            );
+
+            return redirect()->route('mi-taller')->with('msg', 'Taller guardado correctamente');
+        } catch (QueryException $e) {
+            return redirect()->route('mi-taller')->with('msg', 'A ocurrido un error al intentar crear o actulizar su taller');
+        }
+
     }
 
 }
