@@ -6,7 +6,6 @@
 
         <div class="flex-1 p-6">
 
-
             <div class="p-6">
                 <div class="bg-white rounded-lg shadow-md p-8">
 
@@ -28,7 +27,7 @@
                         </div>
 
                         <!-- ===================== -->
-                        <!-- DATOS SOBRE EL TALLER -->
+                        <!-- DESCRIPCIÓN -->
                         <!-- ===================== -->
                         <div>
                             <label class="block mb-2 text-lg font-medium text-gray-900">
@@ -46,24 +45,16 @@
                             <label class="block mb-2 text-lg font-medium text-gray-900">
                                 Imagen del taller
                             </label>
-                            <input
-                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
-                                type="file" name="imagen_taller">
-                        </div>
 
-                        <!-- ===================== -->
-                        <!-- CALENDARIO (NO EDITABLE) -->
-                        <!-- ===================== -->
-                        <div>
-                            <label class="block mb-2 text-lg font-medium text-gray-900">
-                                Calendario
-                            </label>
-                            <div
-                                class="flex items-center justify-center h-64 bg-gray-100 rounded-lg border border-gray-200">
-                                <span class="text-gray-500">
-                                    Aquí estaría el calendario (no editable)
-                                </span>
-                            </div>
+                            @if ($taller && $taller->img_perfil)
+                                <div class="mb-4">
+                                    <img src="{{ asset('storage/imgTalleres/' . $taller->img_perfil) }}"
+                                        class="w-48 h-32 object-cover rounded-lg shadow">
+                                </div>
+                            @endif
+
+                            <input type="file" name="imagen_taller"
+                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50">
                         </div>
 
                         <!-- ===================== -->
@@ -82,7 +73,7 @@
                                             <div class="flex items-center">
                                                 <input type="checkbox" name="servicios[]" value="{{ $servicio }}"
                                                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                                                    @checked(in_array($servicio, $taller->tipo_servicio ?? ''))>
+                                                    @checked(in_array($servicio, $taller->tipo_servicio ?? []))>
                                                 <label class="ms-2 text-sm text-gray-700">
                                                     {{ $servicio }}
                                                 </label>
@@ -91,7 +82,7 @@
                                     </div>
                                 </div>
 
-                                <!-- TIPOS DE VEHICULO -->
+                                <!-- VEHÍCULOS -->
                                 <div>
                                     <h4 class="font-medium mb-3">Tipos de vehículo</h4>
 
@@ -100,7 +91,7 @@
                                             <div class="flex items-center">
                                                 <input type="checkbox" name="vehiculos[]" value="{{ $tipo }}"
                                                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                                                     @checked(in_array($tipo, $taller->tipo_vehiculo ?? ''))>
+                                                    @checked(in_array($tipo, $taller->tipo_vehiculo ?? []))>
                                                 <label class="ms-2 text-sm text-gray-700">
                                                     {{ $tipo }}
                                                 </label>
@@ -125,12 +116,19 @@
                                     <label class="block mb-2 text-lg font-medium text-gray-900">
                                         Imagen de contacto
                                     </label>
-                                    <input
-                                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
-                                        type="file" name="imagen_contacto">
+
+                                    @if ($taller && $taller->img_sec)
+                                        <div class="mb-4">
+                                            <img src="{{ asset('storage/imgTalleres/' . $taller->img_sec) }}"
+                                                class="w-48 h-32 object-cover rounded-lg shadow">
+                                        </div>
+                                    @endif
+
+                                    <input type="file" name="imagen_contacto"
+                                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50">
                                 </div>
 
-                                <!-- Motivos para llamar -->
+                                <!-- Info contacto -->
                                 <div>
                                     <label class="block mb-2 text-lg font-medium text-gray-900">
                                         Motivos para llamar
@@ -140,15 +138,17 @@
                                         placeholder="Ej: presupuestos, urgencias, citas...">{{ old('info_contacto', $taller->info_contacto ?? '') }}</textarea>
                                 </div>
 
-                                <!-- Email y telefono -->
+                                <!-- Teléfono -->
                                 <div>
                                     <label class="block mb-2 text-lg font-medium text-gray-900">
-                                        teléfono
+                                        Teléfono
                                     </label>
                                     <input type="text" name="telefono"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
                                         placeholder="123456789" value="{{ old('telefono', $taller->telefono ?? '') }}">
                                 </div>
+
+                                <!-- Email -->
                                 <div>
                                     <label class="block mb-2 text-lg font-medium text-gray-900">
                                         Email
@@ -162,9 +162,7 @@
                             </div>
                         </div>
 
-                        <!-- ===================== -->
-                        <!-- BOTON -->
-                        <!-- ===================== -->
+                        <!-- BOTÓN -->
                         <div class="text-center pt-6">
                             <button type="submit"
                                 class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-lg px-8 py-3 focus:outline-none">
@@ -176,8 +174,6 @@
 
                 </div>
             </div>
-
-
 
         </div>
 
