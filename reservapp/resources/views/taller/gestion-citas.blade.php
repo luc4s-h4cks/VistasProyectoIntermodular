@@ -11,6 +11,7 @@
             tab: 'solicitudes',
             abiertoDetalle: false,
             marca: '',
+            citaId: null,
             modelo: '',
             fecha: '',
             usuario: '',
@@ -164,7 +165,8 @@
                                                     modelo='{{ $cita->coche->modelo }}';
                                                     fecha='{{ $cita->fecha }}';
                                                     usuario='{{ $cita->coche->usuario->nombre }}';
-                                                    detalles='{{ $cita->motivo }}';"
+                                                    detalles='{{ $cita->motivo }}';
+                                                    citaId='{{ $cita->id_cita }}';"
                                             class="inline-block px-6 py-1 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
                                             Detalles
                                         </button>
@@ -193,53 +195,101 @@
 
                 <div class="bg-white rounded-xl shadow-xl w-[520px] p-6 relative">
 
+                    <!-- Cerrar -->
                     <button @click="abiertoDetalle = false; mostrarNuevaFecha = false"
-                        class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+                        class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl">
+                        &times;
+                    </button>
 
                     <h3 class="text-xl font-bold text-left mb-6">Detalles cita</h3>
 
+                    <!-- INFO -->
                     <div class="grid grid-cols-2 gap-6 mb-6 text-sm">
                         <div class="space-y-3">
-                            <p><span class="font-semibold text-gray-700">Usuario:</span> <span x-text="usuario"></span>
+                            <p><span class="font-semibold text-gray-700">Usuario:</span>
+                                <span x-text="usuario"></span>
                             </p>
-                            <p><span class="font-semibold text-gray-700">Marca:</span> <span x-text="marca"></span></p>
+                            <p><span class="font-semibold text-gray-700">Marca:</span>
+                                <span x-text="marca"></span>
+                            </p>
                         </div>
                         <div class="space-y-3">
-                            <p><span class="font-semibold text-gray-700">Fecha:</span> <span x-text="fecha"></span></p>
-                            <p><span class="font-semibold text-gray-700">Modelo:</span> <span x-text="modelo"></span>
+                            <p><span class="font-semibold text-gray-700">Fecha:</span>
+                                <span x-text="fecha"></span>
+                            </p>
+                            <p><span class="font-semibold text-gray-700">Modelo:</span>
+                                <span x-text="modelo"></span>
                             </p>
                         </div>
                     </div>
 
+                    <!-- DETALLES -->
                     <div class="mb-6">
-                        <label class="block text-sm font-semibold mb-2 text-gray-700">Detalles de la solicitud</label>
+                        <label class="block text-sm font-semibold mb-2 text-gray-700">
+                            Detalles de la solicitud
+                        </label>
                         <textarea readonly class="w-full h-24 p-3 border rounded-lg bg-gray-100 text-sm resize-none" x-text="detalles"></textarea>
                     </div>
 
+                    <!-- BOTONES -->
                     <div class="flex gap-3 justify-end mb-4">
-                        <button @click="abiertoDetalle = false; mostrarNuevaFecha = false"
-                            class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">Rechazar</button>
+
+                        <!-- RECHAZAR -->
+                        <form :action="'/citas/' + citaId + '/rechazar'" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit"
+                                class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
+                                Rechazar
+                            </button>
+                        </form>
+
+                        <!-- PROPONER NUEVA FECHA -->
                         <button @click="mostrarNuevaFecha = !mostrarNuevaFecha"
-                            class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition">Proponer
-                            nueva fecha</button>
-                        <button
-                            class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">Aceptar</button>
+                            class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition">
+                            Proponer nueva fecha
+                        </button>
+
+                        <!-- ACEPTAR -->
+                        <form :action="'/citas/' + citaId + '/aceptar'" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit"
+                                class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                                Aceptar
+                            </button>
+                        </form>
+
                     </div>
 
+                    <!-- ZONA NUEVA FECHA -->
                     <div x-show="mostrarNuevaFecha" x-transition class="border-t pt-4 mt-2">
-                        <label class="block text-sm font-semibold mb-2 text-gray-700">Nueva fecha propuesta</label>
-                        <div class="flex gap-3">
-                            <input type="date" x-model="nuevaFecha"
-                                class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
-                            <button @click="alert('Fecha propuesta: ' + nuevaFecha); mostrarNuevaFecha = false"
-                                class="px-6 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition whitespace-nowrap">
-                                Proponer
-                            </button>
-                        </div>
+
+                        <form :action="'/citas/' + citaId + '/proponer-fecha'" method="POST">
+                            @csrf
+                            @method('PUT')
+
+                            <label class="block text-sm font-semibold mb-2 text-gray-700">
+                                Nueva fecha propuesta
+                            </label>
+
+                            <div class="flex gap-3">
+                                <input type="date" name="nueva_fecha" x-model="nuevaFecha"
+                                    class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+
+                                <button type="submit"
+                                    class="px-6 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition whitespace-nowrap">
+                                    Confirmar
+                                </button>
+                            </div>
+
+                        </form>
+
                     </div>
 
                 </div>
             </div>
+
 
         </div>
 
@@ -251,26 +301,34 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let calendarEl = document.getElementById('calendar');
+        document.addEventListener('alpine:init', () => {
 
-            let calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                locale: 'es',
-                height: 650,
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: ''
-                },
-                dateClick: function(info) {
-                    // Redirige a la ruta por fecha
-                    window.location.href = `/citas/por-fecha?fecha=${info.dateStr}`;
-                }
-            });
+            setTimeout(() => {
 
-            calendar.render();
+                let calendarEl = document.getElementById('calendar');
+
+                if (!calendarEl) return;
+
+                let calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    locale: 'es',
+                    height: 650,
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: ''
+                    },
+                    dateClick: function(info) {
+                        window.location.href = `/citas/por-fecha?fecha=${info.dateStr}`;
+                    }
+                });
+
+                calendar.render();
+
+            }, 100);
+
         });
     </script>
+
 
 </x-layouts::app>

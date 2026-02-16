@@ -18,12 +18,18 @@ class Dia extends Model
         'id_taller',
     ];
 
+    protected $casts = [
+        'fecha' => 'string',
+    ];
 
-    public function citas(){
+
+    public function citas()
+    {
         return $this->hasMany(Cita::class, 'fecha', 'fecha');
     }
 
-    public function taller(){
+    public function taller()
+    {
         return $this->belongsTo(Taller::class, 'id_taller', 'id_taller');
     }
 

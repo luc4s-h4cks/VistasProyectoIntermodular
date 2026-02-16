@@ -10,6 +10,13 @@ class Cita extends Model
     /** @use HasFactory<\Database\Factories\CitaFactory> */
     use HasFactory;
 
+    const ESTADO_RECHAZADO = -1;
+    const ESTADO_SOLICITADO = 0;
+    const ESTADO_ACEPTADO = 1;
+    const ESTADO_TEMINADO = 2;
+
+    const ESTADO_FECHA_PROPUESTA = 10;
+
     protected $table = 'cita';
     protected $primaryKey = 'id_cita';
     public $timestamps = false;
