@@ -67,4 +67,17 @@ class CitaController extends Controller
     {
         //
     }
+
+    public function getCitasPorFecha(Request $request)
+    {
+        $fecha = $request->fecha;
+
+        $citas = Cita::whereDate('fecha', $fecha)
+            ->whereIn('estado', [1])
+            ->with(['coche.usaurio'])
+            ->get();
+
+        return view('taller.gestion-citas', compact('citas', 'fecha'));
+    }
+
 }

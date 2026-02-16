@@ -27,7 +27,10 @@ Route::resource('tipo-suscripcion', TipoSuscripcionController::class);
 Route::resource('usuario', UsuarioController::class);
 
 Route::resource('taller', TallerController::class);
+Route::get('gestion-citas', [TallerController::class, 'gestionCitas'])->name('gestion-citas');
 Route::get('mi-taller', [TallerController::class, 'miTaller'])->name('mi-taller');
 Route::get('subcricion', [TallerController::class, 'tallerSubcripcion'])->name('subcripcion');
 
 Route::post('/mi-taller', [TallerController::class, 'guardar'])->name('taller.guardar');
+Route::get('/citas/por-fecha', [CitaController::class, 'getCitasPorFecha'])->name('citas.por-fecha');
+

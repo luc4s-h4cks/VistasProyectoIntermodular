@@ -23,7 +23,7 @@
         <flux:navbar class="me-1.5 space-x-0.5 rtl:space-x-reverse py-0!">
 
             @if (auth()->user() && auth()->user()->tipo == 1)
-                <flux:navbar.item icon="wrench" :href="route('taller.index')" :current="request()->routeIs('taller.index')"
+                <flux:navbar.item icon="wrench" :href="route('gestion-citas')" :current="request()->routeIs('gestion-citas')"
                     wire:navigate>
                     {{ __('Taller') }}
                 </flux:navbar.item>

@@ -17,7 +17,7 @@ class TallerController extends Controller
      */
     public function index()
     {
-        return view('taller.gestion-citas');
+
     }
 
     /**
@@ -66,6 +66,21 @@ class TallerController extends Controller
     public function destroy(Taller $taller)
     {
         //
+    }
+
+    public function gestionCitas()
+    {
+        $usu = Auth::user();
+
+        $taller = $usu->taller;
+
+        $citas = [];
+
+        if($taller){
+            $citas = $taller->citas()->get();
+        }
+
+        return view('taller.gestion-citas', compact('citas'));
     }
 
     public function miTaller()

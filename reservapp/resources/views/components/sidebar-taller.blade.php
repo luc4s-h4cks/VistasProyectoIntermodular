@@ -40,7 +40,7 @@
 
             <!-- Gestión Citas -->
             <li>
-                <a href="{{ route('taller.index') }}"
+                <a href="{{ route('gestion-citas') }}"
                     class="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 transition group">
                     <span class="text-lg">📅</span>
                     <span class="ms-3">Gestión citas</span>
