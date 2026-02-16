@@ -1,5 +1,5 @@
 <x-layouts::app :title="__('Inicio')" >
-    <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
+    <div class="flex h-full w-full flex-1 flex-col rounded-xl">
            <!-- HERO SECTION -->
     <section class="relative bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-secondary)] text-white py-20 md:py-32 overflow-hidden">
         <div class="absolute inset-0 opacity-10">
@@ -16,12 +16,13 @@
                     Conectamos a los mejores mecánicos con miles de clientes. Agenda tu cita de forma rápida y segura.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button class="bg-white text-[var(--color-primary)] px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-50 transition-colors shadow-lg">
+                    <a href="{{ route('dashboard') }}" class="bg-white text-[var(--color-primary)] px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-50 transition-colors shadow-lg">
                         Buscar Talleres
-                    </button>
-                    <button class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-colors">
+                    </a>
+                    <!-- POR DEFINIR LA URL -->
+                    <a href="{{ route('taller.index') }}" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-colors">
                         ¿Eres taller?
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
