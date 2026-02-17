@@ -34,9 +34,13 @@ Route::get('subcricion', [TallerController::class, 'tallerSubcripcion'])->name('
 Route::post('/mi-taller', [TallerController::class, 'guardar'])->name('taller.guardar');
 Route::get('/citas/por-fecha', [CitaController::class, 'getCitasPorFecha'])->name('citas.por-fecha');
 
-//acciones con las citas
 
-//rechazar
+Route::get('crear-factura/{cita}', [CitaController::class, 'mostrarFactura'])->name('cita.factura');
+
+//acciones con las citas
 Route::put('/citas/{cita}/rechazar', [CitaController::class, 'rechazarCita'])->name('cita.rechazar');
 Route::put('/citas/{cita}/aceptar', [CitaController::class, 'aceptarCita'])->name('cita.aceptar');
 Route::put('/citas/{cita}/proponer-fecha', [CitaController::class, 'proponerNuevaFecha'])->name('cita.proponer-fecha');
+Route::put('citas/{cita}/enviar', [CitaController::class, 'enviarFactura'])->name('cita.enviarFactura');
+
+

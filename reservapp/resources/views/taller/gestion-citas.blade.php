@@ -104,10 +104,11 @@
 
                                         {{-- Botones --}}
                                         <div class="flex gap-2 mt-3">
-                                            <button
-                                                class="flex-1 px-4 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                                            <a href="{{ route('cita.factura', $cita->id_cita) }}"
+                                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                                                 Marcar como terminado
-                                            </button>
+                                            </a>
+
                                             <button
                                                 class="px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
                                                 Cancelar
@@ -178,13 +179,71 @@
 
                     {{-- Notificaciones --}}
                     <div x-show="tab === 'notificaciones'" class="space-y-4">
-                        <p class="text-gray-600">Aquí aparecerán las notificaciones.</p>
-                        <ul class="divide-y divide-gray-200">
-                            <li class="py-2">Nueva solicitud de cita de Ana Gómez</li>
-                            <li class="py-2">Cita confirmada para Luis Fernández</li>
-                            <li class="py-2">Cita cancelada por Carlos Ruiz</li>
-                        </ul>
+
+                        @php
+                            // Filtramos las citas con estados de notificación relevantes
+                            $notificaciones = $citas->filter(fn($cita) => in_array($cita->estado, [-2, 4, 11]));
+                        @endphp
+
+                        @if ($notificaciones->isNotEmpty())
+                            @foreach ($notificaciones as $cita)
+                                @php
+                                    // Definimos estilo y mensaje según estado
+                                    switch ($cita->estado) {
+                                        case -2:
+                                            $bg = 'bg-red-100 border-red-400 text-red-700';
+                                            $mensaje = 'El usuario rechazó la propuesta.';
+                                            break;
+                                        case 4:
+                                            $bg = 'bg-green-100 border-green-400 text-green-700';
+                                            $mensaje = 'La factura ha sido pagada.';
+                                            break;
+                                        case 11:
+                                            $bg = 'bg-blue-100 border-blue-400 text-blue-700';
+                                            $mensaje = 'El cliente aceptó la nueva fecha de la cita.';
+                                            break;
+                                        default:
+                                            $bg = 'bg-gray-100 border-gray-300 text-gray-700';
+                                            $mensaje = '';
+                                    }
+                                @endphp
+
+                                <div
+                                    class="border rounded-lg p-4 shadow-sm flex items-center gap-4 relative {{ $bg }}">
+
+                                    {{-- Botón de eliminar --}}
+                                    <form action=""
+                                        method="POST" class="absolute top-2 right-2">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="font-bold text-lg">&times;</button>
+                                    </form>
+
+                                    <div class="flex-1">
+                                        <p class="text-sm font-semibold">
+                                            Usuario: {{ $cita->coche->usuario->nombre }}
+                                        </p>
+                                        <p class="text-sm">
+                                            Coche: {{ $cita->coche->marca }} {{ $cita->coche->modelo }}
+                                        </p>
+                                        <p class="text-sm">
+                                            Fecha de cita: {{ $cita->fecha }}
+                                        </p>
+                                        <p class="text-sm font-medium mt-1">
+                                            {{ $mensaje }}
+                                        </p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <p class="text-gray-600 text-center">No hay notificaciones por ahora.</p>
+                        @endif
+
                     </div>
+
+
+
+
                 </div>
 
             </div>

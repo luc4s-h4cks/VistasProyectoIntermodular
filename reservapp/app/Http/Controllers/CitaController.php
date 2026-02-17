@@ -83,10 +83,10 @@ class CitaController extends Controller
 
     public function rechazarCita(Cita $cita)
     {
-        $cita->estado = Cita::ESTADO_RECHAZADO;
+        $cita->estado = Cita::ESTADO_RECHAZADO_POR_TALLER;
         $cita->save();
 
-        return redirect()->back()->with('Seccess', "Cita rechazafa");
+        return redirect()->back()->with('Seccess', "Cita rechazada");
     }
 
     public function aceptarCita(Cita $cita)
@@ -124,6 +124,16 @@ class CitaController extends Controller
 
         return redirect()->route('gestion-citas')
             ->with('success', 'Nueva fecha propuesta correctamente');
+    }
+
+    public function mostrarFactura(Cita $cita){
+        return view('taller.factura')->with('cita', $cita);
+    }
+
+    public function enviarFactura(Cita $cita){
+        $cita->estado = Cita::ESTADO_ESPERANDO_PAGO;
+        $cita->save();
+        return redirect()->route('gestion-citas')->with('mensaje', 'Factura enciada');
     }
 
 }
