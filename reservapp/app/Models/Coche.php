@@ -21,7 +21,6 @@ class Coche extends Model
         'marca',
         'modelo',
         'tipo_conbustible',
-        'img_vehiculo',
     ];
 
     public function citas(){
@@ -30,6 +29,10 @@ class Coche extends Model
 
     public function usuario(){
         return $this->belongsTo(Usuario::class, 'id_usuario', 'id_usuario');
+    }
+
+    public function tipoCombustible(){
+        return $this->belongsTo(TipoCombustible::class, 'tipo_conbustible', 'tipo_combustible');
     }
 
 

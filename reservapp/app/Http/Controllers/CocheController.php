@@ -22,7 +22,7 @@ class CocheController extends Controller
     public function miscoches()
     {
         $user = Auth::user();
-        $miscoches = $user->coches()->paginate(4);
+        $miscoches = $user->coches();//->paginate(4);
         return view('zona_privada.mis_coches', compact('miscoches'));
     }
 

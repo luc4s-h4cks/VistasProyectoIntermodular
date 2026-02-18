@@ -16,6 +16,9 @@ new class extends Component
 
     public function mostrarForm()
     {
+        if($this->mostrar == true) {
+//borramos form
+        }
         $this->mostrar = !$this->mostrar;
     }
 };

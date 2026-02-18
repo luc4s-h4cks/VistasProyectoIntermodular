@@ -24,11 +24,11 @@ new class extends Component {
     protected function rules(): array
     {
         return [
-            'matricula'        => 'required|string|max:10|unique:coche,matricula',
+            'matricula'        => 'required|string|max:10|unique:coches,matricula',
             'marca'            => 'required|string|max:100',
             'modelo'           => 'required|string|max:100',
-            'n_bastidor'       => 'required|string|max:17|unique:coche,n_bastidor',
-            'tipo_conbustible' => 'required|integer|exists:tipo_propulsion,tipo_combustible',
+            'n_bastidor'       => 'required|string|max:17|unique:coches,n_bastidor',
+            'tipo_conbustible' => 'required|string',
         ];
     }
 
@@ -40,7 +40,6 @@ new class extends Component {
         'n_bastidor.required'       => 'El número de bastidor es obligatorio.',
         'n_bastidor.unique'         => 'Este número de bastidor ya está registrado.',
         'tipo_conbustible.required' => 'El tipo de propulsión es obligatorio.',
-        'tipo_conbustible.exists'   => 'El tipo de propulsión seleccionado no es válido.',
     ];
 
     public function mount(?int $carId = null): void{

@@ -13,7 +13,11 @@ class TipoCombustible extends Model
     protected $primaryKey = 'tipo_combustible';
     public $timestamps = false;
 
-    protected $filleable = [
+    protected $fillable = [
         'nombre',
     ];
+
+    public function coches(){
+        return $this->hasMany(Coche::class, 'tipo_conbustible', 'tipo_combustible');
+    }
 }
