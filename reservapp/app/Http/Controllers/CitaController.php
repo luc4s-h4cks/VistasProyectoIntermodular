@@ -16,8 +16,13 @@ class CitaController extends Controller
      */
     public function index()
     {
+        //
+    }
+
+    public function misCitas()
+    {
         $user = Auth::user();
-        $miscitas = $user->citas;
+        $miscitas = $user->citas()->paginate(4);
         return view('zona_privada.mis_citas', compact('miscitas'));
     }
 

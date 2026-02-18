@@ -10,7 +10,7 @@ class TipoCombustible extends Model
     /** @use HasFactory<\Database\Factories\TipoCombustibleFactory> */
     use HasFactory;
     protected $table = 'tipo_propulsion';
-    protected $primaryKey = 'tipo_propulsion';
+    protected $primaryKey = 'tipo_combustible';
     public $timestamps = false;
 
     protected $filleable = [

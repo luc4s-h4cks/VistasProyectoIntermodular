@@ -16,10 +16,14 @@ class CocheController extends Controller
      */
     public function index()
     {
+        //
+    }
+
+    public function miscoches()
+    {
         $user = Auth::user();
         $miscoches = $user->coches()->paginate(4);
-        //dd($miscoches);
-        return view('coche.index', compact('miscoches'));
+        return view('zona_privada.mis_coches', compact('miscoches'));
     }
 
     /**

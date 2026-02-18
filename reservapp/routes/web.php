@@ -19,6 +19,10 @@ Route::view('dashboard', 'dashboard')
 
 require __DIR__.'/settings.php';
 
+Route::get('settings/mis-coches', [CocheController::class, 'miscoches'])->name('mis-coches');
+Route::get('settings/mis-citas', [CitaController::class, 'misCitas'])->name('mis-citas');
+
+
 Route::resource('cita', CitaController::class);
 Route::resource('coche', CocheController::class);
 Route::resource('dia', DiaController::class);

@@ -14,7 +14,7 @@
 
             {{-- Paginación --}}
             <div class="mt-6">
-                {{ $miscoches->links() }}
+                {{-- $miscoches->links() --}}
             </div>
 
             {{-- Componente para crear nuevo coche --}}
