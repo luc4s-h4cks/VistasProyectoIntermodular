@@ -63,4 +63,19 @@ class DiaController extends Controller
     {
         //
     }
+
+    public function existeDia($tallerId, $fecha){
+        $dia = Dia::where('id_taller', $tallerId)->whereDate('fecha', $fecha)->first();
+
+        if(!$dia){
+            $dia = Dia::create([
+                'id_taller' => $tallerId,
+                'fecha' => $fecha,
+                'estado' => 0,
+            ]);
+        }
+
+        return $dia;
+
+    }
 }

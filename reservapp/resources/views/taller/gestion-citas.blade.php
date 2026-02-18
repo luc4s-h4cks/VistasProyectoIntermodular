@@ -1,5 +1,8 @@
 <x-layouts::app :title="__('Gestión de Citas')">
     <script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
+    @php
+        $notificaciones = $citas->filter(fn($cita) => in_array($cita->estado, [-2, 4, 11]));
+    @endphp
 
     <div class="flex w-full">
 
@@ -136,10 +139,24 @@
                         Solicitudes de Citas
                     </button>
                     <button
-                        :class="tab === 'notificaciones' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'"
-                        class="px-4 py-2 font-medium focus:outline-none" @click="tab = 'notificaciones'">
+                        :class="tab === 'notificaciones' ?
+                            'border-b-2 border-blue-600 text-blue-600' :
+                            'text-gray-500'"
+                        class="px-4 py-2 font-medium focus:outline-none relative" @click="tab = 'notificaciones'">
+
                         Notificaciones
+
+                        @if ($notificaciones->count() > 0)
+                            <span
+                                class="absolute -top-1 -right-2 bg-red-600 text-white text-xs
+                                w-5 h-5 flex items-center justify-center
+                                rounded-full">
+                                {{ $notificaciones->count() }}
+                            </span>
+                        @endif
+
                     </button>
+
                 </div>
 
                 {{-- Contenido de Tabs --}}
@@ -180,25 +197,22 @@
                     {{-- Notificaciones --}}
                     <div x-show="tab === 'notificaciones'" class="space-y-4">
 
-                        @php
-                            // Filtramos las citas con estados de notificación relevantes
-                            $notificaciones = $citas->filter(fn($cita) => in_array($cita->estado, [-2, 4, 11]));
-                        @endphp
+
 
                         @if ($notificaciones->isNotEmpty())
                             @foreach ($notificaciones as $cita)
                                 @php
                                     // Definimos estilo y mensaje según estado
                                     switch ($cita->estado) {
-                                        case -2:
+                                        case \App\Models\Cita::ESTADO_RECHAZADO_POR_CLIENTE:
                                             $bg = 'bg-red-100 border-red-400 text-red-700';
                                             $mensaje = 'El usuario rechazó la propuesta.';
                                             break;
-                                        case 4:
+                                        case \App\Models\Cita::ESTADO_PAGADA:
                                             $bg = 'bg-green-100 border-green-400 text-green-700';
                                             $mensaje = 'La factura ha sido pagada.';
                                             break;
-                                        case 11:
+                                        case \App\Models\Cita::ESTADO_FECHA_ACEPTADA_CLIENTE:
                                             $bg = 'bg-blue-100 border-blue-400 text-blue-700';
                                             $mensaje = 'El cliente aceptó la nueva fecha de la cita.';
                                             break;
@@ -212,12 +226,21 @@
                                     class="border rounded-lg p-4 shadow-sm flex items-center gap-4 relative {{ $bg }}">
 
                                     {{-- Botón de eliminar --}}
-                                    <form action=""
-                                        method="POST" class="absolute top-2 right-2">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="font-bold text-lg">&times;</button>
-                                    </form>
+                                    @if ($cita->estado === \App\Models\Cita::ESTADO_FECHA_ACEPTADA_CLIENTE)
+                                        <form action="{{ route('cita.aceptar', $cita->id_cita) }}" method="POST"
+                                            class="absolute top-2 right-2">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="font-bold text-lg">&times;</button>
+                                        </form>
+                                    @else
+                                        <form action="" method="POST" class="absolute top-2 right-2">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="font-bold text-lg">&times;</button>
+                                        </form>
+                                    @endif
+
 
                                     <div class="flex-1">
                                         <p class="text-sm font-semibold">
@@ -249,8 +272,8 @@
             </div>
 
             {{-- Modal de detalles de cada cita --}}
-            <div x-show="abiertoDetalle" x-cloak
-                class="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center z-50">
+            <div x-show="abiertoDetalle" x-cloak style="background: rgba(0,0,0,0.4)"
+                class="fixed inset-0 flex items-center justify-center z-50">
 
                 <div class="bg-white rounded-xl shadow-xl w-[520px] p-6 relative">
 
@@ -360,13 +383,22 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
     <script>
+        const resumenCitas = @json($resumenCitas ?? []);
         document.addEventListener('alpine:init', () => {
 
             setTimeout(() => {
 
                 let calendarEl = document.getElementById('calendar');
-
                 if (!calendarEl) return;
+
+                // Creamos eventos resumen
+                let eventosResumen = resumenCitas.map(dia => {
+                    return {
+                        title: '🔧 ' + dia.total,
+                        start: dia.fecha,
+                        allDay: true
+                    };
+                });
 
                 let calendar = new FullCalendar.Calendar(calendarEl, {
                     initialView: 'dayGridMonth',
@@ -377,6 +409,9 @@
                         center: 'title',
                         right: ''
                     },
+
+                    events: eventosResumen,
+
                     dateClick: function(info) {
                         window.location.href = `/citas/por-fecha?fecha=${info.dateStr}`;
                     }

@@ -107,6 +107,13 @@
                     <form action="{{ route('cita.enviarFactura', $cita->id_cita) }}" method="POST">
                         @csrf
                         @method('PUT')
+
+                        <input type="hidden" name="detalles" :value="JSON.stringify(items)">
+
+                        <input type="hidden" name="subtotal" :value="subtotal.toFixed(2)">
+                        <input type="hidden" name="iva" :value="iva.toFixed(2)">
+                        <input type="hidden" name="total" :value="total.toFixed(2)">
+
                         <button type="submit" class="px-5 py-2 bg-green-600 text-white rounded hover:bg-green-700">
                             Enviar factura
                         </button>
@@ -118,6 +125,8 @@
 
         </div>
     </div>
+
+
 
     <!-- Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>

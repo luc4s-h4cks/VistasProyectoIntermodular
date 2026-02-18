@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Cita;
 
 
 class TallerController extends Controller
@@ -17,7 +18,7 @@ class TallerController extends Controller
      */
     public function index()
     {
-        return("taller index");
+        return ("taller index");
     }
 
     /**
@@ -74,13 +75,15 @@ class TallerController extends Controller
 
         $taller = $usu->taller;
 
+        $resumenCitas = Cita::selectRaw('fecha, COUNT(*) as total')->groupBy('fecha')->get();
+
         $citas = [];
 
-        if($taller){
+        if ($taller) {
             $citas = $taller->citas()->get();
         }
 
-        return view('taller.gestion-citas', compact('citas'));
+        return view('taller.gestion-citas', compact('citas', 'resumenCitas'));
     }
 
     public function miTaller()

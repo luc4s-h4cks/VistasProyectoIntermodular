@@ -79,7 +79,10 @@ class CitaController extends Controller
         $fecha = $request->fecha;
 
         $citas = Cita::whereDate('fecha', $fecha)
-            ->whereIn('estado', [1])
+            ->whereIn('estado', [
+                Cita::ESTADO_ACEPTADO,
+                Cita::ESTADO_FECHA_ACEPTADA_CLIENTE
+            ])
             ->with(['coche.usuario'])
             ->get();
 
@@ -127,15 +130,23 @@ class CitaController extends Controller
 
         $cita->save();
 
-        return redirect()->route('gestion-citas')
-            ->with('success', 'Nueva fecha propuesta correctamente');
+        // return redirect()->route('gestion-citas')
+        //     ->with('success', 'Nueva fecha propuesta correctamente');
+        return redirect()->back()->with('Seccess', "Fecha propuesta");
     }
 
-    public function mostrarFactura(Cita $cita){
+    public function mostrarFactura(Cita $cita)
+    {
         return view('taller.factura')->with('cita', $cita);
     }
 
-    public function enviarFactura(Cita $cita){
+    public function enviarFactura(Cita $cita, Request $request)
+    {
+
+        $cita->detalles = $request->detalles;
+        $cita->subtotal = $request->subtotal;
+        $cita->iva = $request->iva;
+        $cita->total = $request->total;
         $cita->estado = Cita::ESTADO_ESPERANDO_PAGO;
         $cita->save();
         return redirect()->route('gestion-citas')->with('mensaje', 'Factura enciada');

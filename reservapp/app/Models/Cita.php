@@ -16,11 +16,14 @@ class Cita extends Model
     const ESTADO_TEMINADO = 2;
     const ESTADO_ESPERANDO_PAGO = 3;
     const ESTADO_PAGADA = 4;
-
     const ESTADO_FECHA_PROPUESTA = 10;
     const ESTADO_FECHA_ACEPTADA_CLIENTE = 11;
 
     protected $table = 'cita';
+
+    protected $casts = [
+        'detalles' => 'array'
+    ];
     protected $primaryKey = 'id_cita';
     public $timestamps = false;
 
@@ -31,6 +34,10 @@ class Cita extends Model
         'tramo_horario',
         'motivo',
         'estado',
+        'detalles',
+        'subtotal',
+        'iva',
+        'total'
     ];
 
     public function coche()
