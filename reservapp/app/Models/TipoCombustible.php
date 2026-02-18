@@ -18,6 +18,6 @@ class TipoCombustible extends Model
     ];
 
     public function coches(){
-        return $this->hasMany(Coche::class, 'tipo_conbustible', 'tipo_combustible');
+        return $this->hasMany(Coche::class, 'tipo_combustible', 'tipo_combustible');
     }
 }

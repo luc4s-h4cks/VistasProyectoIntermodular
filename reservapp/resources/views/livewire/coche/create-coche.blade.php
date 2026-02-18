@@ -81,11 +81,11 @@
                     <div>
                         <flux:input
                             type="text"
-                            wire:model="tipo_conbustible"
+                            wire:model="tipo_combustible"
                             :label="__('Tipo de combustible')"
                             required
                         />
-                        @error('tipo_conbustible')
+                        @error('tipo_combustible')
                             <span class="text-red-600 text-sm mt-1 block">{{ $message }}</span>
                         @enderror
                     </div>

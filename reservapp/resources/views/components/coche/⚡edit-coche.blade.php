@@ -1,90 +1,220 @@
 <?php
 
 use Livewire\Component;
+use App\Models\Coche;
+use App\Models\TipoCombustible;
 
 new class extends Component
 {
-    public $mostrar = false;
+    public bool $mostrar = false;
+
+    public string $matricula        = '';
+    public string $marca            = '';
+    public string $modelo           = '';
+    public string $n_bastidor       = '';
+    public string $tipo_combustible = '';
+
     public $tiposPropulsion = [];
-    public ?Coche $car = null;
+    public ?int $carId = null;
 
-
-    public function mount(): void
+    protected function rules(): array
     {
+        return [
+            'matricula'        => 'required|string|max:10',
+            'marca'            => 'required|string|max:100',
+            'modelo'           => 'required|string|max:100',
+            'n_bastidor'       => 'required|string|max:17',
+            'tipo_combustible' => 'required|integer|exists:tipo_propulsion,tipo_combustible',
+        ];
+    }
+
+    protected array $messages = [
+        'matricula.required'        => 'La matrícula es obligatoria.',
+        'marca.required'            => 'La marca es obligatoria.',
+        'modelo.required'           => 'El modelo es obligatorio.',
+        'n_bastidor.required'       => 'El número de bastidor es obligatorio.',
+        'tipo_combustible.required' => 'El tipo de propulsión es obligatorio.',
+        'tipo_combustible.exists'   => 'El tipo de propulsión seleccionado no es válido.',
+    ];
+
+    public function mount(Coche $coche): void
+    {
+        $this->carId           = $coche->id_coche;
+        $this->matricula       = $coche->matricula;
+        $this->marca           = $coche->marca;
+        $this->modelo          = $coche->modelo;
+        $this->n_bastidor      = $coche->n_bastidor;
+        $this->tipo_combustible = $coche->tipo_combustible;
         $this->tiposPropulsion = TipoCombustible::all();
     }
 
-    public function mostrarForm()
+    public function abrirModal(): void
     {
-        if($this->mostrar == true) {
-//borramos form
-        }
-        $this->mostrar = !$this->mostrar;
+        $this->mostrar = true;
+    }
+
+    public function cerrarModal(): void
+    {
+        $this->mostrar = false;
+        $this->resetValidation();
+    }
+
+    public function actualizar(): void
+    {
+        $this->validate();
+
+        Coche::where('id_coche', $this->carId)->update([
+            'matricula'        => strtoupper($this->matricula),
+            'marca'            => $this->marca,
+            'modelo'           => $this->modelo,
+            'n_bastidor'       => strtoupper($this->n_bastidor),
+            'tipo_combustible' => $this->tipo_combustible,
+        ]);
+
+        $this->cerrarModal();
+        $this->dispatch('cocheActualizado');
     }
 };
 ?>
 
 <div>
-    <flux:button wire:click="mostrarForm" variant='primary'>Nuevo Coche</flux:button>
-    @if($mostrar)
-    <h3>Editar Coche</h3>
-    <form method="POST" action="{{ route('cars.update', $car->id) }}" enctype="multipart/form-data" class="max-w-md mx-auto">
-        @csrf
-        @method('PUT')
-        <div class="relative z-0 w-full mb-5 group">
-            <input type="text" value="{{ old('matricula', $car->matricula) }}" name="matricula" id="matricula" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-            <label for="matricula" class="">Matrícula</label>
-            @error('matricula')
-                <div class="text-red-500 mt-2 text-sm">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-        <div class="relative z-0 w-full mb-5 group">
-            <input type="text" value="{{ old('marca', $car->marca) }}" name="marca" id="marca" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-            <label for="marca" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Marca</label>
-            @error('marca')
-                <div class="text-red-500 mt-2 text-sm">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-        <div class="relative z-0 w-full mb-5 group">
-            <input type="text" value="{{ old('modelo', $car->modelo) }}" name="modelo" id="modelo" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-            <label for="modelo" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Modelo</label>
-            @error('modelo')
-                <div class="text-red-500 mt-2 text-sm">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-        <div class="relative z-0 w-full mb-5 group">
-            <input type="text" value="{{ old('n_bastidor', $car->n_bastidor) }}" name="n_bastidor" id="n_bastidor" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-            <label for="n_bastidor" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Número de bastidor</label>
-            @error('n_bastidor')
-                <div class="text-red-500 mt-2 text-sm">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-        <div class="relative z-0 w-full mb-5 group">
-            Tipo de Propulsión:
-            <select name="tipo_conbustible" id="tipo_conbustible" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" required>
-                <option value="" disabled selected>Selecciona el tipo de propulsión</option>
-                @foreach($tiposPropulsion as $tipo)
-                    <option value="{{ $tipo->tipo_combustible }}" {{ old('tipo_conbustible') == $tipo->tipo_combustible ? 'selected' : '' }}>{{ $tipo->nombre }}</option>
-                @endforeach
-            </select>
-            @error('tipo_conbustible')
-                <div class="text-red-500 mt-2 text-sm">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
+    <flux:button wire:click="abrirModal" variant='primary'>
+        Editar Coche
+    </flux:button>
 
-        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
-            Actualizar coche
-        </button>
-    </form>
+    @if($mostrar)
+        <div
+            class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm dark:bg-black/70"
+            wire:click="cerrarModal"
+        ></div>
+
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div class="w-full max-w-lg rounded-xl shadow-2xl
+                        bg-white text-gray-900
+                        dark:bg-gray-900 dark:text-gray-100">
+
+                <div class="p-6 space-y-6">
+
+                    {{-- Header --}}
+                    <div class="flex items-start justify-between border-b pb-4
+                                border-gray-200 dark:border-gray-700">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                                Editar Coche
+                            </h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                Modifica los datos del vehículo.
+                            </p>
+                        </div>
+                        <button
+                            type="button"
+                            wire:click="cerrarModal"
+                            class="rounded-lg p-1.5 transition
+                                text-gray-400 hover:bg-gray-100 hover:text-gray-600
+                                dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+                        >
+                            <flux:icon.x-mark class="size-5" />
+                        </button>
+                    </div>
+
+                    {{-- Form --}}
+                    <form wire:submit="actualizar" class="space-y-4">
+
+                        {{-- Matrícula --}}
+                        <div class="relative z-0 w-full group">
+                            {{-- Matrícula --}}
+                            <input wire:model="matricula" type="text" id="matricula" placeholder=" "
+                                class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase
+                                    text-gray-900 border-gray-300 focus:border-blue-600
+                                    dark:text-gray-100 dark:border-gray-600 dark:focus:border-blue-400" />
+                            <label for="matricula"
+                                class="peer-focus:font-medium absolute text-sm duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6
+                                    text-gray-500 peer-focus:text-blue-600
+                                    dark:text-gray-400 dark:peer-focus:text-blue-400">
+                                Matrícula
+                            </label>
+                            @error('matricula') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        </div>
+
+                        {{-- Marca y Modelo --}}
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="relative z-0 w-full group">
+                                <input wire:model="marca" type="text" id="marca" placeholder=" "
+                                    class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer
+                                        text-gray-900 border-gray-300 focus:border-blue-600
+                                        dark:text-gray-100 dark:border-gray-600 dark:focus:border-blue-400" />
+                                <label for="marca"
+                                    class="peer-focus:font-medium absolute text-sm duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6
+                                        text-gray-500 peer-focus:text-blue-600
+                                        dark:text-gray-400 dark:peer-focus:text-blue-400">
+                                    Marca
+                                </label>
+                                @error('marca') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                            </div>
+                            <div class="relative z-0 w-full group">
+                                <input wire:model="modelo" type="text" id="modelo" placeholder=" "
+                                    class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer
+                                        text-gray-900 border-gray-300 focus:border-blue-600
+                                        dark:text-gray-100 dark:border-gray-600 dark:focus:border-blue-400" />
+                                <label for="modelo"
+                                    class="peer-focus:font-medium absolute text-sm duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6
+                                        text-gray-500 peer-focus:text-blue-600
+                                        dark:text-gray-400 dark:peer-focus:text-blue-400">
+                                    Modelo
+                                </label>
+                                @error('modelo') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
+
+                        {{-- Número de bastidor --}}
+                        <div class="relative z-0 w-full group">
+                            <input wire:model="n_bastidor" type="text" id="n_bastidor" placeholder=" "
+                                class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase
+                                    text-gray-900 border-gray-300 focus:border-blue-600
+                                    dark:text-gray-100 dark:border-gray-600 dark:focus:border-blue-400" />
+                            <label for="n_bastidor"
+                                class="peer-focus:font-medium absolute text-sm duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6
+                                    text-gray-500 peer-focus:text-blue-600
+                                    dark:text-gray-400 dark:peer-focus:text-blue-400">
+                                Número de bastidor
+                            </label>
+                            @error('n_bastidor') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        </div>
+
+                        {{-- Tipo de propulsión --}}
+                        <div class="relative z-0 w-full group">
+                            <label for="tipo_combustible"
+                                class="block text-sm mb-1
+                                    text-gray-500 dark:text-gray-400">
+                                Tipo de propulsión
+                            </label>
+                            <select wire:model="tipo_combustible" id="tipo_combustible"
+                                class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0
+                                    text-gray-900 border-gray-300 focus:border-blue-600
+                                    dark:text-gray-100 dark:border-gray-600 dark:focus:border-blue-400">
+                                <option value="" disabled>Selecciona el tipo de propulsión</option>
+                                @foreach($tiposPropulsion as $tipo)
+                                    <option value="{{ $tipo->tipo_combustible }}">{{ $tipo->nombre }}</option>
+                                @endforeach
+                            </select>
+                            @error('tipo_combustible') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        </div>
+
+                        {{-- Botones --}}
+                        <div class="flex justify-end gap-3 pt-4 border-t
+                                    border-gray-200 dark:border-gray-700">
+                            <flux:button type="button" wire:click="cerrarModal" variant="ghost">
+                                Cancelar
+                            </flux:button>
+                            <flux:button type="submit" variant="primary">
+                                <span wire:loading.remove wire:target="actualizar">Guardar cambios</span>
+                                <span wire:loading wire:target="actualizar">Guardando…</span>
+                            </flux:button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
     @endif
 </div>
