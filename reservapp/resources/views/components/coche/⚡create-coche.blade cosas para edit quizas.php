@@ -16,7 +16,7 @@ new class extends Component {
     public string $marca            = '';
     public string $modelo           = '';
     public string $n_bastidor       = '';
-    public string $tipo_conbustible = '';
+    public string $tipo_combustible = '';
 
     public $tiposPropulsion = [];
     public ?int $carId = null;
@@ -28,7 +28,7 @@ new class extends Component {
             'marca'            => 'required|string|max:100',
             'modelo'           => 'required|string|max:100',
             'n_bastidor'       => 'required|string|max:17|unique:coches,n_bastidor',
-            'tipo_conbustible' => 'required|string',
+            'tipo_combustible' => 'required|string',
         ];
     }
 
@@ -39,7 +39,7 @@ new class extends Component {
         'modelo.required'           => 'El modelo es obligatorio.',
         'n_bastidor.required'       => 'El número de bastidor es obligatorio.',
         'n_bastidor.unique'         => 'Este número de bastidor ya está registrado.',
-        'tipo_conbustible.required' => 'El tipo de propulsión es obligatorio.',
+        'tipo_combustible.required' => 'El tipo de propulsión es obligatorio.',
     ];
 
     public function mount(?int $carId = null): void{
@@ -68,7 +68,7 @@ new class extends Component {
             'marca'            => $this->marca,
             'modelo'           => $this->modelo,
             'n_bastidor'       => strtoupper($this->n_bastidor),
-            'tipo_conbustible' => $this->tipo_conbustible,
+            'tipo_combustible' => $this->tipo_combustible,
             'id_usuario'       => auth()->id(),
         ]);
 
@@ -78,7 +78,7 @@ new class extends Component {
 
     private function limpiarForm(): void
     {
-        $this->reset(['matricula', 'marca', 'modelo', 'n_bastidor', 'tipo_conbustible']);
+        $this->reset(['matricula', 'marca', 'modelo', 'n_bastidor', 'tipo_combustible']);
         $this->resetValidation();
     }
 };
@@ -156,17 +156,17 @@ new class extends Component {
 
                     {{-- Tipo de propulsión --}}
                     <div class="relative z-0 w-full group">
-                        <label for="tipo_conbustible" class="block text-sm text-gray-500 mb-1">
+                        <label for="tipo_combustible" class="block text-sm text-gray-500 mb-1">
                             Tipo de propulsión
                         </label>
-                        <select wire:model="tipo_conbustible" id="tipo_conbustible"
+                        <select wire:model="tipo_combustible" id="tipo_combustible"
                             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600">
                             <option value="" disabled>Selecciona el tipo de propulsión</option>
                             @foreach($tiposPropulsion as $tipo)
                                 <option value="{{ $tipo->tipo_combustible }}">{{ $tipo->nombre }}</option>
                             @endforeach
                         </select>
-                        @error('tipo_conbustible') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        @error('tipo_combustible') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                     </div>
 
                     {{-- Botones --}}

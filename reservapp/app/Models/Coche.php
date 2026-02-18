@@ -20,7 +20,7 @@ class Coche extends Model
         'n_bastidor',
         'marca',
         'modelo',
-        'tipo_conbustible',
+        'tipo_combustible',
     ];
 
     public function citas(){
@@ -32,7 +32,7 @@ class Coche extends Model
     }
 
     public function tipoCombustible(){
-        return $this->belongsTo(TipoCombustible::class, 'tipo_conbustible', 'tipo_combustible');
+        return $this->belongsTo(TipoCombustible::class, 'tipo_combustible', 'tipo_combustible');
     }
 
 
