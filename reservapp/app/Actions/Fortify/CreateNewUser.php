@@ -16,7 +16,7 @@ class CreateNewUser implements CreatesNewUsers
             'apellidos' => ['required', 'string', 'max:255'],
             'nombre_usuario' => ['required', 'string', 'max:255', 'unique:usuario,nombre_usuario'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:usuario,email'],
-            'telefono' => ['nullable', 'string', 'max:20'],
+            'telefono' => ['nullable', 'string', 'max:12'],
             'fecha_nacimiento' => ['required', 'date'],
             'tipo' => ['required'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
