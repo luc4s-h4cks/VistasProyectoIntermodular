@@ -4,23 +4,28 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Taller extends Model
 {
-    /** @use HasFactory<\Database\Factories\TallerFactory> */
     use HasFactory;
+
     protected $table = 'taller';
     protected $primaryKey = 'id_taller';
+
+    //Esto indica que el PK es string y no autoincremental
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     public $timestamps = false;
 
     protected $fillable = [
+        'id_taller',
         'id_usuario',
         'handle',
         'nombre',
         'img_perfil',
-        'img_perfil_path',
         'img_sec',
-        'img_sec_path',
         'telefono',
         'email',
         'tipo_vehiculo',
@@ -31,18 +36,35 @@ class Taller extends Model
         'suscripcion',
     ];
 
+    protected $casts = [
+        'tipo_vehiculo' => 'array',
+        'tipo_servicio' => 'array',
+    ];
+
+    // 🛠 Generar UUID automáticamente al crear
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (!$model->id_taller) {
+                $model->id_taller = (string) Str::uuid();
+            }
+        });
+    }
 
     public function citas()
     {
         return $this->hasMany(Cita::class, 'id_taller', 'id_taller');
     }
 
-    public function dias(){
+    public function dias()
+    {
         return $this->hasMany(Dia::class, 'id_taller', 'id_taller');
     }
 
-    public function usuario(){
+    public function usuario()
+    {
         return $this->belongsTo(Usuario::class, 'id_usuario', 'id_usuario');
     }
-
 }

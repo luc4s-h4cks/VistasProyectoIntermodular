@@ -13,6 +13,18 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Componente de autenticación de dos factores (2FA)
+ * 
+ * Este componente ahora se utiliza como subcomponente embebido en Profile.blade.php
+ * en lugar de ser una página independiente. Maneja toda la lógica de:
+ * - Habilitar/deshabilitar 2FA
+ * - Generar códigos QR para aplicaciones de autenticación
+ * - Confirmar la configuración con código OTP
+ * - Gestionar códigos de recuperación
+ * 
+ * @see resources/views/livewire/settings/profile.blade.php (sección Autenticación de dos factores)
+ */
 class TwoFactor extends Component
 {
     #[Locked]

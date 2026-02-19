@@ -1,3 +1,12 @@
+{{--
+    ESTA VISTA YA NO SE USA
+    
+    El selector de apariencia (tema claro/oscuro/sistema) ahora está integrado en:
+    - Vista: resources/views/livewire/settings/profile.blade.php (sección Apariencia)
+    - No requiere lógica backend, Flux UI lo maneja con Alpine.js y localStorage
+    
+    El componente Appearance.php está vacío.
+--}}
 <section class="w-full">
     @include('partials.settings-heading')
 
