@@ -166,8 +166,7 @@ class TallerController extends Controller
 
     public function buscador()
     {
-        $talleres = Taller::all();
-        return view('dashboard', compact('talleres')  );
+        return view('dashboard');
     }
 
 
