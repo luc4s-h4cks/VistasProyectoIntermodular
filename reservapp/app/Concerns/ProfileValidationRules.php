@@ -19,6 +19,7 @@ trait ProfileValidationRules
             'apellidos' => ['required', 'string', 'max:255'],
             'telefono' => ['nullable', 'string', 'max:20'],
             'fecha_nacimiento' => ['required', 'date', 'before:today'],
+            'img_perfil' => $this->imageRules(),
         ];
     }
 
@@ -92,5 +93,15 @@ trait ProfileValidationRules
                 ? Rule::unique(Usuario::class, 'nombre_usuario')
                 : Rule::unique(Usuario::class, 'nombre_usuario')->ignore($userId, 'id_usuario'),
         ];
+    }
+
+    /**
+     * Get the validation rules used to validate profile images.
+     *
+     * @return array<int, \Illuminate\Contracts\Validation\Rule|array<mixed>|string>
+     */
+    protected function imageRules(): array
+    {
+        return ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:5120'];
     }
 }

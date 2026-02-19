@@ -72,6 +72,47 @@
                 required
             />
 
+            {{-- Profile Image Section --}}
+            <div class="space-y-3">
+                <flux:label>{{ __('Foto de perfil') }}</flux:label>
+
+                {{-- Current Image Display --}}
+                @if($this->currentImageUrl)
+                    <div class="mb-4 rounded-lg border border-zinc-200 p-4 dark:border-zinc-700">
+                        <img
+                            src="{{ $this->currentImageUrl }}"
+                            alt="{{ __('Foto de perfil actual') }}"
+                            class="h-32 w-32 rounded-lg object-cover"
+                        />
+                        <flux:text class="mt-3 text-sm">
+                            {{ __('Foto actual') }}
+                        </flux:text>
+                    </div>
+                @endif
+
+                {{-- File Input --}}
+                <flux:input
+                    wire:model="img_perfil"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    :hint="__('Máximo 5 MB. Formatos permitidos: JPG, PNG, WebP')"
+                />
+
+                {{-- Preview of new image --}}
+                @if($img_perfil)
+                    <div class="mt-4 rounded-lg border border-zinc-200 p-4 dark:border-zinc-700">
+                        <img
+                            src="{{ $img_perfil->temporaryUrl() }}"
+                            alt="{{ __('Vista previa de foto de perfil') }}"
+                            class="h-32 w-32 rounded-lg object-cover"
+                        />
+                        <flux:text class="mt-3 text-sm">
+                            {{ __('Vista previa') }}
+                        </flux:text>
+                    </div>
+                @endif
+            </div>
+
             <div class="flex items-center gap-4">
                 <flux:button variant="primary" type="submit">{{ __('Guardar cambios') }}</flux:button>
 
