@@ -40,6 +40,7 @@ class Profile extends Component
     public string $apellidos = '';
     public string $telefono = '';
     public string $fecha_nacimiento = '';
+    #[Validate('nullable|image|max:5120')]
     public $img_perfil;
     public string $imgPerfilUrlBase = 'storage/imgperfil/';
 
@@ -94,26 +95,22 @@ class Profile extends Component
     public function updateBasicInformation(): void
     {
         $user = Auth::user();
-
         $validated = $this->validate($this->basicProfileRules());
-
+        dd($this->img_perfil);
+    //dd($validated);
         // Procesar la imagen si existe
         if ($this->img_perfil && is_object($this->img_perfil)) {
-            // Eliminar imagen anterior si existe
             if ($user->img_perfil) {
                 Storage::delete('imgperfil/'.$user->img_perfil);
             }
 
-            // Generar nombre del archivo
-            $nombreFoto = time()."_".$this->img_perfil->getClientOriginalName();
-
-            // Guardar la nueva imagen
+            $nombreFoto = time()."_".Auth::id().".".$this->img_perfil->guessExtension();
             $this->img_perfil->storeAs('imgperfil', $nombreFoto);
-            $validated['img_perfil'] = $nombreFoto;
-        } else {
-            // Si no hay nueva imagen, no actualizar el campo
-            unset($validated['img_perfil']);
+            $user->img_perfil = $nombreFoto;
         }
+
+        // Quitar img_perfil SIEMPRE antes del fill()
+        unset($validated['img_perfil']);
 
         $user->fill($validated);
         $user->save();
