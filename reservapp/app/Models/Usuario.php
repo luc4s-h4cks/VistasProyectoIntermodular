@@ -10,9 +10,9 @@ use Illuminate\Support\Str;
 
 class Usuario extends Authenticatable
 {
-    public $USUARIO = 0;
-    public $MECANICO = 1;
-    public $ADMIN = 2;
+    public const USUARIO = 0;
+    public const MECANICO = 1;
+    public const ADMIN = 2;
 
     use HasFactory, Notifiable, TwoFactorAuthenticatable;
 

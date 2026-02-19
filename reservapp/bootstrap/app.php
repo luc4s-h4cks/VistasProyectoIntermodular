@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\Logueado;
+use App\Http\Middleware\UsuarioAdmin;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -13,7 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'mecanico' => UsuarioMecanico::class
+            'mecanico' => UsuarioMecanico::class,
+            'admin' => UsuarioAdmin::class,
+            'logueado' => Logueado::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
