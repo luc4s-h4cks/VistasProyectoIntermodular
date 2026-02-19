@@ -18,7 +18,7 @@ class TallerController extends Controller
      */
     public function index()
     {
-        return ("taller index");
+        //
     }
 
     /**
@@ -162,6 +162,12 @@ class TallerController extends Controller
             return redirect()->route('mi-taller')->with('msg', 'A ocurrido un error al intentar crear o actulizar su taller');
         }
 
+    }
+
+    public function buscador()
+    {
+        $talleres = Taller::all();
+        return view('dashboard', compact('talleres')  );
     }
 
 
