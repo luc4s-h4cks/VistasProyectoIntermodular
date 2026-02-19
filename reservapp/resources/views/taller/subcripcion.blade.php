@@ -1,4 +1,4 @@
-<x-layouts::app :title="__('Subcripcion')">
+<x-layouts::app :title="__('Suscripcion')">
 
     <div class="flex w-full">
 
