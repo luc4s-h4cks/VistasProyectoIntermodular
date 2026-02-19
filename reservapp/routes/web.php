@@ -52,4 +52,4 @@ Route::put('/citas/{cita}/aceptar', [CitaController::class, 'aceptarCita'])->nam
 Route::put('/citas/{cita}/proponer-fecha', [CitaController::class, 'proponerNuevaFecha'])->name('cita.proponer-fecha');
 Route::put('citas/{cita}/enviar', [CitaController::class, 'enviarFactura'])->name('cita.enviarFactura');
 
-
+Route::get("/buscador/{taller}",[TallerController::class, 'index'])->name('buscador');

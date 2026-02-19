@@ -76,12 +76,13 @@ new class extends Component
 
         {{-- Filtros --}}
         <div class="w-52 flex-shrink-0">
-            <livewire:filtros/>
+            <livewire:buscador.filtros/>
         </div>
 
         {{-- Lista de talleres --}}
         <div class="flex-1 flex flex-col gap-4">
             @foreach ($talleres as $taller)
+                <a href ="{{ route("buscador",$taller->handle)}}">
                 <div class="w-full flex gap-4 bg-background border-l-4 border-primary rounded-xl shadow-sm p-4">
 
                     {{-- Imagen --}}
@@ -116,6 +117,7 @@ new class extends Component
                     </div>
 
                 </div>
+                </a>
             @endforeach
         </div>
 
