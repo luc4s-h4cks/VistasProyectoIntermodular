@@ -13,7 +13,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::view('dashboard', 'dashboard')
+Route::get('dashboard', [TallerController::class, 'buscador'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
