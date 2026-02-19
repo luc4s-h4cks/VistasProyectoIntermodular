@@ -31,7 +31,7 @@ Route::resource('tipo-suscripcion', TipoSuscripcionController::class);
 Route::resource('usuario', UsuarioController::class);
 
 
-Route::get('suscripcion', [TallerController::class, 'tallerSubcripcion'])->name('suscripcion');
+Route::get('subcripcion', [TallerController::class, 'tallerSubcripcion'])->name('subcripcion');
 
 Route::middleware(['mecanico'])->group(function () {
     Route::post('/mi-taller', [TallerController::class, 'guardar'])->name('taller.guardar');
@@ -54,4 +54,4 @@ Route::put('/citas/{cita}/aceptar', [CitaController::class, 'aceptarCita'])->nam
 Route::put('/citas/{cita}/proponer-fecha', [CitaController::class, 'proponerNuevaFecha'])->name('cita.proponer-fecha');
 Route::put('citas/{cita}/enviar', [CitaController::class, 'enviarFactura'])->name('cita.enviarFactura');
 
-
+Route::get("/buscador/{taller}",[TallerController::class, 'index'])->name('buscador');

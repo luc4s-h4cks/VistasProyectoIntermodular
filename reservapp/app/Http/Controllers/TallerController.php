@@ -16,9 +16,10 @@ class TallerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($handle)
     {
-        //
+        $taller = Taller::where('handle',"like",$handle)->first();
+        return view('taller.index', compact('taller'));
     }
 
     /**
