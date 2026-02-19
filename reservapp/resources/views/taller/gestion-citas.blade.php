@@ -2,7 +2,20 @@
     <script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
     @php
         $notificaciones = $citas->filter(fn($cita) => in_array($cita->estado, [-2, 4, 11]));
+
+        //SOLO citas aceptadas (estado 1) para el calendario
+        $resumenCitas = $citas
+            ->where('estado', \App\Models\Cita::ESTADO_ACEPTADO)
+            ->groupBy('fecha')
+            ->map(function ($citasPorDia, $fecha) {
+                return [
+                    'fecha' => $fecha,
+                    'total' => $citasPorDia->count(),
+                ];
+            })
+            ->values();
     @endphp
+
 
     <div class="flex w-full">
 
@@ -383,7 +396,8 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
     <script>
-        const resumenCitas = @json($resumenCitas ?? []);
+        const resumenCitas = @json($resumenCitas);
+
         document.addEventListener('alpine:init', () => {
 
             setTimeout(() => {
@@ -391,7 +405,7 @@
                 let calendarEl = document.getElementById('calendar');
                 if (!calendarEl) return;
 
-                // Creamos eventos resumen
+                // 🔧 Eventos SOLO de citas en estado 1
                 let eventosResumen = resumenCitas.map(dia => {
                     return {
                         title: '🔧 ' + dia.total,
@@ -423,6 +437,7 @@
 
         });
     </script>
+
 
 
 </x-layouts::app>
