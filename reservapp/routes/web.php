@@ -17,7 +17,7 @@ Route::get('dashboard', [TallerController::class, 'buscador'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';
 
 Route::get('settings/mis-coches', [CocheController::class, 'miscoches'])->name('mis-coches');
 Route::get('settings/mis-citas', [CitaController::class, 'misCitas'])->name('mis-citas');
@@ -30,13 +30,18 @@ Route::resource('tipo-combustible', TipoCombustibleController::class);
 Route::resource('tipo-suscripcion', TipoSuscripcionController::class);
 Route::resource('usuario', UsuarioController::class);
 
-Route::resource('taller', TallerController::class);
-Route::get('gestion-citas', [TallerController::class, 'gestionCitas'])->name('gestion-citas');
-Route::get('mi-taller', [TallerController::class, 'miTaller'])->name('mi-taller');
+
 Route::get('subcricion', [TallerController::class, 'tallerSubcripcion'])->name('subcripcion');
 
-Route::post('/mi-taller', [TallerController::class, 'guardar'])->name('taller.guardar');
-Route::get('/citas/por-fecha', [CitaController::class, 'getCitasPorFecha'])->name('citas.por-fecha');
+Route::middleware(['mecanico'])->group(function () {
+    Route::post('/mi-taller', [TallerController::class, 'guardar'])->name('taller.guardar');
+    Route::get('/citas/por-fecha', [CitaController::class, 'getCitasPorFecha'])->name('citas.por-fecha');
+    Route::resource('taller', TallerController::class);
+    Route::get('gestion-citas', [TallerController::class, 'gestionCitas'])->name('gestion-citas');
+    Route::get('mi-taller', [TallerController::class, 'miTaller'])->name('mi-taller');
+});
+
+
 
 
 Route::get('crear-factura/{cita}', [CitaController::class, 'mostrarFactura'])->name('cita.factura');

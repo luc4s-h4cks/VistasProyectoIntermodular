@@ -10,6 +10,10 @@ use Illuminate\Support\Str;
 
 class Usuario extends Authenticatable
 {
+    public $USUARIO = 0;
+    public $MECANICO = 1;
+    public $ADMIN = 2;
+
     use HasFactory, Notifiable, TwoFactorAuthenticatable;
 
     protected $table = 'usuario';
