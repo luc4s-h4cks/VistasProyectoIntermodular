@@ -41,7 +41,9 @@ Route::middleware(['mecanico'])->group(function () {
     Route::get('mi-taller', [TallerController::class, 'miTaller'])->name('mi-taller');
 });
 
-
+Route::middleware(['admin'])->group(function(){
+    Route::get('/administracion-usuarios', [UsuarioController::class, 'index'])->name('admin.usuarios');
+});
 
 
 Route::get('crear-factura/{cita}', [CitaController::class, 'mostrarFactura'])->name('cita.factura');

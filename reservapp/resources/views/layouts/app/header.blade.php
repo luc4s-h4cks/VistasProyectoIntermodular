@@ -12,8 +12,8 @@
         <x-app-logo href="{{ route('home') }}" wire:navigate />
 
         <flux:navbar class="-mb-px max-lg:hidden">
-            <flux:navbar.item icon="magnifying-glass" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
-                wire:navigate>
+            <flux:navbar.item icon="magnifying-glass" :href="route('dashboard')"
+                :current="request()->routeIs('dashboard')" wire:navigate>
                 {{ __('Buscador') }}
             </flux:navbar.item>
         </flux:navbar>
@@ -23,9 +23,16 @@
         <flux:navbar class="me-1.5 space-x-0.5 rtl:space-x-reverse py-0!">
 
             @if (auth()->user() && auth()->user()->tipo == 1)
-                <flux:navbar.item icon="wrench" :href="route('gestion-citas')" :current="request()->routeIs('gestion-citas')"
-                    wire:navigate>
+                <flux:navbar.item icon="wrench" :href="route('gestion-citas')"
+                    :current="request()->routeIs('gestion-citas')" wire:navigate>
                     {{ __('Taller') }}
+                </flux:navbar.item>
+            @endif
+
+            @if (auth()->user() && auth()->user()->tipo == 2)
+                <flux:navbar.item icon="wrench" :href="route('admin.usuarios')"
+                    :current="request()->routeIs('admin.usuarios')" wire:navigate>
+                    {{ __('Administracion') }}
                 </flux:navbar.item>
             @endif
 
@@ -36,13 +43,13 @@
             <x-desktop-user-menu />
         @else
             <flux:navbar class="me-1.5 space-x-0.5 rtl:space-x-reverse py-0!">
-                <flux:navbar.item icon="user-circle" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
-                    wire:navigate>
+                <flux:navbar.item icon="user-circle" :href="route('dashboard')"
+                    :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Login') }}
                 </flux:navbar.item>
 
-                <flux:navbar.item icon="inbox-arrow-down" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
-                    wire:navigate>
+                <flux:navbar.item icon="inbox-arrow-down" :href="route('dashboard')"
+                    :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Register') }}
                 </flux:navbar.item>
             </flux:navbar>

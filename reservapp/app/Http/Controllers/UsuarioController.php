@@ -13,7 +13,8 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        //
+        $usuarios = Usuario::all();
+        return view('admin.crud-usaurio')->with('usuarios', $usuarios);
     }
 
     /**
