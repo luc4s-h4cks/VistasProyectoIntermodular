@@ -109,7 +109,15 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <flux:button variant="primary" type="submit">{{ __('Guardar cambios') }}</flux:button>
+                <flux:button
+                    variant="primary"
+                    type="submit"
+                    wire:loading.attr="disabled"
+                    wire:target="img_perfil"
+                >
+                    <span wire:loading.remove wire:target="img_perfil">{{ __('Guardar cambios') }}</span>
+                    <span wire:loading wire:target="img_perfil">{{ __('Subiendo imagen...') }}</span>
+                </flux:button>
 
                 <x-action-message class="me-3" on="profile-updated">
                     {{ __('Guardado.') }}

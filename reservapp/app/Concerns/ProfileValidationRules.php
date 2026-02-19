@@ -17,8 +17,9 @@ trait ProfileValidationRules
         return [
             'nombre' => $this->nameRules(),
             'apellidos' => ['required', 'string', 'max:255'],
-            'telefono' => ['nullable', 'string', 'max:20'],
+            'telefono' => ['nullable', 'string', 'max:12'],
             'fecha_nacimiento' => ['required', 'date', 'before:today'],
+            'img_perfil' => $this->imageRules(),
         ];
     }
 
@@ -99,8 +100,8 @@ trait ProfileValidationRules
      *
      * @return array<int, \Illuminate\Contracts\Validation\Rule|array<mixed>|string>
      */
-    /*protected function imageRules(): array
+    protected function imageRules(): array
     {
-        return ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:5120'];
-    }*/
+        return ['nullable', 'image', 'mimes:jpeg,png,webp,jpg', 'max:5120'];
+    }
 }
