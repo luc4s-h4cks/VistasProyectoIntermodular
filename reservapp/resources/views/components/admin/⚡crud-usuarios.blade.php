@@ -123,14 +123,7 @@ new class extends Component {
 
     public function guardar()
     {
-        $this->validate([
-            'nombre' => 'required|string|max:255',
-            'apellidos' => 'nullable|string|max:255',
-            'nombre_usuario' => ['required', 'string', 'max:255', Rule::unique('usuario', 'nombre_usuario')->ignore($this->usuarioSeleccionado->id_usuario, 'id_usuario')],
-            'email' => ['required', 'email', 'max:255', Rule::unique('usuario', 'email')->ignore($this->usuarioSeleccionado->id_usuario, 'id_usuario')],
-            'telefono' => 'nullable|string|max:20',
-            'tipo' => 'required|in:0,1,2',
-        ]);
+        $this->validate();
 
         Usuario::find($this->usuarioSeleccionado->id_usuario)->update([
             'nombre' => $this->nombre,
@@ -147,16 +140,7 @@ new class extends Component {
 
     public function crear()
     {
-        $this->validate([
-            'nombre' => 'required|string|max:255',
-            'apellidos' => 'nullable|string|max:255',
-            'nombre_usuario' => 'required|string|max:255|unique:usuario,nombre_usuario',
-            'email' => 'required|email|max:255|unique:usuario,email',
-            'telefono' => 'nullable|string|max:20',
-            'tipo' => 'required|in:0,1,2',
-            'pass' => 'required|string|min:8',
-            'fecha_nacimiento' => 'required|date|before:today',
-        ]);
+        $this->validate();
 
         Usuario::create([
             'nombre' => $this->nombre,
@@ -379,92 +363,96 @@ new class extends Component {
 
     <!-- Modal Crear -->
     @if ($modalCrear)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div class="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 space-y-4">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-gray-900">Nuevo usuario</h3>
-                    <button wire:click="cerrarModalCrear" class="text-gray-400 hover:text-gray-600 text-xl">✕</button>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
+        <form action="">
+            <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                <div class="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">Nuevo usuario</h3>
+                        <button wire:click="cerrarModalCrear"
+                            class="text-gray-400 hover:text-gray-600 text-xl">✕</button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                            <input type="text" wire:model.blur="nombre"
+                                class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
+                            @error('nombre')
+                                <span class="text-red-500 text-xs">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Apellidos</label>
+                            <input type="text" wire:model.blur="apellidos"
+                                class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
+                            @error('apellidos')
+                                <span class="text-red-500 text-xs">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                        <input type="text" wire:model.blur="nombre"
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nombre de usuario</label>
+                        <input type="text" wire:model.blur="nombre_usuario"
                             class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                        @error('nombre')
+                        @error('nombre_usuario')
                             <span class="text-red-500 text-xs">{{ $message }}</span>
                         @enderror
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Apellidos</label>
-                        <input type="text" wire:model.blur="apellidos"
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" wire:model.blur.live="email"
                             class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                        @error('apellidos')
+                        @error('email')
                             <span class="text-red-500 text-xs">{{ $message }}</span>
                         @enderror
                     </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nombre de usuario</label>
-                    <input type="text" wire:model.blur="nombre_usuario"
-                        class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                    @error('nombre_usuario')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input type="email" wire:model.blur.live="email"
-                        class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                    @error('email')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
-                        <input type="text" wire:model.blur="telefono"
-                            class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                        @error('telefono')
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+                            <input type="text" wire:model.blur="telefono"
+                                class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
+                            @error('telefono')
+                                <span class="text-red-500 text-xs">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
+                            <select wire:model.number="tipo"
+                                class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
+
+                                <option value="0">Usuario</option>
+                                <option value="1">Taller</option>
+                                <option value="2">Admin</option>
+                            </select>
+                            @error('tipo')
+                                <span class="text-red-500 text-xs">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
-                        <select wire:model.number="tipo"
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                        <input type="password" wire:model.blur="pass"
                             class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                            <option value="0">Usuario</option>
-                            <option value="1">Taller</option>
-                            <option value="2">Admin</option>
-                        </select>
-                        @error('tipo')
+                        @error('pass')
                             <span class="text-red-500 text-xs">{{ $message }}</span>
                         @enderror
                     </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
-                    <input type="password" wire:model.blur="pass"
-                        class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                    @error('pass')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de nacimiento</label>
-                    <input type="date" wire:model.blur="fecha_nacimiento"
-                        class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                    @error('fecha_nacimiento')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="flex justify-end gap-3 pt-2">
-                    <button wire:click="cerrarModalCrear"
-                        class="px-4 py-2 text-sm text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">Cancelar</button>
-                    <button wire:click="crear"
-                        class="px-4 py-2 text-sm text-white bg-green-600 rounded-lg hover:bg-green-700">Crear</button>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de nacimiento</label>
+                        <input type="date" wire:model.blur="fecha_nacimiento"
+                            class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
+                        @error('fecha_nacimiento')
+                            <span class="text-red-500 text-xs">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="flex justify-end gap-3 pt-2">
+                        <button wire:click="cerrarModalCrear"
+                            class="px-4 py-2 text-sm text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">Cancelar</button>
+                        <button wire:click="crear"
+                            class="px-4 py-2 text-sm text-white bg-green-600 rounded-lg hover:bg-green-700">Crear</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     @endif
 
     <!-- Modal Eliminar -->
