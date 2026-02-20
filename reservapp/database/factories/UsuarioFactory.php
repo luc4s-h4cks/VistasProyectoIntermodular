@@ -38,10 +38,5 @@ class UsuarioFactory extends Factory
             'img_perfil' => null,
         ];
     }
-    public function definition(): array
-    {
-        return [
-            //
-        ];
-    }
+
 }
