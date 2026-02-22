@@ -106,7 +106,6 @@ new class extends Component {
         $this->usuarioAEliminar = null;
     }
 
-    // handle único ignorando el propio usuario al editar
     public function updatedNombreUsuario()
     {
         $this->validateOnly('nombre_usuario', [

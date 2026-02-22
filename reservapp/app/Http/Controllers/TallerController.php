@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TallerRequest;
 use App\Models\Taller;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ class TallerController extends Controller
      */
     public function index($handle)
     {
-        $taller = Taller::where('handle',"like",$handle)->first();
+        $taller = Taller::where('handle', "like", $handle)->first();
         return view('taller.index', compact('taller'));
     }
 
@@ -101,12 +102,9 @@ class TallerController extends Controller
         return view('taller.subcripcion');
     }
 
-    public function guardar(Request $request)
+    public function guardar(TallerRequest $request)
     {
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-        ]);
-
+        $validated = $request->validated();
         try {
             $usuario = Auth::user();
             $taller = $usuario->taller;
@@ -115,13 +113,13 @@ class TallerController extends Controller
             $servicios = $request->servicios;
 
             $datos = [
-                'nombre' => $request->nombre,
-                'descripcion' => $request->descripcion,
-                'telefono' => $request->telefono,
-                'email' => $request->email,
-                'tipo_vehiculo' => $vehiculos,
-                'tipo_servicio' => $servicios,
-                'info_contacto' => $request->info_contacto,
+                'nombre' => $validated['nombre'],
+                'descripcion' => $validated['descripcion'],
+                'telefono' => $validated['telefono'] ?? null,
+                'email' => $validated['email'] ?? null,
+                'tipo_vehiculo' => $validated['vehiculos'],
+                'tipo_servicio' => $validated['servicios'],
+                'info_contacto' => $validated['info_contacto'] ?? null,
             ];
 
             if ($request->hasFile('imagen_taller')) {
