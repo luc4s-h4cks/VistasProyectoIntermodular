@@ -3,12 +3,17 @@
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Models\Cita;
+use App\Models\Dia;
 
 new class extends Component {
     public $modalAbierto = false;
     public $fechaSeleccionada = '';
     public $citas = [];
-    public $permitirCitas = 'si';
+    public $estadoDia = Dia::ESTADO_LIBRE;
+
+    protected $queryString = [
+        'fechaSeleccionada' => ['except' => ''],
+    ];
 
     #[On('abrirModalDia')]
     public function abrirModal($fecha)
@@ -20,7 +25,25 @@ new class extends Component {
             ->with(['coche.usuario'])
             ->get();
 
+        // Cargamos el estado actual del día si existe
+        $dia = Dia::where('fecha', $fecha)
+            ->where('id_taller', auth()->user()->taller->id_taller)
+            ->first();
+
+        $this->estadoDia = $dia ? $dia->estado : Dia::ESTADO_LIBRE;
+
         $this->modalAbierto = true;
+    }
+
+    public function updatedEstadoDia($valor)
+    {
+        Dia::updateOrCreate(
+            [
+                'fecha' => $this->fechaSeleccionada,
+                'id_taller' => auth()->user()->taller->id_taller,
+            ],
+            ['estado' => $valor],
+        );
     }
 
     public function cerrarModal()
@@ -28,6 +51,7 @@ new class extends Component {
         $this->modalAbierto = false;
         $this->fechaSeleccionada = '';
         $this->citas = [];
+        $this->reset(['modalAbierto', 'fechaSeleccionada', 'citas']);
     }
 
     public function cancelarCita($citaId)
@@ -38,8 +62,12 @@ new class extends Component {
         $this->abrirModal($this->fechaSeleccionada);
     }
 
-    
-
+    public function mount()
+    {
+        if ($this->fechaSeleccionada) {
+            $this->abrirModal($this->fechaSeleccionada);
+        }
+    }
 };
 ?>
 
@@ -48,23 +76,20 @@ new class extends Component {
         <div class="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center z-50">
             <div class="bg-white rounded-xl shadow-xl w-[600px] max-h-[90vh] flex flex-col p-6 relative">
 
-                <!-- Cerrar -->
                 <button wire:click="cerrarModal"
                     class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl font-bold">
                     &times;
                 </button>
 
-                <!-- Título -->
                 <h2 class="text-2xl font-bold mb-6 text-center">
                     DIA {{ $fechaSeleccionada }}
                 </h2>
 
-                <!-- Select y cantidad -->
                 <div class="flex items-center justify-between mb-4 pb-4 border-b">
-                    <select wire:model="permitirCitas"
+                    <select wire:model.live="estadoDia"
                         class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
-                        <option value="si">Permitir más citas</option>
-                        <option value="no">No permitir más citas</option>
+                        <option value="{{ \App\Models\Dia::ESTADO_LIBRE }}">Permitir más citas</option>
+                        <option value="{{ \App\Models\Dia::ESTADO_OCUPADO }}">No permitir más citas</option>
                     </select>
                     <div class="text-sm font-medium text-gray-700">
                         Citas aceptadas:
@@ -72,7 +97,6 @@ new class extends Component {
                     </div>
                 </div>
 
-                <!-- Citas -->
                 <div class="flex-1 overflow-y-auto space-y-4 pr-2" style="max-height: 500px;">
                     @forelse ($citas as $cita)
                         <div class="border-2 border-gray-300 rounded-lg p-4">
@@ -100,7 +124,6 @@ new class extends Component {
                                     </div>
                                 </div>
                             </div>
-
                             <div class="flex gap-2 mt-3">
                                 <a href="{{ route('cita.factura', $cita->id_cita) }}"
                                     class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm">
