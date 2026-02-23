@@ -20,8 +20,8 @@ new class extends Component
     {
         $this->aplicarFiltros();
     }
+#[On('filtros-actualizados')]
 
-    #[On('filtros-actualizados')]
     public function recibirFiltros(array $servicios, array $vehiculos)
     {
         $this->filtroServicios = $servicios;
