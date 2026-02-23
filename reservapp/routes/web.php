@@ -33,7 +33,7 @@ Route::resource('usuario', UsuarioController::class);
 
 Route::get('subcripcion', [TallerController::class, 'tallerSubcripcion'])->name('subcripcion');
 
-Route::middleware(['mecanico'])->group(function () {
+Route::middleware(['mecanico', 'verified'])->group(function () {
     Route::post('/mi-taller', [TallerController::class, 'guardar'])->name('taller.guardar');
     Route::get('/citas/por-fecha', [CitaController::class, 'getCitasPorFecha'])->name('citas.por-fecha');
     Route::resource('taller', TallerController::class);

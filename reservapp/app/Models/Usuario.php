@@ -7,8 +7,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-class Usuario extends Authenticatable
+class Usuario extends Authenticatable implements MustVerifyEmail
 {
     public const USUARIO = 0;
     public const MECANICO = 1;
@@ -46,6 +48,11 @@ class Usuario extends Authenticatable
             'fecha_nacimiento' => 'date',
             'fecha_creacion_cuenta' => 'datetime',
         ];
+    }
+
+    public function setPassAttribute($value)
+    {
+        $this->attributes['pass'] = Hash::make($value);
     }
 
     /**
