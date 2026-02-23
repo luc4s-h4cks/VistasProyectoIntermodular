@@ -104,7 +104,8 @@ new class extends Component
             ></div>
 
             {{-- Modal --}}
-            <div class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase
+            <div class="relative z-10 w-full max-w-lg rounded-xl p-6 shadow-2xl
+                        bg-background text-text border border-secondary/20 focus:outline-none focus:ring-0 peer uppercase
                 text-text border-text/20 focus:border-primary">
 
                 {{-- Header --}}
@@ -131,7 +132,7 @@ new class extends Component
                     {{-- Matrícula --}}
                     <div class="relative z-0 w-full group">
                         <input wire:model="matricula" type="text" id="matricula" placeholder=" "
-                            class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase 
+                            class="block py-2.5 px-0 w-full text-sm border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase 
                                 text-text border-text/20 focus:border-primary"
                         />
                         <label for="matricula"
@@ -146,7 +147,7 @@ new class extends Component
                     <div class="grid grid-cols-2 gap-4">
                         <div class="relative z-0 w-full group">
                             <input wire:model="marca" type="text" id="marca" placeholder=" "
-                                class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase 
+                                class="block py-2.5 px-0 w-full text-sm border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase 
                                     text-text border-text/20 focus:border-primary"
                             />
                             <label for="marca"
@@ -158,7 +159,7 @@ new class extends Component
                         </div>
                         <div class="relative z-0 w-full group">
                             <input wire:model="modelo" type="text" id="modelo" placeholder=" "
-                                class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase 
+                                class="block py-2.5 px-0 w-full text-sm border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase 
                                 text-text border-text/20 focus:border-primary"
                             />
                             <label for="modelo"
@@ -173,7 +174,7 @@ new class extends Component
                     {{-- Número de bastidor --}}
                     <div class="relative z-0 w-full group">
                         <input wire:model="n_bastidor" type="text" id="n_bastidor" placeholder=" "
-                            class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase 
+                            class="block py-2.5 px-0 w-full text-sm border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase 
                                 text-text border-text/20 focus:border-primary"
                         />
                         <label for="n_bastidor"
@@ -190,7 +191,7 @@ new class extends Component
                             Tipo de propulsión
                         </label>
                         <select wire:model="tipo_combustible" id="tipo_combustible"
-                            class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 
+                            class="block py-2.5 px-0 w-full text-sm border-0 border-b-2 bg-background
                                     appearance-none focus:outline-none focus:ring-0 text-text border-text/20 
                                     focus:border-primary">
                             <option value="" disabled>Selecciona el tipo de propulsión</option>
