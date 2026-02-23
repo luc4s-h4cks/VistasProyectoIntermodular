@@ -121,6 +121,7 @@ new class extends Component {
 
         return $this->view(['coches' => $coches]);
     }
+}
 ?>
 
 <div>
@@ -181,18 +182,19 @@ new class extends Component {
                                 {{ $coche->tipoCombustible->nombre ?? '—' }}
                             </span>
                         </td>
-                        <td class="px-4 py-3 text-center space-x-2">
-                            <button wire:click="abrirModalEditar({{ $coche->id_coche }})"
-                                class="text-primary hover:text-primary/70 text-xs font-medium">Editar</button>
-                            <button wire:click="abrirModalEliminar({{ $coche->id_coche }})"
-                                class="text-accent hover:text-accent/70 text-xs font-medium">Eliminar</button>
-                        </td>
                         <td class="px-4 py-3 text-text/60 dark:text-[#f5f5f5]/60">
                             {{ $coche->usuario->nombre ?? '—' }}
                             <span class="text-xs text-text/40 dark:text-[#f5f5f5]/40 block">
                                 {{ $coche->usuario->nombre_usuario ?? '' }}
                             </span>
                         </td>
+                        <td class="px-4 py-3 text-center space-x-2">
+                            <button wire:click="abrirModalEditar({{ $coche->id_coche }})"
+                                class="text-primary hover:text-primary/70 text-xs font-medium">Editar</button>
+                            <button wire:click="abrirModalEliminar({{ $coche->id_coche }})"
+                                class="text-accent hover:text-accent/70 text-xs font-medium">Eliminar</button>
+                        </td>
+
                     </tr>
                 @empty
                     <tr>

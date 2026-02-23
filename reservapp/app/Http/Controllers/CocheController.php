@@ -16,7 +16,8 @@ class CocheController extends Controller
      */
     public function index()
     {
-        //
+        $coches = Coche::all();
+        return view('admin.crud-coche', compact('coches'));
     }
 
     public function miscoches()
