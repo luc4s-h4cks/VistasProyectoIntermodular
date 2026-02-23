@@ -21,19 +21,19 @@ new class extends Component {
     public $modalAbierto = false;
     public $usuarioSeleccionado = null;
 
-    #[Validate('required|string|max:255')]
+    #[Validate('required|string|max:32')]
     public $nombre;
 
-    #[Validate('nullable|string|max:255')]
+    #[Validate('nullable|string|max:32')]
     public $apellidos;
 
-    #[Validate('required|string|max:255')]
+    #[Validate('required|string|max:32')]
     public $nombre_usuario;
 
-    #[Validate('required|email|max:255')]
+    #[Validate('required|email|max:64')]
     public $email;
 
-    #[Validate('nullable|string|max:20')]
+    #[Validate('nullable|string|max:12')]
     public $telefono;
 
     #[Validate('required|date|before:today')]
@@ -44,6 +44,27 @@ new class extends Component {
 
     #[Validate('nullable|string|min:8')]
     public $pass;
+
+    protected function messages(): array {
+        return [
+            'nombre.required'           => 'El nombre es obligatorio.',
+            'nombre.max'                => 'El nombre no puede superar los 32 caracteres.',
+            'apellidos.max'             => 'Los apellidos no pueden superar los 32 caracteres.',
+            'nombre_usuario.required'   => 'El nombre de usuario es obligatorio.',
+            'nombre_usuario.max'        => 'El nombre de usuario no puede superar los 32 caracteres.',
+            'email.required'            => 'El correo electrónico es obligatorio.',
+            'email.email'               => 'El formato del correo no es válido.',
+            'email.max'                 => 'El correo no puede superar los 64 caracteres.',
+            'telefono.max'              => 'El teléfono no puede superar los 12 caracteres.',
+            'fecha_nacimiento.required' => 'La fecha de nacimiento es obligatoria.',
+            'fecha_nacimiento.date'     => 'La fecha de nacimiento no es válida.',
+            'fecha_nacimiento.before'   => 'La fecha de nacimiento debe ser anterior a hoy.',
+            'tipo.in'                   => 'El tipo de usuario no es válido.',
+            'pass.min'                  => 'La contraseña debe tener al menos 8 caracteres.',
+            'pass.required'             => 'La contraseña es obligatoria.',
+        ];
+    }
+
 
     public function updatingBuscar()
     {

@@ -24,10 +24,10 @@ new class extends Component
     protected function rules(): array
     {
         return [
-            'matricula'        => 'required|string|max:10|unique:coche,matricula',
-            'marca'            => 'required|string|max:100',
-            'modelo'           => 'required|string|max:100',
-            'n_bastidor'       => 'required|string|max:17|unique:coche,n_bastidor',
+            'matricula'        => 'required|string|max:16|unique:coche,matricula',
+            'marca'            => 'required|string|max:32',
+            'modelo'           => 'required|string|max:32',
+            'n_bastidor'       => 'required|string|max:32|unique:coche,n_bastidor',
             'tipo_combustible' => 'required|integer|exists:tipo_propulsion,tipo_combustible',
         ];
     }
@@ -35,10 +35,14 @@ new class extends Component
     protected array $messages = [
         'matricula.required'        => 'La matrícula es obligatoria.',
         'matricula.unique'          => 'Esta matrícula ya está registrada.',
+        'matricula.max'             => 'La matrícula no puede superar los 16 caracteres.',
         'marca.required'            => 'La marca es obligatoria.',
+        'marca.max'                 => 'La marca no puede superar los 32 caracteres.',
         'modelo.required'           => 'El modelo es obligatorio.',
+        'modelo.max'                => 'El modelo no puede superar los 32 caracteres.',
         'n_bastidor.required'       => 'El número de bastidor es obligatorio.',
         'n_bastidor.unique'         => 'Este número de bastidor ya está registrado.',
+        'n_bastidor.max'            => 'El número de bastidor no puede superar los 32 caracteres.',
         'tipo_combustible.required' => 'El tipo de propulsión es obligatorio.',
         'tipo_combustible.exists'   => 'El tipo de propulsión seleccionado no es válido.',
     ];
