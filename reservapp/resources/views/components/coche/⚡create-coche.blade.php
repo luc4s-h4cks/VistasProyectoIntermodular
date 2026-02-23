@@ -6,7 +6,7 @@ use App\Models\TipoCombustible;
 use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 
-new class extends Component 
+new class extends Component
 {
     use WithFileUploads;
 
@@ -74,7 +74,7 @@ new class extends Component
         ]);
 
         $this->cerrarModal();
-        $this->dispatch('cocheCreado'); // escuchado por el padre
+        $this->dispatch('cocheCreado');
     }
 
     private function limpiarForm(): void
@@ -93,31 +93,33 @@ new class extends Component
     @if($mostrar)
         <div class="fixed inset-0 z-50 flex items-center justify-center">
 
+            {{-- Backdrop --}}
             <div
                 class="absolute inset-0 bg-black/50 backdrop-blur-sm"
                 wire:click="cerrarModal"
             ></div>
 
-            <div class="relative z-10 w-full max-w-lg rounded-xl bg-white p-6 shadow-2xl
-                        bg-white text-gray-900
-                        dark:bg-gray-900 dark:text-gray-100">
+            {{-- Modal --}}
+            <div class="relative z-10 w-full max-w-lg rounded-xl p-6 shadow-2xl
+                        bg-background text-text
+                        dark:text-[#f5f5f5]">
 
                 {{-- Header --}}
                 <div class="mb-6 flex items-start justify-between border-b pb-4
-                            border-gray-200 dark:border-gray-700">
+                            border-secondary/30 dark:border-secondary/20">
                     <div>
-                        <h3 class="text-lg font-semibold text-gray-900">
+                        <h3 class="text-lg font-semibold text-primary dark:text-[#1a73a8]">
                             Nuevo Coche
                         </h3>
-                        <p class="text-sm text-gray-500">
+                        <p class="text-sm text-text/60 dark:text-[#f5f5f5]/60">
                             Rellena los datos del vehículo.
                         </p>
                     </div>
                     <button
                         wire:click="cerrarModal"
                         class="rounded-lg p-1.5 transition
-                            text-gray-400 hover:bg-gray-100 hover:text-gray-600
-                            dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+                            text-text/40 hover:bg-secondary/10 hover:text-accent
+                            dark:text-[#f5f5f5]/40 dark:hover:bg-secondary/10 dark:hover:text-accent"
                     >
                         <flux:icon.x-mark class="size-5" />
                     </button>
@@ -130,13 +132,18 @@ new class extends Component
                     <div class="relative z-0 w-full group">
                         <input wire:model="matricula" type="text" id="matricula" placeholder=" "
                             class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase
-                                    text-gray-900 border-gray-300 focus:border-blue-600
-                                    dark:text-gray-100 dark:border-gray-600 dark:focus:border-blue-400"
-                                    />
-                        <label for="matricula" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                    text-text border-text/20 focus:border-primary
+                                    dark:text-[#f5f5f5] dark:border-[#f5f5f5]/20 dark:focus:border-primary"
+                        />
+                        <label for="matricula"
+                            class="peer-focus:font-medium absolute text-sm text-text/50 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
+                                   peer-focus:text-primary
+                                   peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+                                   peer-focus:scale-75 peer-focus:-translate-y-6
+                                   dark:text-[#f5f5f5]/50 dark:peer-focus:text-primary">
                             Matrícula
                         </label>
-                        @error('matricula') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        @error('matricula') <p class="mt-1 text-xs text-accent">{{ $message }}</p> @enderror
                     </div>
 
                     {{-- Marca y Modelo --}}
@@ -144,23 +151,34 @@ new class extends Component
                         <div class="relative z-0 w-full group">
                             <input wire:model="marca" type="text" id="marca" placeholder=" "
                                 class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase
-                                    text-gray-900 border-gray-300 focus:border-blue-600
-                                    dark:text-gray-100 dark:border-gray-600 dark:focus:border-blue-400"
-                                    />
-                            <label for="marca" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                    text-text border-text/20 focus:border-primary
+                                    dark:text-[#f5f5f5] dark:border-[#f5f5f5]/20 dark:focus:border-primary"
+                            />
+                            <label for="marca"
+                                class="peer-focus:font-medium absolute text-sm text-text/50 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
+                                       peer-focus:text-primary
+                                       peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+                                       peer-focus:scale-75 peer-focus:-translate-y-6
+                                       dark:text-[#f5f5f5]/50 dark:peer-focus:text-primary">
                                 Marca
                             </label>
-                            @error('marca') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                            @error('marca') <p class="mt-1 text-xs text-accent">{{ $message }}</p> @enderror
                         </div>
                         <div class="relative z-0 w-full group">
                             <input wire:model="modelo" type="text" id="modelo" placeholder=" "
                                 class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer
-                                        text-gray-900 border-gray-300 focus:border-blue-600
-                                        dark:text-gray-100 dark:border-gray-600 dark:focus:border-blue-400" />
-                            <label for="modelo" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                        text-text border-text/20 focus:border-primary
+                                        dark:text-[#f5f5f5] dark:border-[#f5f5f5]/20 dark:focus:border-primary"
+                            />
+                            <label for="modelo"
+                                class="peer-focus:font-medium absolute text-sm text-text/50 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
+                                       peer-focus:text-primary
+                                       peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+                                       peer-focus:scale-75 peer-focus:-translate-y-6
+                                       dark:text-[#f5f5f5]/50 dark:peer-focus:text-primary">
                                 Modelo
                             </label>
-                            @error('modelo') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                            @error('modelo') <p class="mt-1 text-xs text-accent">{{ $message }}</p> @enderror
                         </div>
                     </div>
 
@@ -168,32 +186,39 @@ new class extends Component
                     <div class="relative z-0 w-full group">
                         <input wire:model="n_bastidor" type="text" id="n_bastidor" placeholder=" "
                             class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase
-                                    text-gray-900 border-gray-300 focus:border-blue-600
-                                    dark:text-gray-100 dark:border-gray-600 dark:focus:border-blue-400" />
-                        <label for="n_bastidor" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                    text-text border-text/20 focus:border-primary
+                                    dark:text-[#f5f5f5] dark:border-[#f5f5f5]/20 dark:focus:border-primary"
+                        />
+                        <label for="n_bastidor"
+                            class="peer-focus:font-medium absolute text-sm text-text/50 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
+                                   peer-focus:text-primary
+                                   peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+                                   peer-focus:scale-75 peer-focus:-translate-y-6
+                                   dark:text-[#f5f5f5]/50 dark:peer-focus:text-primary">
                             Número de bastidor
                         </label>
-                        @error('n_bastidor') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        @error('n_bastidor') <p class="mt-1 text-xs text-accent">{{ $message }}</p> @enderror
                     </div>
 
                     {{-- Tipo de propulsión --}}
                     <div class="relative z-0 w-full group">
-                        <label for="tipo_combustible" class="block text-sm text-gray-500 mb-1">
+                        <label for="tipo_combustible" class="block text-sm text-text/50 mb-1 dark:text-[#f5f5f5]/50">
                             Tipo de propulsión
                         </label>
                         <select wire:model="tipo_combustible" id="tipo_combustible"
-                            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600
-                                    dark:text-gray-100 dark:border-gray-600 dark:focus:border-blue-400">
+                            class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0
+                                    text-text border-text/20 focus:border-primary
+                                    dark:text-[#f5f5f5] dark:border-[#f5f5f5]/20 dark:focus:border-primary">
                             <option value="" disabled>Selecciona el tipo de propulsión</option>
                             @foreach($tiposPropulsion as $tipo)
                                 <option value="{{ $tipo->tipo_combustible }}">{{ $tipo->nombre }}</option>
                             @endforeach
                         </select>
-                        @error('tipo_combustible') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                        @error('tipo_combustible') <p class="mt-1 text-xs text-accent">{{ $message }}</p> @enderror
                     </div>
 
                     {{-- Botones --}}
-                    <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                    <div class="flex justify-end gap-3 pt-4 border-t border-secondary/20">
                         <flux:button type="button" wire:click="cerrarModal" variant="ghost">
                             Cancelar
                         </flux:button>

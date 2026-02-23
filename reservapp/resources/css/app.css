@@ -38,7 +38,7 @@
 @layer theme {
     .dark {
         --color-text: #f5f5f5;
-        --color-background: #1a1a2e;
+        --color-background: #27272a;
         --color-accent: #ff8c5a;
         --color-accent-content: #ff8c5a;
         --color-accent-foreground: var(--color-neutral-800);
@@ -46,7 +46,6 @@
 }
 
 @layer base {
-
     *,
     ::after,
     ::before,
@@ -61,7 +60,7 @@
 }
 
 [data-flux-label] {
-    @apply  !mb-0 !leading-tight;
+    @apply !mb-0 !leading-tight;
 }
 
 input:focus[data-flux-control],
@@ -70,63 +69,41 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
-
-/*
- * Las clases bg-primary, text-primary, bg-secondary, text-secondary,
- * bg-accent, text-accent, etc. se generan automáticamente desde @theme.
- * Ya no hace falta definirlas manualmente.
- *
- * Uso en Blade:
- *   class="bg-primary text-white"      → fondo azul #1a73a8
- *   class="bg-secondary text-white"     → fondo dorado #ffb400
- *   class="bg-accent text-white"        → fondo naranja #ff6f3c
- *   class="text-text"                   → texto #2b2b2b
- *   class="bg-background"               → fondo #f5f7fa
- */
-
 /* Botones personalizados */
 .btn-primary {
-  background-color: var(--color-primary);
-  color: white;
-  transition: opacity 0.2s;
+    background-color: var(--color-primary);
+    color: white;
+    transition: opacity 0.2s;
 }
 .btn-primary:hover { opacity: 0.9; }
 
 .btn-secondary {
-  background-color: var(--color-secondary);
-  color: white;
-  transition: opacity 0.2s;
+    background-color: var(--color-secondary);
+    color: white;
+    transition: opacity 0.2s;
 }
 .btn-secondary:hover { opacity: 0.9; }
 
 .btn-accent {
-  background-color: var(--color-accent);
-  color: white;
-  transition: opacity 0.2s;
+    background-color: var(--color-accent);
+    color: white;
+    transition: opacity 0.2s;
 }
 .btn-accent:hover { opacity: 0.9; }
 
 /* Navbar personalizado */
 header {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-header button,
-header .font-medium {
-  color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 header .bg-white {
-  background-color: white;
-  color: var(--color-text);
-  font-weight: 600;
+    background-color: var(--color-background) !important;
+    color: var(--color-text);
+    font-weight: 600;
 }
 
 /* Sidebar personalizado */
 aside {
-  background-color: #f0f0f0 !important;
-  border-right: 3px solid var(--color-secondary);
+    background-color: var(--color-background) !important;
+    border-right: 3px solid var(--color-secondary);
 }

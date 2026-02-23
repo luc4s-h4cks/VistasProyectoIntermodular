@@ -34,6 +34,7 @@ class Taller extends Model
         'info_contacto',
         'fecha_fin_suscripcion',
         'suscripcion',
+        'ubicacion'
     ];
 
     protected $casts = [

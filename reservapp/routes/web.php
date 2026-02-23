@@ -41,12 +41,15 @@ Route::middleware(['mecanico'])->group(function () {
     Route::get('mi-taller', [TallerController::class, 'miTaller'])->name('mi-taller');
 });
 
-Route::middleware(['admin'])->group(function(){
+Route::middleware(['admin'])->group(function () {
     Route::get('/administracion-usuarios', [UsuarioController::class, 'index'])->name('admin.usuarios');
 });
 
 
 Route::get('crear-factura/{cita}', [CitaController::class, 'mostrarFactura'])->name('cita.factura');
+
+Route::post('descargar-factura-pdf/{cita}', [CitaController::class, 'descargarFactura'])->name('cita.descargarFactura');
+
 
 //acciones con las citas
 Route::put('/citas/{cita}/rechazar', [CitaController::class, 'rechazarCita'])->name('cita.rechazar');
@@ -54,4 +57,4 @@ Route::put('/citas/{cita}/aceptar', [CitaController::class, 'aceptarCita'])->nam
 Route::put('/citas/{cita}/proponer-fecha', [CitaController::class, 'proponerNuevaFecha'])->name('cita.proponer-fecha');
 Route::put('citas/{cita}/enviar', [CitaController::class, 'enviarFactura'])->name('cita.enviarFactura');
 
-Route::get("/buscador/{taller}",[TallerController::class, 'index'])->name('buscador');
+Route::get("/buscador/{taller}", [TallerController::class, 'index'])->name('buscador');

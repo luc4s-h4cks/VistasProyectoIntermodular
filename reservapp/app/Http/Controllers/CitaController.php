@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CitaController extends Controller
 {
@@ -149,7 +150,29 @@ class CitaController extends Controller
         $cita->total = $request->total;
         $cita->estado = Cita::ESTADO_ESPERANDO_PAGO;
         $cita->save();
+
         return redirect()->route('gestion-citas')->with('mensaje', 'Factura enciada');
     }
+
+    public function descargarFactura(Cita $cita, Request $request)
+    {
+        $items = $request->input('items', []);
+        $items = is_string($items) ? json_decode($items, true) : $items;
+
+        $subtotal = array_sum(array_map(fn($i) => $i['precio'] ?? 0, $items));
+        $iva = $subtotal * 0.21;
+        $total = $subtotal + $iva;
+
+        $pdf = Pdf::loadView('pdf.factura', [
+            'cita' => $cita,
+            'items' => $items,
+            'subtotal' => $subtotal,
+            'iva' => $iva,
+            'total' => $total,
+        ]);
+
+        return $pdf->download('factura_cita_' . $cita->dia->fecha.'-'. $cita->coche->matricula . '.pdf');
+    }
+
 
 }

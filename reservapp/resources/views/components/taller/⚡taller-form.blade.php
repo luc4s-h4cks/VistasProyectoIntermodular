@@ -20,6 +20,9 @@ new class extends Component {
     #[Validate('required|string')]
     public $descripcion;
 
+    #[Validate('required|string|max:255')]
+    public $ubicacion;
+
     #[Validate('required|string|max:50')]
     public $handle;
 
@@ -61,6 +64,7 @@ new class extends Component {
         $this->info_contacto = $taller->info_contacto ?? '';
         $this->telefono = $taller->telefono ?? '';
         $this->email = $taller->email ?? '';
+        $this->ubicacion = $taller->ubicacion ?? '';
     }
 
     public function updatedHandle($value)
@@ -86,7 +90,9 @@ new class extends Component {
                 'tipo_vehiculo' => $this->vehiculos,
                 'tipo_servicio' => $this->servicios,
                 'info_contacto' => $this->info_contacto,
+                'ubicacion' => $this->ubicacion,
                 'handle' => ['required', 'string', 'max:50', Rule::unique('taller', 'handle')->ignore($this->taller?->id_taller, 'id_taller')],
+
             ];
 
             if ($this->imagen_taller) {
@@ -106,8 +112,7 @@ new class extends Component {
                 $this->imagen_contacto->storeAs('imgTalleres', $nombreFoto, 'public');
                 $datos['img_sec'] = $nombreFoto;
             }
-
-            $usuario->taller()->updateOrCreate(['id_usuario' => $usuario->id], $datos);
+            $usuario->taller()->updateOrCreate(['id_usuario' => $usuario->id_usuario], $datos);
 
             session()->flash('message', 'Taller guardado correctamente');
         } catch (QueryException $e) {
@@ -152,6 +157,17 @@ new class extends Component {
             @if ($handle && !$errors->has('handle'))
                 <span class="text-green-500 text-sm">✓ Handle disponible</span>
             @endif
+        </div>
+
+        <!-- UBICACION DEL TALLER -->
+        <div>
+            <label class="block mb-2 text-lg font-medium text-gray-900">Ubicación del taller</label>
+            <input type="text" wire:model.blur.live='ubicacion'
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
+                placeholder="Escribe la ubicación del taller">
+            @error('ubicacion')
+                <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
 
         <!-- DESCRIPCIÓN -->

@@ -104,18 +104,29 @@
 
                 <div class="flex justify-end gap-4">
 
-                    <form action="{{ route('cita.enviarFactura', $cita->id_cita) }}" method="POST">
+                    <!-- BOTÓN SOLO PDF -->
+                    <form action="{{ route('cita.descargarFactura', $cita) }}" method="POST" target="_blank">
+                        @csrf
+                        <input type="hidden" name="items"
+                            x-model="JSON.stringify(items.filter(i => i.nombre && i.precio > 0))">
+                        <button type="submit" class="px-5 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                            Descargar PDF
+                        </button>
+                    </form>
+
+                    <!-- BOTÓN SOLO ENVIAR -->
+                    <form action="{{ route('cita.enviarFactura', $cita) }}" method="POST">
                         @csrf
                         @method('PUT')
 
-                        <input type="hidden" name="detalles" :value="JSON.stringify(items)">
-
+                        <input type="hidden" name="detalles"
+                            :value="JSON.stringify(items.filter(i => i.nombre && i.precio > 0))">
                         <input type="hidden" name="subtotal" :value="subtotal.toFixed(2)">
                         <input type="hidden" name="iva" :value="iva.toFixed(2)">
                         <input type="hidden" name="total" :value="total.toFixed(2)">
 
                         <button type="submit" class="px-5 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-                            Enviar factura
+                            Enviar Factura
                         </button>
                     </form>
 
