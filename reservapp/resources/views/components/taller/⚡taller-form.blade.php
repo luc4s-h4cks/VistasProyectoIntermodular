@@ -145,7 +145,7 @@ new class extends Component {
 
 ?>
 
-<div class="bg-white rounded-lg shadow-md p-8 space-y-8">
+<div class="bg-background rounded-lg shadow-md p-8 space-y-8">
 
     @if (session()->has('message'))
         <div class="bg-green-100 text-green-800 p-3 rounded">{{ session('message') }}</div>
@@ -155,73 +155,62 @@ new class extends Component {
 
         <!-- NOMBRE DEL TALLER -->
         <div>
-            <label class="block mb-2 text-lg font-medium text-gray-900">Nombre del taller</label>
+            <label class="block mb-2 text-lg font-medium text-text">Nombre del taller</label>
             <input type="text" wire:model.blur.live='nombre'
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
+                class="bg-secondary/5 border border-text/20 text-text text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-3"
                 placeholder="Escribe el nombre del taller">
-            @error('nombre')
-                <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            @error('nombre') <span class="text-accent text-sm">{{ $message }}</span> @enderror
         </div>
 
         <!-- HANDLE -->
         <div>
-            <label class="block mb-2 text-lg font-medium text-gray-900">Handle (URL)</label>
+            <label class="block mb-2 text-lg font-medium text-text">Handle (URL)</label>
             <div class="flex items-center gap-2">
-                <span class="text-gray-500 text-sm">talleres/</span>
+                <span class="text-text/50 text-sm">talleres/</span>
                 <input type="text" wire:model.blur.live='handle'
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
+                    class="bg-secondary/5 border border-text/20 text-text text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-3"
                     placeholder="mi-taller">
             </div>
-            @error('handle')
-                <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            @error('handle') <span class="text-accent text-sm">{{ $message }}</span> @enderror
             @if ($handle && !$errors->has('handle'))
                 <span class="text-green-500 text-sm">✓ Handle disponible</span>
             @endif
         </div>
 
-        <!-- UBICACION DEL TALLER -->
+        <!-- UBICACION -->
         <div>
-            <label class="block mb-2 text-lg font-medium text-gray-900">Ubicación del taller</label>
+            <label class="block mb-2 text-lg font-medium text-text">Ubicación del taller</label>
             <input type="text" wire:model.blur.live='ubicacion'
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
+                class="bg-secondary/5 border border-text/20 text-text text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-3"
                 placeholder="Escribe la ubicación del taller">
-            @error('ubicacion')
-                <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            @error('ubicacion') <span class="text-accent text-sm">{{ $message }}</span> @enderror
         </div>
 
         <!-- DESCRIPCIÓN -->
         <div>
-            <label class="block mb-2 text-lg font-medium text-gray-900">Datos sobre el taller</label>
+            <label class="block mb-2 text-lg font-medium text-text">Datos sobre el taller</label>
             <textarea wire:model.blur.live='descripcion' rows="4"
-                class="block w-full p-3 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                class="block w-full p-3 text-sm text-text bg-secondary/5 rounded-lg border border-text/20 focus:ring-primary focus:border-primary"
                 placeholder="Descripción, ubicación, horarios..."></textarea>
-            @error('descripcion')
-                <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            @error('descripcion') <span class="text-accent text-sm">{{ $message }}</span> @enderror
         </div>
 
         <!-- IMAGEN DEL TALLER -->
         <div>
-            <label class="block mb-2 text-lg font-medium text-gray-900">Imagen del taller</label>
-            <label
-                class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 relative overflow-hidden transition">
+            <label class="block mb-2 text-lg font-medium text-text">Imagen del taller</label>
+            <label class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-secondary/30 rounded-xl cursor-pointer bg-secondary/5 hover:bg-secondary/10 relative overflow-hidden transition">
                 @if ($imagen_taller)
-                    <img src="{{ $imagen_taller->temporaryUrl() }}"
-                        class="absolute inset-0 w-full h-full object-cover rounded-xl">
+                    <img src="{{ $imagen_taller->temporaryUrl() }}" class="absolute inset-0 w-full h-full object-cover rounded-xl">
                     <div class="absolute inset-0 bg-black/30 flex items-center justify-center rounded-xl">
                         <span class="text-white text-sm font-medium">Cambiar imagen</span>
                     </div>
                 @elseif($taller && $taller->img_perfil)
-                    <img src="{{ asset('storage/imgTalleres/' . $taller->img_perfil) }}"
-                        class="absolute inset-0 w-full h-full object-cover rounded-xl">
+                    <img src="{{ asset('storage/imgTalleres/' . $taller->img_perfil) }}" class="absolute inset-0 w-full h-full object-cover rounded-xl">
                     <div class="absolute inset-0 bg-black/30 flex items-center justify-center rounded-xl">
                         <span class="text-white text-sm font-medium">Cambiar imagen</span>
                     </div>
                 @else
-                    <div class="flex flex-col items-center justify-center text-gray-400">
+                    <div class="flex flex-col items-center justify-center text-text/40">
                         <svg class="w-10 h-10 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -231,48 +220,40 @@ new class extends Component {
                 @endif
                 <input type="file" wire:model.live="imagen_taller" class="hidden">
             </label>
-            @error('imagen_taller')
-                <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            @error('imagen_taller') <span class="text-accent text-sm">{{ $message }}</span> @enderror
         </div>
 
         <!-- ESPECIALIDADES -->
         <div>
-            <h3 class="text-xl font-semibold mb-4">Especialidades</h3>
+            <h3 class="text-xl font-semibold mb-4 text-text">Especialidades</h3>
             <div class="grid md:grid-cols-2 gap-8">
 
-                <!-- SERVICIOS -->
                 <div>
-                    <h4 class="font-medium mb-3">Servicios</h4>
+                    <h4 class="font-medium mb-3 text-text">Servicios</h4>
                     <div class="space-y-2">
                         @foreach (['Frenos y suspensión', 'Mantenimiento', 'Diagnosis', 'Reparación de motor', 'Electricidad automotriz'] as $servicio)
                             <div class="flex items-center">
                                 <input type="checkbox" wire:model.blur.live='servicios' value="{{ $servicio }}"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
-                                <label class="ms-2 text-sm text-gray-700">{{ $servicio }}</label>
+                                    class="w-4 h-4 text-primary bg-secondary/5 border-text/20 rounded focus:ring-primary">
+                                <label class="ms-2 text-sm text-text/70">{{ $servicio }}</label>
                             </div>
                         @endforeach
                     </div>
-                    @error('servicios')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
+                    @error('servicios') <span class="text-accent text-sm">{{ $message }}</span> @enderror
                 </div>
 
-                <!-- VEHÍCULOS -->
                 <div>
-                    <h4 class="font-medium mb-3">Tipos de vehículo</h4>
+                    <h4 class="font-medium mb-3 text-text">Tipos de vehículo</h4>
                     <div class="space-y-2">
                         @foreach (['Coches', 'Motos', 'Camiones'] as $tipo)
                             <div class="flex items-center">
                                 <input type="checkbox" wire:model.blur.live='vehiculos' value="{{ $tipo }}"
-                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
-                                <label class="ms-2 text-sm text-gray-700">{{ $tipo }}</label>
+                                    class="w-4 h-4 text-primary bg-secondary/5 border-text/20 rounded focus:ring-primary">
+                                <label class="ms-2 text-sm text-text/70">{{ $tipo }}</label>
                             </div>
                         @endforeach
                     </div>
-                    @error('vehiculos')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
+                    @error('vehiculos') <span class="text-accent text-sm">{{ $message }}</span> @enderror
                 </div>
 
             </div>
@@ -280,28 +261,25 @@ new class extends Component {
 
         <!-- CONTACTO -->
         <div>
-            <h3 class="text-xl font-semibold mb-4">Contacto</h3>
+            <h3 class="text-xl font-semibold mb-4 text-text">Contacto</h3>
             <div class="space-y-6">
 
                 <!-- IMAGEN CONTACTO -->
                 <div>
-                    <label class="block mb-2 text-lg font-medium text-gray-900">Imagen de contacto</label>
-                    <label
-                        class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 relative overflow-hidden transition">
+                    <label class="block mb-2 text-lg font-medium text-text">Imagen de contacto</label>
+                    <label class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-secondary/30 rounded-xl cursor-pointer bg-secondary/5 hover:bg-secondary/10 relative overflow-hidden transition">
                         @if ($imagen_contacto)
-                            <img src="{{ $imagen_contacto->temporaryUrl() }}"
-                                class="absolute inset-0 w-full h-full object-cover rounded-xl">
+                            <img src="{{ $imagen_contacto->temporaryUrl() }}" class="absolute inset-0 w-full h-full object-cover rounded-xl">
                             <div class="absolute inset-0 bg-black/30 flex items-center justify-center rounded-xl">
                                 <span class="text-white text-sm font-medium">Cambiar imagen</span>
                             </div>
                         @elseif($taller && $taller->img_sec)
-                            <img src="{{ asset('storage/imgTalleres/' . $taller->img_sec) }}"
-                                class="absolute inset-0 w-full h-full object-cover rounded-xl">
+                            <img src="{{ asset('storage/imgTalleres/' . $taller->img_sec) }}" class="absolute inset-0 w-full h-full object-cover rounded-xl">
                             <div class="absolute inset-0 bg-black/30 flex items-center justify-center rounded-xl">
                                 <span class="text-white text-sm font-medium">Cambiar imagen</span>
                             </div>
                         @else
-                            <div class="flex flex-col items-center justify-center text-gray-400">
+                            <div class="flex flex-col items-center justify-center text-text/40">
                                 <svg class="w-10 h-10 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                         d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -311,42 +289,34 @@ new class extends Component {
                         @endif
                         <input type="file" wire:model.live="imagen_contacto" class="hidden">
                     </label>
-                    @error('imagen_contacto')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
+                    @error('imagen_contacto') <span class="text-accent text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <!-- Info contacto -->
                 <div>
-                    <label class="block mb-2 text-lg font-medium text-gray-900">Motivos para llamar</label>
+                    <label class="block mb-2 text-lg font-medium text-text">Motivos para llamar</label>
                     <textarea wire:model.blur.live='info_contacto' rows="3"
-                        class="block w-full p-3 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                        class="block w-full p-3 text-sm text-text bg-secondary/5 rounded-lg border border-text/20 focus:ring-primary focus:border-primary"
                         placeholder="Ej: presupuestos, urgencias, citas..."></textarea>
-                    @error('info_contacto')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
+                    @error('info_contacto') <span class="text-accent text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <!-- Teléfono -->
                 <div>
-                    <label class="block mb-2 text-lg font-medium text-gray-900">Teléfono</label>
+                    <label class="block mb-2 text-lg font-medium text-text">Teléfono</label>
                     <input type="text" wire:model.blur.live='telefono'
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
+                        class="bg-secondary/5 border border-text/20 text-text text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-3"
                         placeholder="123456789">
-                    @error('telefono')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
+                    @error('telefono') <span class="text-accent text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <!-- Email -->
                 <div>
-                    <label class="block mb-2 text-lg font-medium text-gray-900">Email</label>
+                    <label class="block mb-2 text-lg font-medium text-text">Email</label>
                     <input type="text" wire:model.blur.live='email'
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
+                        class="bg-secondary/5 border border-text/20 text-text text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-3"
                         placeholder="ejemplo@correo.com">
-                    @error('email')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
+                    @error('email') <span class="text-accent text-sm">{{ $message }}</span> @enderror
                 </div>
 
             </div>
@@ -355,7 +325,7 @@ new class extends Component {
         <!-- BOTÓN -->
         <div class="text-center pt-6">
             <button type="submit"
-                class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-lg px-8 py-3 focus:outline-none">
+                class="text-white bg-primary hover:opacity-90 focus:ring-4 focus:ring-primary/30 font-medium rounded-lg text-lg px-8 py-3 focus:outline-none transition">
                 Actualizar
             </button>
         </div>
