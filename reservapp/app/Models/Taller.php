@@ -69,4 +69,9 @@ class Taller extends Model
         return $this->belongsTo(Usuario::class, 'id_usuario', 'id_usuario');
     }
 
+    public function tipoSuscripcion()
+    {
+        return $this->belongsTo(TipoSuscripcion::class, 'suscripcion', 'id_estado');
+    }
+
 }

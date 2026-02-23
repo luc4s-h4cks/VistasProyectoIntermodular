@@ -105,25 +105,22 @@ new class extends Component
 
             {{-- Modal --}}
             <div class="relative z-10 w-full max-w-lg rounded-xl p-6 shadow-2xl
-                        bg-background text-text
-                        dark:text-[#f5f5f5]">
+                        bg-background text-text border border-secondary/20 focus:outline-none focus:ring-0 peer uppercase
+                text-text border-text/20 focus:border-primary">
 
                 {{-- Header --}}
                 <div class="mb-6 flex items-start justify-between border-b pb-4
                             border-secondary/30 dark:border-secondary/20">
                     <div>
-                        <h3 class="text-lg font-semibold text-primary dark:text-[#1a73a8]">
+                        <h3 class="text-lg font-semibold text-primary">
                             Nuevo Coche
                         </h3>
-                        <p class="text-sm text-text/60 dark:text-[#f5f5f5]/60">
+                        <p class="text-sm text-text/60">
                             Rellena los datos del vehículo.
                         </p>
                     </div>
-                    <button
-                        wire:click="cerrarModal"
-                        class="rounded-lg p-1.5 transition
-                            text-text/40 hover:bg-secondary/10 hover:text-accent
-                            dark:text-[#f5f5f5]/40 dark:hover:bg-secondary/10 dark:hover:text-accent"
+                    <button wire:click="cerrarModal"
+                        class="rounded-lg p-1.5 transition text-text/40 hover:bg-secondary/10 hover:text-accent"
                     >
                         <flux:icon.x-mark class="size-5" />
                     </button>
@@ -135,16 +132,12 @@ new class extends Component
                     {{-- Matrícula --}}
                     <div class="relative z-0 w-full group">
                         <input wire:model="matricula" type="text" id="matricula" placeholder=" "
-                            class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase
-                                    text-text border-text/20 focus:border-primary
-                                    dark:text-[#f5f5f5] dark:border-[#f5f5f5]/20 dark:focus:border-primary"
+                            class="block py-2.5 px-0 w-full text-sm border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase 
+                                text-text border-text/20 focus:border-primary"
                         />
                         <label for="matricula"
-                            class="peer-focus:font-medium absolute text-sm text-text/50 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-                                   peer-focus:text-primary
-                                   peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
-                                   peer-focus:scale-75 peer-focus:-translate-y-6
-                                   dark:text-[#f5f5f5]/50 dark:peer-focus:text-primary">
+                            class="peer-focus:font-medium absolute text-sm text-text/50 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] 
+                            peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                             Matrícula
                         </label>
                         @error('matricula') <p class="mt-1 text-xs text-accent">{{ $message }}</p> @enderror
@@ -154,32 +147,24 @@ new class extends Component
                     <div class="grid grid-cols-2 gap-4">
                         <div class="relative z-0 w-full group">
                             <input wire:model="marca" type="text" id="marca" placeholder=" "
-                                class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase
-                                    text-text border-text/20 focus:border-primary
-                                    dark:text-[#f5f5f5] dark:border-[#f5f5f5]/20 dark:focus:border-primary"
+                                class="block py-2.5 px-0 w-full text-sm border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase 
+                                    text-text border-text/20 focus:border-primary"
                             />
                             <label for="marca"
-                                class="peer-focus:font-medium absolute text-sm text-text/50 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-                                       peer-focus:text-primary
-                                       peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
-                                       peer-focus:scale-75 peer-focus:-translate-y-6
-                                       dark:text-[#f5f5f5]/50 dark:peer-focus:text-primary">
+                                class="peer-focus:font-medium absolute text-sm text-text/50 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] 
+                                peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                                 Marca
                             </label>
                             @error('marca') <p class="mt-1 text-xs text-accent">{{ $message }}</p> @enderror
                         </div>
                         <div class="relative z-0 w-full group">
                             <input wire:model="modelo" type="text" id="modelo" placeholder=" "
-                                class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer
-                                        text-text border-text/20 focus:border-primary
-                                        dark:text-[#f5f5f5] dark:border-[#f5f5f5]/20 dark:focus:border-primary"
+                                class="block py-2.5 px-0 w-full text-sm border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase 
+                                text-text border-text/20 focus:border-primary"
                             />
                             <label for="modelo"
-                                class="peer-focus:font-medium absolute text-sm text-text/50 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-                                       peer-focus:text-primary
-                                       peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
-                                       peer-focus:scale-75 peer-focus:-translate-y-6
-                                       dark:text-[#f5f5f5]/50 dark:peer-focus:text-primary">
+                                class="peer-focus:font-medium absolute text-sm text-text/50 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] 
+                                peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                                 Modelo
                             </label>
                             @error('modelo') <p class="mt-1 text-xs text-accent">{{ $message }}</p> @enderror
@@ -189,16 +174,12 @@ new class extends Component
                     {{-- Número de bastidor --}}
                     <div class="relative z-0 w-full group">
                         <input wire:model="n_bastidor" type="text" id="n_bastidor" placeholder=" "
-                            class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase
-                                    text-text border-text/20 focus:border-primary
-                                    dark:text-[#f5f5f5] dark:border-[#f5f5f5]/20 dark:focus:border-primary"
+                            class="block py-2.5 px-0 w-full text-sm border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer uppercase 
+                                text-text border-text/20 focus:border-primary"
                         />
                         <label for="n_bastidor"
-                            class="peer-focus:font-medium absolute text-sm text-text/50 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-                                   peer-focus:text-primary
-                                   peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
-                                   peer-focus:scale-75 peer-focus:-translate-y-6
-                                   dark:text-[#f5f5f5]/50 dark:peer-focus:text-primary">
+                            class="peer-focus:font-medium absolute text-sm text-text/50 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] 
+                                peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                             Número de bastidor
                         </label>
                         @error('n_bastidor') <p class="mt-1 text-xs text-accent">{{ $message }}</p> @enderror
@@ -210,9 +191,9 @@ new class extends Component
                             Tipo de propulsión
                         </label>
                         <select wire:model="tipo_combustible" id="tipo_combustible"
-                            class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0
-                                    text-text border-text/20 focus:border-primary
-                                    dark:text-[#f5f5f5] dark:border-[#f5f5f5]/20 dark:focus:border-primary">
+                            class="block py-2.5 px-0 w-full text-sm border-0 border-b-2 bg-background
+                                    appearance-none focus:outline-none focus:ring-0 text-text border-text/20 
+                                    focus:border-primary">
                             <option value="" disabled>Selecciona el tipo de propulsión</option>
                             @foreach($tiposPropulsion as $tipo)
                                 <option value="{{ $tipo->tipo_combustible }}">{{ $tipo->nombre }}</option>

@@ -14,7 +14,7 @@
     class="fixed top-16 left-0 z-40 w-64 h-[calc(100vh-4rem)] transition-transform -translate-x-full sm:translate-x-0"
     aria-label="Sidebar">
 
-    <div class="h-full px-3 py-4 overflow-y-auto bg-white shadow-lg">
+    <div class="h-full px-3 py-4 overflow-y-auto bg-background text-text shadow-lg">
 
         <h2 class="text-lg font-bold mb-6 px-2">Menú</h2>
 
@@ -22,8 +22,8 @@
 
             <!-- Suscripción -->
             <li>
-                <a href="{{ route('subcripcion') }}"
-                    class="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 transition group">
+                <a href="{{ route('suscripcion') }}"
+                    class="flex items-center p-2 rounded-lg hover:bg-gray-100 transition group">
                     <span class="text-lg">💳</span>
                     <span class="ms-3">Suscripción</span>
                 </a>
@@ -32,7 +32,7 @@
             <!-- Página Taller -->
             <li>
                 <a href="{{ route('mi-taller') }}"
-                    class="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 transition group">
+                    class="flex items-center p-2 rounded-lg hover:bg-gray-100 transition group">
                     <span class="text-lg">🛠</span>
                     <span class="ms-3">Página taller</span>
                 </a>
@@ -41,7 +41,7 @@
             <!-- Gestión Citas -->
             <li>
                 <a href="{{ route('gestion-citas') }}"
-                    class="flex items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 transition group">
+                    class="flex items-center p-2 rounded-lg hover:bg-gray-100 transition group">
                     <span class="text-lg">📅</span>
                     <span class="ms-3">Gestión citas</span>
                 </a>

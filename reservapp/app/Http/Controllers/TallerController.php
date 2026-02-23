@@ -17,10 +17,10 @@ class TallerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($handle)
+    public function index()
     {
-        $taller = Taller::where('handle', "like", $handle)->first();
-        return view('taller.index', compact('taller'));
+        $talleres = Taller::all();
+        return view('admin.crud-taller', compact('talleres'));
     }
 
     /**
@@ -42,9 +42,10 @@ class TallerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Taller $taller)
+    public function show($handle)
     {
-        //
+        $taller = Taller::where('handle', "like", $handle)->first();
+        return view('taller.index', compact('taller'));
     }
 
     /**

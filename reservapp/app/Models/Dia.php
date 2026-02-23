@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dia extends Model
 {
+
+    const ESTADO_LIBRE = 0;
+    const ESTADO_OCUPADO = 1;
+
     /** @use HasFactory<\Database\Factories\DiaFactory> */
     use HasFactory;
     protected $table = 'dia';

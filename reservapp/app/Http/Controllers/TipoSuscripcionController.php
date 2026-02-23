@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TipoSuscripcion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class TipoSuscripcionController extends Controller
 {
@@ -13,7 +14,45 @@ class TipoSuscripcionController extends Controller
      */
     public function index()
     {
-        //
+        $taller = auth()->user()->taller;
+        $planes = TipoSuscripcion::all();
+
+        $suscripcionActiva = false;
+        $diasRestantes = 0;
+        $planActual = null;
+
+        if ($taller->suscripcion && $taller->fecha_fin_suscripcion) {
+            $fechaFin = Carbon::parse($taller->fecha_fin_suscripcion);
+
+            if ($fechaFin->isFuture()) {
+                $suscripcionActiva = true;
+                $diasRestantes = (int) Carbon::now()->diffInDays($fechaFin);
+                $planActual = TipoSuscripcion::where('id_estado', $taller->suscripcion)->first();
+            }
+        }
+
+        return view('taller.subcripcion', compact('taller', 'planes', 'suscripcionActiva', 'diasRestantes', 'planActual'));
+    }
+
+    public function contratar(Request $request)
+    {
+        $request->validate([
+            'id_plan' => 'required|exists:tipo_suscripcion,id_estado',
+        ]);
+
+        $taller = auth()->user()->taller;
+        $plan = TipoSuscripcion::findOrFail($request->id_plan);
+
+        $inicio = ($taller->fecha_fin_suscripcion && Carbon::parse($taller->fecha_fin_suscripcion)->isFuture())
+            ? Carbon::parse($taller->fecha_fin_suscripcion)
+            : Carbon::now();
+
+        $taller->update([
+            'suscripcion' => $request->id_plan,
+            'fecha_fin_suscripcion' => Carbon::now()->addMonth(),
+        ]);
+
+        return redirect()->route('suscripcion')->with('success', '¡Suscripción activada correctamente!');
     }
 
     /**

@@ -37,11 +37,13 @@
 
 @layer theme {
     .dark {
-        --color-text: #f5f5f5;
-        --color-background: #27272a;
-        --color-accent: #ff8c5a;
+        --color-text: #e8eaf0;
+        --color-background: #1a1d23;
+        --color-primary: #4da6d9;       /* más claro para contrastar sobre fondo oscuro */
+        --color-secondary: #ffc233;     /* amarillo ligeramente más brillante */
+        --color-accent: #ff8c5a;        /* naranja más suave */
         --color-accent-content: #ff8c5a;
-        --color-accent-foreground: var(--color-neutral-800);
+        --color-accent-foreground: var(--color-zinc-900);
     }
 }
 
@@ -91,16 +93,19 @@ select:focus[data-flux-control] {
 }
 .btn-accent:hover { opacity: 0.9; }
 
+
 /* Navbar personalizado */
-header {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.header {
+    background-color: #ffffff !important;
+    border-bottom: 3px solid var(--color-primary) !important;
+    color: var(--color-text);
 }
 
-header .bg-white {
-    background-color: var(--color-background) !important;
-    color: var(--color-text);
-    font-weight: 600;
+.dark .header {
+    background-color: var(--color-zinc-900) !important;
+    border-bottom: 3px solid var(--color-accent) !important;
 }
+
 
 /* Sidebar personalizado */
 aside {

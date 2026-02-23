@@ -46,45 +46,33 @@ new class extends Component
 
     {{-- Modal --}}
     <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div class="w-full max-w-lg rounded-xl shadow-2xl
-                    bg-white text-gray-900
-                    dark:bg-gray-900 dark:text-gray-100">
+        <div class="w-full max-w-lg rounded-xl shadow-2xl bg-background text-text">
             <form>
                 <div class="p-6 space-y-6">
 
                     {{-- Header --}}
-                    <div class="flex items-center justify-between border-b pb-4
-                                border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center justify-between border-b pb-4 border-secondary/30">
                         <flux:heading size="lg">
                             {{ __('Eliminar coche') }}
                         </flux:heading>
-                        <button
-                            type="button"
-                            wire:click="cerrarModal"
-                            class="rounded-lg p-1.5 transition
-                                   text-gray-400 hover:bg-gray-100 hover:text-gray-600
-                                   dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-300"
-                        >
+                        <button type="button" wire:click="cerrarModal"
+                            class="rounded-lg p-1.5 transition text-text/40 hover:bg-secondary/10 hover:text-accent">
                             <flux:icon.x-mark class="size-5" />
                         </button>
                     </div>
 
                     {{-- Body --}}
-                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                    <p class="text-sm text-text/60">
                         {{ __('¿Estás seguro de que deseas eliminar este coche? Esta acción no se puede deshacer.') }}
                     </p>
 
                     {{-- Footer --}}
-                    <div class="border-t pt-4 flex justify-end gap-3
-                                border-gray-200 dark:border-gray-700">
+                    <div class="border-t pt-4 flex justify-end gap-3 border-secondary/20">
                         <flux:button type="button" wire:click="cerrarModal">
                             {{ __('Cancelar') }}
                         </flux:button>
-                        <flux:button
-                            type="button"
-                            wire:click="deleteCoche"
-                            class="!bg-red-600 hover:!bg-red-700 !text-white !border-red-600"
-                        >
+                        <flux:button type="button" wire:click="deleteCoche"
+                            class="!bg-red-600 hover:!bg-red-700 !text-white !border-red-600">
                             <span wire:loading.remove wire:target="deleteCoche">{{ __('Eliminar') }}</span>
                             <span wire:loading wire:target="deleteCoche">{{ __('Eliminando…') }}</span>
                         </flux:button>

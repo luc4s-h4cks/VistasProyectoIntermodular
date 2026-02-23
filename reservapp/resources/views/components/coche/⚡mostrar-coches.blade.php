@@ -37,12 +37,12 @@ new class extends Component
 
     {{-- Lista de coches --}}
     @forelse($miscoches as $coche)
-        <div class="flex items-center gap-4 rounded-lg border p-4">
+        <div class="flex items-center gap-4 rounded-lg border border-secondary/20 p-4">
             <div>
-                <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                <h3 class="text-lg font-medium text-text">
                     {{ $coche->marca }} {{ $coche->modelo }}
                 </h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400">
+                <p class="text-sm text-text/60">
                     {{ $coche->matricula }}
                 </p>
             </div>
@@ -54,12 +54,9 @@ new class extends Component
             </div>
         </div>
     @empty
-        <div class="rounded-lg border border-dashed p-8 text-center text-sm text-gray-400">
+        <div class="rounded-lg border border-dashed border-secondary/30 p-8 text-center text-sm text-text/40">
             No tienes vehículos registrados aún.
         </div>
     @endforelse
-
-    {{-- Paginación (activar cuando uses paginate()) --}}
-    {{-- <div class="mt-6">{{ $miscoches->links() }}</div> --}}
 
 </div>

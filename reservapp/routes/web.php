@@ -32,8 +32,10 @@ Route::resource('usuario', UsuarioController::class);
 
 
 Route::get('subcripcion', [TallerController::class, 'tallerSubcripcion'])->name('subcripcion');
+Route::get('/suscripcion', [TipoSuscripcionController::class, 'index'])->name('suscripcion');
+Route::post('/suscripcion/contratar', [TipoSuscripcionController::class, 'contratar'])->name('suscripcion.contratar');
 
-Route::middleware(['mecanico'])->group(function () {
+Route::middleware(['mecanico', 'verified'])->group(function () {
     Route::post('/mi-taller', [TallerController::class, 'guardar'])->name('taller.guardar');
     Route::get('/citas/por-fecha', [CitaController::class, 'getCitasPorFecha'])->name('citas.por-fecha');
     Route::resource('taller', TallerController::class);
@@ -44,6 +46,7 @@ Route::middleware(['mecanico'])->group(function () {
 Route::middleware(['admin'])->group(function () {
     Route::get('/administracion-usuarios', [UsuarioController::class, 'index'])->name('admin.usuarios');
     Route::get('/administracion-coches', [CocheController::class, 'index'])->name('admin.coches');
+    Route::get('/administracion-taller', [TallerController::class, 'index'])->name('admin.taller');
 });
 
 
@@ -58,4 +61,4 @@ Route::put('/citas/{cita}/aceptar', [CitaController::class, 'aceptarCita'])->nam
 Route::put('/citas/{cita}/proponer-fecha', [CitaController::class, 'proponerNuevaFecha'])->name('cita.proponer-fecha');
 Route::put('citas/{cita}/enviar', [CitaController::class, 'enviarFactura'])->name('cita.enviarFactura');
 
-Route::get("/buscador/{taller}", [TallerController::class, 'index'])->name('buscador');
+Route::get("/buscador/{taller}", [TallerController::class, 'show'])->name('buscador');
