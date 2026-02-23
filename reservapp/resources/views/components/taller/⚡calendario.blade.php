@@ -1,3 +1,36 @@
+<?php
+
+use Livewire\Component;
+use App\Models\Cita;
+use App\Models\Taller;
+new class extends Component {
+    public $cars = [];
+    public $tallerId;
+    public $cocheId = '';
+    public $tramoHorario = '';
+    public $motivo = '';
+    public $fecha = '';
+
+    public function mount(Taller $taller)
+    {
+        $this->tallerId = $taller->id_taller;
+        $this->cars = auth()->user()->coches()->get();
+    }
+    public function enviar(){
+        $cita = new Cita();
+        $cita->id_taller = $this->tallerId;
+        $cita->id_coche = $this->cocheId;
+        $cita->id_usuario = auth()->id();
+        $cita->fecha = $this->fecha;
+        $cita->tramo_horario = $this->tramoHorario;
+        $cita->motivo = $this->motivo;
+        $cita->save();
+    }
+};
+?>
+
+
+<div>
 <div class="bg-background dark:bg-zinc-800 rounded-2xl shadow-md p-6">
     <h2 class="text-xl font-semibold text-text dark:text-zinc-100 border-b-2 border-secondary pb-2 mb-4">
         Calendario de citas
@@ -42,14 +75,17 @@
         <form id="formPedirCita" class="space-y-4">
             <div>
                 <flux:label>Vehículo</flux:label>
-                <flux:select>
+                <flux:select wire:model="cocheId">
                     <option value="">Selecciona tu vehículo</option>
+                    @foreach($cars as $car)
+                        <option value="{{ $car->id_coche }}">{{ $car->marca }} {{ $car->modelo }}</option>
+                    @endforeach
                 </flux:select>
             </div>
 
             <div>
                 <flux:label>Tramo horario</flux:label>
-                <flux:select>
+                <flux:select wire:model="tramoHorario">
                     <option value="">Selecciona un tramo</option>
                     <option value="manana">Mañana</option>
                     <option value="tarde">Tarde</option>
@@ -58,11 +94,11 @@
 
             <div>
                 <flux:label>Motivo de la cita</flux:label>
-                <flux:textarea placeholder="Describe el motivo de tu cita..." rows="3" />
+                <flux:textarea wire:model="motivo" placeholder="Describe el motivo de tu cita..." rows="3" />
             </div>
 
             <div class="text-center pt-2">
-                <flux:button type="submit" variant="primary" class="w-full">
+                <flux:button type="submit" variant="primary" class="w-full" wire:click="enviar">
                     Solicitar cita
                 </flux:button>
             </div>
@@ -175,3 +211,4 @@
     // Inicializar
     generarCalendario(mesActual, anioActual);
 </script>
+</div>

@@ -64,7 +64,7 @@
         </div>
 
         {{-- Sección 2: Calendario --}}
-        <x-taller.calendario />
+        <livewire:taller.calendario :taller="$taller" />
 
         {{-- Sección 3: Contacto --}}
         <div class="bg-background dark:bg-zinc-800 rounded-2xl shadow-md p-6">
