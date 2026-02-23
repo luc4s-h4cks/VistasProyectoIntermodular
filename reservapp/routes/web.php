@@ -32,6 +32,8 @@ Route::resource('usuario', UsuarioController::class);
 
 
 Route::get('subcripcion', [TallerController::class, 'tallerSubcripcion'])->name('subcripcion');
+Route::get('/suscripcion', [TipoSuscripcionController::class, 'index'])->name('suscripcion');
+Route::post('/suscripcion/contratar', [TipoSuscripcionController::class, 'contratar'])->name('suscripcion.contratar');
 
 Route::middleware(['mecanico', 'verified'])->group(function () {
     Route::post('/mi-taller', [TallerController::class, 'guardar'])->name('taller.guardar');
