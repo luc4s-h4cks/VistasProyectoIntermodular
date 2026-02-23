@@ -11,11 +11,7 @@ new class extends Component {
     public $citas = [];
     public $estadoDia = Dia::ESTADO_LIBRE;
 
-    protected $queryString = [
-        'fechaSeleccionada' => ['except' => ''],
-    ];
-
-    #[On('abrirModalDia')]
+    #[On('abrir-modal-dia')]
     public function abrirModal($fecha)
     {
         $this->fechaSeleccionada = $fecha;
@@ -62,16 +58,13 @@ new class extends Component {
         $this->abrirModal($this->fechaSeleccionada);
     }
 
-    public function mount()
-    {
-        if ($this->fechaSeleccionada) {
-            $this->abrirModal($this->fechaSeleccionada);
-        }
-    }
+    public function mount() {}
 };
 ?>
 
-<div>
+<div x-init="window.addEventListener('abrir-modal-dia', (e) => {
+    $wire.abrirModal(e.detail.fecha)
+})">
     @if ($modalAbierto)
         <div class="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center z-50">
             <div class="bg-white rounded-xl shadow-xl w-[600px] max-h-[90vh] flex flex-col p-6 relative">
