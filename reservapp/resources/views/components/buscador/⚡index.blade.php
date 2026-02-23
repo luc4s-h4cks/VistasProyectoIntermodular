@@ -2,34 +2,33 @@
 
 use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Computed;
+use Livewire\WithPagination;
 use App\Models\Taller;
 
 new class extends Component
 {
-    public $talleres = [];
+    use WithPagination;
+
     public $search = '';
     public $filtroServicios = [];
     public $filtroVehiculos = [];
 
-    public function mount()
-    {
-        $this->talleres = Taller::all();
-    }
-
     public function updatedSearch()
     {
-        $this->aplicarFiltros();
+        $this->resetPage();
     }
-#[On('filtros-actualizados')]
 
+    #[On('filtros-actualizados')]
     public function recibirFiltros(array $servicios, array $vehiculos)
     {
         $this->filtroServicios = $servicios;
         $this->filtroVehiculos = $vehiculos;
-        $this->aplicarFiltros();
+        $this->resetPage();
     }
 
-    private function aplicarFiltros()
+    #[Computed]
+    public function talleres()
     {
         $query = Taller::query();
 
@@ -59,7 +58,7 @@ new class extends Component
             });
         }
 
-        $this->talleres = $query->get();
+        return $query->paginate(10);
     }
 
 };
@@ -69,7 +68,7 @@ new class extends Component
     <h1> Buscador </h1>
     <br/>
     <flux:input icon="magnifying-glass" placeholder="Buscar talleres..." clearable
-    wire:model.live="search"
+    wire:model.live.debounce.400ms="search"
     />
 
     <div class="mt-6 flex gap-6">
@@ -81,7 +80,7 @@ new class extends Component
 
         {{-- Lista de talleres --}}
         <div class="flex-1 flex flex-col gap-4">
-            @foreach ($talleres as $taller)
+            @foreach ($this->talleres as $taller)
                 <a href ="{{ route("buscador",$taller->handle)}}">
                 <div class="w-full flex gap-4 bg-background border-l-4 border-primary rounded-xl shadow-sm p-4">
 
@@ -119,6 +118,7 @@ new class extends Component
                 </div>
                 </a>
             @endforeach
+            {{ $this->talleres->links() }}
         </div>
 
     </div>
