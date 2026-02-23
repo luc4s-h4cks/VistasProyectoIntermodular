@@ -50,10 +50,6 @@ class Usuario extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    public function setPassAttribute($value)
-    {
-        $this->attributes['pass'] = Hash::make($value);
-    }
 
     /**
      * 🔑 Decirle a Laravel qué campo es la contraseña
