@@ -40,7 +40,7 @@ class CitaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
