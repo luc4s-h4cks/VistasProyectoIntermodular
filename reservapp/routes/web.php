@@ -43,6 +43,7 @@ Route::middleware(['mecanico', 'verified'])->group(function () {
 
 Route::middleware(['admin'])->group(function () {
     Route::get('/administracion-usuarios', [UsuarioController::class, 'index'])->name('admin.usuarios');
+    Route::get('/administracion-coches', [CocheController::class, 'index'])->name('admin.coches');
 });
 
 

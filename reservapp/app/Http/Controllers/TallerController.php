@@ -77,7 +77,12 @@ class TallerController extends Controller
 
         $taller = $usu->taller;
 
-        $resumenCitas = Cita::selectRaw('fecha, COUNT(*) as total')->groupBy('fecha')->get();
+        // ----- revisar revision ---
+        //$resumenCitas = Cita::selectRaw('fecha, COUNT(*) as total')->groupBy('fecha')->get();
+        $resumenCitas = Cita::where('id_taller', $taller?->id_taller)
+            ->selectRaw('fecha, COUNT(*) as total')
+            ->groupBy('fecha')
+            ->get();
 
         $citas = [];
 
@@ -158,7 +163,7 @@ class TallerController extends Controller
 
             return redirect()->route('mi-taller')->with('msg', 'Taller guardado correctamente');
         } catch (QueryException $e) {
-            return redirect()->route('mi-taller')->with('msg', 'A ocurrido un error al intentar crear o actulizar su taller');
+            return redirect()->route('mi-taller')->with('msg', 'Ha ocurrido un error al intentar crear o actulizar su taller');
         }
 
     }

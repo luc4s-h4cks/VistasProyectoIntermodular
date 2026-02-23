@@ -7,6 +7,8 @@ use Livewire\Attributes\Validate;
 use Illuminate\Support\Str;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 new class extends Component {
     use WithFileUploads;
@@ -17,7 +19,7 @@ new class extends Component {
     #[Validate('required|string|max:255')]
     public $nombre;
 
-    #[Validate('required|string')]
+    #[Validate('required|string|max:255')]
     public $descripcion;
 
     #[Validate('required|string|max:255')]
@@ -43,14 +45,35 @@ new class extends Component {
     public $vehiculos = [];
 
     // Contacto
-    #[Validate('nullable|string')]
+    #[Validate('nullable|string|max:255')]
     public $info_contacto;
 
-    #[Validate('nullable|string|max:20')]
+    #[Validate('nullable|string|max:12')]
     public $telefono;
 
-    #[Validate('nullable|email|max:255')]
+    #[Validate('nullable|email|max:50')]
     public $email;
+
+    protected array $messages = [
+        'nombre.required' => 'El nombre del taller es obligatorio.',
+        'nombre.max' => 'El nombre del taller no puede superar los 255 caracteres.',
+        'descripcion.required' => 'La descripción del taller es obligatoria.',
+        'descripcion.max' => 'La descripción del taller no puede superar los 255 caracteres.',
+        'ubicacion.required' => 'La ubicación del taller es obligatoria.',
+        'handle.required' => 'El handle del taller es obligatorio.',
+        'handle.max' => 'El handle del taller no puede superar los 50 caracteres.',
+        'handle.unique' => 'Este handle ya está en uso. Por favor, elige otro.',
+        'servicios.required' => 'Debes seleccionar al menos un servicio.',
+        'vehiculos.required' => 'Debes seleccionar al menos un tipo de vehículo.',
+        'info_contacto.max' => 'La información de contacto no puede superar los 255 caracteres.',
+        'telefono.max' => 'El teléfono no puede superar los 12 caracteres.',
+        'email.email' => 'El email debe ser una dirección de correo válida.',
+        'email.max' => 'El email no puede superar los 50 caracteres.',
+        'imagen_taller.image' => 'La imagen del taller debe ser un archivo de imagen.',
+        'imagen_taller.max' => 'La imagen del taller no puede superar los 2MB.',
+        'imagen_contacto.image' => 'La imagen de contacto debe ser un archivo de imagen.',
+        'imagen_contacto.max' => 'La imagen de contacto no puede superar los 2MB.',
+    ];
 
     public function mount($taller = null)
     {
@@ -91,13 +114,12 @@ new class extends Component {
                 'tipo_servicio' => $this->servicios,
                 'info_contacto' => $this->info_contacto,
                 'ubicacion' => $this->ubicacion,
-                'handle' => ['required', 'string', 'max:50', Rule::unique('taller', 'handle')->ignore($this->taller?->id_taller, 'id_taller')],
-
+                'handle' => $this->handle,
             ];
 
             if ($this->imagen_taller) {
                 if ($taller && $taller->img_perfil) {
-                    Storage::delete('imgTalleres/' . $taller->img_perfil);
+                    Storage::disk('public')->delete('imgTalleres/' . $taller->img_perfil);
                 }
                 $nombreFoto = time() . '_' . $this->imagen_taller->getClientOriginalName();
                 $this->imagen_taller->storeAs('imgTalleres', $nombreFoto, 'public');
@@ -106,7 +128,7 @@ new class extends Component {
 
             if ($this->imagen_contacto) {
                 if ($taller && $taller->img_sec) {
-                    Storage::delete('imgTalleres/' . $taller->img_sec);
+                    Storage::disk('public')->delete('imgTalleres/' . $taller->img_sec);
                 }
                 $nombreFoto = time() . '_' . $this->imagen_contacto->getClientOriginalName();
                 $this->imagen_contacto->storeAs('imgTalleres', $nombreFoto, 'public');
