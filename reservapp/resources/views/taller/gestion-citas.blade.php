@@ -94,7 +94,9 @@
                         <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
                             <h2 class="text-2xl font-bold mb-6">Calendario de Citas</h2>
                             <div id="calendar"></div>
-                        </div>
+                            <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css"
+                                rel="stylesheet">
+                            <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 
                         {{-- Modal del día --}}
                         <div id="modal-dia" x-show="abierto" x-cloak
@@ -348,158 +350,78 @@
                         </div>
 
                         {{-- Modal de detalles de cada cita --}}
-                        <div x-show="abiertoDetalle" x-cloak style="background: rgba(0,0,0,0.4)"
-                            class="fixed inset-0 flex items-center justify-center z-50">
 
-                            <div class="bg-white rounded-xl shadow-xl w-[520px] p-6 relative">
-
-                                <!-- Cerrar -->
-                                <button @click="abiertoDetalle = false; mostrarNuevaFecha = false"
-                                    class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl">
-                                    &times;
-                                </button>
-
-                                <h3 class="text-xl font-bold text-left mb-6">Detalles cita</h3>
-
-                                <!-- INFO -->
-                                <div class="grid grid-cols-2 gap-6 mb-6 text-sm">
-                                    <div class="space-y-3">
-                                        <p><span class="font-semibold text-gray-700">Usuario:</span>
-                                            <span x-text="usuario"></span>
-                                        </p>
-                                        <p><span class="font-semibold text-gray-700">Marca:</span>
-                                            <span x-text="marca"></span>
-                                        </p>
-                                    </div>
-                                    <div class="space-y-3">
-                                        <p><span class="font-semibold text-gray-700">Fecha:</span>
-                                            <span x-text="fecha"></span>
-                                        </p>
-                                        <p><span class="font-semibold text-gray-700">Modelo:</span>
-                                            <span x-text="modelo"></span>
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <!-- DETALLES -->
-                                <div class="mb-6">
-                                    <label class="block text-sm font-semibold mb-2 text-gray-700">
-                                        Detalles de la solicitud
-                                    </label>
-                                    <textarea readonly class="w-full h-24 p-3 border rounded-lg bg-gray-100 text-sm resize-none" x-text="detalles"></textarea>
-                                </div>
-
-                                <!-- BOTONES -->
-                                <div class="flex gap-3 justify-end mb-4">
-
-                                    <!-- RECHAZAR -->
-                                    <form :action="'/citas/' + citaId + '/rechazar'" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <button type="submit"
-                                            class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
-                                            Rechazar
-                                        </button>
-                                    </form>
-
-                                    <!-- PROPONER NUEVA FECHA -->
-                                    <button @click="mostrarNuevaFecha = !mostrarNuevaFecha"
-                                        class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition">
-                                        Proponer nueva fecha
-                                    </button>
-
-                                    <!-- ACEPTAR -->
-                                    <form :action="'/citas/' + citaId + '/aceptar'" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <button type="submit"
-                                            class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
-                                            Aceptar
-                                        </button>
-                                    </form>
-
-                                </div>
-
-                                <!-- ZONA NUEVA FECHA -->
-                                <div x-show="mostrarNuevaFecha" x-transition class="border-t pt-4 mt-2">
-
-                                    <form :action="'/citas/' + citaId + '/proponer-fecha'" method="POST">
-                                        @csrf
-                                        @method('PUT')
-
-                                        <label class="block text-sm font-semibold mb-2 text-gray-700">
-                                            Nueva fecha propuesta
-                                        </label>
-
-                                        <div class="flex gap-3">
-                                            <input type="date" name="nueva_fecha" x-model="nuevaFecha"
-                                                class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
-
-                                            <button type="submit"
-                                                class="px-6 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition whitespace-nowrap">
-                                                Confirmar
-                                            </button>
-                                        </div>
-
-                                    </form>
-
-                                </div>
-
-                            </div>
-                        </div>
-
+                        <livewire:taller.modal-dia-citas />
 
                     </div>
 
                 </div>
 
                 {{-- FullCalendar CSS y JS --}}
-                <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
-                <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+
 
                 <script>
                     const resumenCitas = @json($resumenCitas);
 
-                    document.addEventListener('alpine:init', () => {
+                    function iniciarCalendario() {
+                        let calendarEl = document.getElementById('calendar');
+                        if (!calendarEl) return;
 
-                        setTimeout(() => {
+                        // Evitar doble inicialización
+                        if (calendarEl._calendar) return;
 
-                            let calendarEl = document.getElementById('calendar');
-                            if (!calendarEl) return;
+                        let eventosResumen = resumenCitas.map(dia => ({
+                            title: '🔧 ' + dia.total,
+                            start: dia.fecha,
+                            allDay: true
+                        }));
 
-                            // 🔧 Eventos SOLO de citas en estado 1
-                            let eventosResumen = resumenCitas.map(dia => {
-                                return {
-                                    title: '🔧 ' + dia.total,
-                                    start: dia.fecha,
-                                    allDay: true
-                                };
-                            });
+                        let calendar = new FullCalendar.Calendar(calendarEl, {
+                            initialView: 'dayGridMonth',
+                            locale: 'es',
+                            height: 650,
+                            headerToolbar: {
+                                left: 'prev,next today',
+                                center: 'title',
+                                right: ''
+                            },
+                            events: eventosResumen,
+                            dateClick: function(info) {
+                                window.dispatchEvent(new CustomEvent('abrir-modal-dia', {
+                                    detail: {
+                                        fecha: info.dateStr
+                                    }
+                                }));
+                            }
+                        });
 
-                            let calendar = new FullCalendar.Calendar(calendarEl, {
-                                initialView: 'dayGridMonth',
-                                locale: 'es',
-                                height: 650,
-                                headerToolbar: {
-                                    left: 'prev,next today',
-                                    center: 'title',
-                                    right: ''
-                                },
+                        calendar.render();
+                        calendarEl._calendar = calendar; // Marcamos como inicializado
+                    }
 
-                                events: eventosResumen,
-
-                                dateClick: function(info) {
-                                    window.location.href = `/citas/por-fecha?fecha=${info.dateStr}`;
-                                }
-                            });
-
-                            calendar.render();
-
-                        }, 100);
-
+                    // Intento 1: cuando el DOM esté listo
+                    document.addEventListener('DOMContentLoaded', () => {
+                        setTimeout(iniciarCalendario, 200);
                     });
+
+                    // Intento 2: cuando Livewire esté listo (por si acaso)
+                    document.addEventListener('livewire:init', () => {
+                        setTimeout(iniciarCalendario, 200);
+                    });
+
+                    // Intento 3: cuando Livewire navega entre páginas (SPA)
+                    document.addEventListener('livewire:navigated', () => {
+                        setTimeout(iniciarCalendario, 200);
+                    });
+
+                    console.log('FullCalendar:', typeof FullCalendar);
+                    console.log('Livewire:', typeof Livewire);
+                    console.log('Calendar el:', document.getElementById('calendar'));
+                    console.log('Calendar inicializado:', document.getElementById('calendar')?._calendar);
                 </script>
+
+
             @endif
         @endif
     </x-layouts::app>
