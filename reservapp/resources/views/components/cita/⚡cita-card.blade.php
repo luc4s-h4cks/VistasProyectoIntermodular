@@ -53,7 +53,7 @@ new class extends Component {
 };
 ?>
 
-<div class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-50">
+<div class="block p-6 bg-background border border-secondary/20 rounded-lg shadow hover:bg-secondary/5 transition-colors">
     @php
         // Decodificar el JSON de detalles si es string
         $detalles = is_string($cita->detalles) ? json_decode($cita->detalles, true) : $cita->detalles;
@@ -68,7 +68,7 @@ new class extends Component {
                         d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
                         clip-rule="evenodd" />
                 </svg>
-                <p class="text-sm font-semibold text-gray-900">
+                <p class="text-sm font-semibold text-text">...</p>
                     {{ \Carbon\Carbon::parse($cita->fecha)->locale('es')->isoFormat('D [de] MMMM [de] YYYY') }}
                     @if ($cita->tramo_horario)
                         - {{ $cita->tramo_horario }}
@@ -104,7 +104,7 @@ new class extends Component {
                         d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
                         clip-rule="evenodd" />
                 </svg>
-                <p class="text-sm text-gray-700">
+                <p class="text-sm text-text/70">
                     <span class="font-medium">Taller:</span>
                     {{ $cita->taller->nombre ?? 'Sin asignar' }}
                 </p>
@@ -117,7 +117,7 @@ new class extends Component {
                     <path
                         d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z" />
                 </svg>
-                <p class="text-sm text-gray-700">
+                <p class="text-sm text-text/70">
                     <span class="font-medium">Vehículo:</span>
                     {{ $cita->coche->marca }} {{ $cita->coche->modelo }}
                     @if ($cita->coche->anyo)
@@ -128,52 +128,52 @@ new class extends Component {
 
             {{-- Motivo --}}
             @if ($cita->motivo)
-                <p class="text-sm text-gray-600 mb-3">
+                <p class="text-sm text-text/60 mb-3">
                     <span class="font-medium">Motivo:</span> {{ $cita->motivo }}
                 </p>
             @endif
 
             {{-- FACTURA --}}
             @if ($detalles && is_array($detalles) && count($detalles) > 0)
-                <div class="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <div class="mt-4 p-4 bg-secondary/5 rounded-lg border border-secondary/20">
                     <div class="flex items-center mb-3">
                         <svg class="w-5 h-5 text-gray-700 mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path
                                 d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z" />
                             <path d="M3 8a2 2 0 012-2v10h8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
                         </svg>
-                        <h4 class="text-sm font-bold text-gray-900">Factura</h4>
+                        <h4 class="text-sm font-bold text-text">Factura</h4>
                     </div>
 
                     <div class="space-y-2 mb-3">
                         @foreach ($detalles as $detalle)
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-700">{{ $detalle['nombre'] ?? 'Sin nombre' }}</span>
+                                <span class="text-text/70">{{ $detalle['nombre'] ?? 'Sin nombre' }}</span>
                                 <span
-                                    class="font-medium text-gray-900">{{ number_format(floatval($detalle['precio'] ?? 0), 2) }}€</span>
+                                    class="font-medium text-text">{{ number_format(floatval($detalle['precio'] ?? 0), 2) }}€</span>
                             </div>
                         @endforeach
                     </div>
 
-                    <div class="border-t border-gray-300 pt-3 space-y-2">
+                    <div class="border-t border-secondary/20 pt-3 space-y-2">
                         @if ($cita->subtotal)
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">Subtotal:</span>
-                                <span class="text-gray-900">{{ number_format($cita->subtotal, 2) }}€</span>
+                                <span class="text-text/60">Subtotal:</span>
+                                <span class="text-text">{{ number_format($cita->subtotal, 2) }}€</span>
                             </div>
                         @endif
 
                         @if ($cita->iva)
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">IVA (21%):</span>
-                                <span class="text-gray-900">{{ number_format($cita->iva, 2) }}€</span>
+                                <span class="text-text/60">IVA (21%):</span>
+                                <span class="text-text">{{ number_format($cita->iva, 2) }}€</span>
                             </div>
                         @endif
 
                         @if ($cita->total)
-                            <div class="flex justify-between text-base font-bold border-t border-gray-300 pt-2">
-                                <span class="text-gray-900">Total:</span>
-                                <span class="text-gray-900">{{ number_format($cita->total, 2) }}€</span>
+                            <div class="flex justify-between text-base font-bold border-t border-secondary/20 pt-2">
+                                <span class="text-text">Total:</span>
+                                <span class="text-text">{{ number_format($cita->total, 2) }}€</span>
                             </div>
                         @endif
                     </div>
