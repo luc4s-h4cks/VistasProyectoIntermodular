@@ -44,6 +44,7 @@ Route::middleware(['mecanico', 'verified'])->group(function () {
 Route::middleware(['admin'])->group(function () {
     Route::get('/administracion-usuarios', [UsuarioController::class, 'index'])->name('admin.usuarios');
     Route::get('/administracion-coches', [CocheController::class, 'index'])->name('admin.coches');
+    Route::get('/administracion-taller', [TallerController::class, 'index'])->name('admin.taller');
 });
 
 
@@ -58,4 +59,4 @@ Route::put('/citas/{cita}/aceptar', [CitaController::class, 'aceptarCita'])->nam
 Route::put('/citas/{cita}/proponer-fecha', [CitaController::class, 'proponerNuevaFecha'])->name('cita.proponer-fecha');
 Route::put('citas/{cita}/enviar', [CitaController::class, 'enviarFactura'])->name('cita.enviarFactura');
 
-Route::get("/buscador/{taller}", [TallerController::class, 'index'])->name('buscador');
+Route::get("/buscador/{taller}", [TallerController::class, 'show'])->name('buscador');
