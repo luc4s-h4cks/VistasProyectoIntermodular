@@ -1,0 +1,136 @@
+/* Base */
+
+body,
+body *:not(html):not(style):not(br):not(tr):not(code) {
+    box-sizing: border-box;
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    position: relative;
+}
+
+body {
+    -webkit-text-size-adjust: none;
+    background-color: #eef1f4; /* gris muy suave */
+    color: #2f3a45; /* gris oscuro profesional */
+    height: 100%;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    width: 100% !important;
+}
+
+/* Typography */
+
+h1 {
+    color: #0f3557; /* azul petróleo */
+    font-size: 20px;
+    font-weight: 700;
+}
+
+h2 {
+    color: #13446b; /* azul más claro */
+    font-size: 17px;
+    font-weight: 600;
+}
+
+h3 {
+    color: #13446b;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+p {
+    font-size: 15px;
+    line-height: 1.6em;
+}
+
+/* Layout */
+
+.wrapper {
+    background-color: #eef1f4;
+    width: 100%;
+}
+
+.body {
+    background-color: #eef1f4;
+}
+
+.inner-body {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    width: 570px;
+}
+
+/* Header */
+
+.header {
+    padding: 30px 0;
+    text-align: center;
+}
+
+.header a {
+    color: #0f3557;
+    font-size: 22px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* Logo */
+
+.logo {
+    height: 70px;
+    margin-bottom: 15px;
+}
+
+/* Buttons */
+
+.button {
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+/* Botón principal (azul petróleo) */
+
+.button-primary {
+    background-color: #0f3557;
+    border: 10px solid #0f3557;
+    border-left-width: 22px;
+    border-right-width: 22px;
+    color: #ffffff !important;
+}
+
+/* Botón secundario (verde azulado profesional) */
+
+.button-success {
+    background-color: #1c6e6c;
+    border: 10px solid #1c6e6c;
+    border-left-width: 22px;
+    border-right-width: 22px;
+    color: #ffffff !important;
+}
+
+/* Panel */
+
+.panel {
+    border-left: #1c6e6c solid 4px;
+    border-radius: 6px;
+}
+
+.panel-content {
+    background-color: #f5f7f9;
+    padding: 18px;
+}
+
+/* Subcopy */
+
+.subcopy {
+    border-top: 1px solid #d4d8dd;
+}
+
+/* Footer */
+
+.footer p {
+    color: #8a949e;
+    font-size: 13px;
+}
