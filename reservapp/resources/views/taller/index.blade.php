@@ -115,6 +115,13 @@
                             </a>
                         </div>
                     @endif
+
+                    @if ($taller->ubicacion)
+                        <div class="flex items-center gap-2 text-text dark:text-zinc-300">
+                            <flux:icon name="map-pin" class="w-5 h-5 text-primary" />
+                            <span>{{ $taller->ubicacion }}</span>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

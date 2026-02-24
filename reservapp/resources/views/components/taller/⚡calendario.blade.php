@@ -13,9 +13,11 @@ new class extends Component {
     public $motivo = '';
     public $fecha = '';
     public $dia_no_disponible = [];
+    public $autenticado = false;
 
     public function mount(Taller $taller)
     {
+        $this->autenticado=auth()->check();
         $this->tallerId = $taller->id_taller;
         $this->cars = auth()->user()->coches()->get();
         $this->dia_no_disponible = Dia::where('id_taller', $this->tallerId)
@@ -66,6 +68,7 @@ new class extends Component {
         Calendario de citas
     </h2>
 
+    <div id="taller-calendar-data" data-dias-no-disponibles='@json($dia_no_disponible)' class="hidden"></div>
     <div class="bg-zinc-50 dark:bg-zinc-700 p-4 rounded-xl" wire:ignore>
         {{-- Navegación mes --}}
         <div class="flex items-center justify-between mb-4">
@@ -139,6 +142,7 @@ new class extends Component {
 
 <script>
     // ── Calendario ──
+    window.diasNoDisponibles = JSON.parse(document.getElementById('taller-calendar-data').dataset.diasNoDisponibles || '[]');
     let mesActual = new Date().getMonth();
     let anioActual = new Date().getFullYear();
 
@@ -148,6 +152,7 @@ new class extends Component {
     ];
 
     function generarCalendario(mes, anio) {
+        console.log(window.diasNoDisponibles)
         const diasMesContainer = document.getElementById('diasMes');
         const mesAnioTitulo = document.getElementById('mesAnio');
 
@@ -172,9 +177,14 @@ new class extends Component {
         for (let dia = 1; dia <= diasEnMes; dia++) {
             const celdaDia = document.createElement('div');
             const esPasado = new Date(anio, mes, dia) < new Date(anioHoy, mesHoy, diaHoy);
+            const noDisponible = window.diasNoDisponibles.includes(`${anio}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`);
 
             if (esPasado) {
                 celdaDia.className = 'p-2 rounded-lg text-zinc-300 dark:text-zinc-600 cursor-not-allowed';
+            } else if (noDisponible) {
+                celdaDia.className = 'p-2 rounded-lg text-zinc-400 dark:text-zinc-500 bg-red-100 dark:bg-red-900/30 cursor-not-allowed line-through';
+                celdaDia.title = 'Día no disponible';
+                celdaDia.addEventListener('click', () => alert('Este día no está disponible para citas.'));
             } else if (dia === diaHoy && mes === mesHoy && anio === anioHoy) {
                 celdaDia.className = 'p-2 rounded-lg cursor-pointer bg-primary text-white font-bold shadow-sm';
                 celdaDia.addEventListener('click', () => abrirModalCita(dia, mes));
@@ -210,7 +220,7 @@ new class extends Component {
         }, 10);
     }
 
-    function cerrarModalCita() {
+    window.cerrarModalCita = function cerrarModalCita() {
         const modal = document.getElementById('modalPedirCita');
         const contenido = document.getElementById('modalContenido');
 
