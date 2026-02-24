@@ -94,7 +94,7 @@
                         nuevaFecha: '',
                         permitirCitas: 'si',
                         cantidadCitas: {{ isset($citas) ? count($citas) : 0 }},
-                        tramo: '';
+                        tramo: '',
                     }">
 
                         {{-- Calendario --}}
