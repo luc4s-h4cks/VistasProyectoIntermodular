@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\ResetPasswordNotification;
 use App\Notifications\VerifyEmailNotification;
+use Laravel\Sanctum\HasApiTokens;
 
 class Usuario extends Authenticatable implements MustVerifyEmail
 {
@@ -18,7 +19,7 @@ class Usuario extends Authenticatable implements MustVerifyEmail
     public const MECANICO = 1;
     public const ADMIN = 2;
 
-    use HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasApiTokens;
 
     protected $table = 'usuario';
     protected $primaryKey = 'id_usuario';
