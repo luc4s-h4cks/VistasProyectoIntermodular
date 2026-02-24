@@ -244,9 +244,21 @@ new class extends Component {
                     </button>
                 </div>
             @elseif($cita->estado == App\Models\Cita::ESTADO_TEMINADO)
-                <span class="bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full">
-                    Completada
-                </span>
+                <div class="flex flex-col items-end gap-1.5">
+                    <span class="bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full">
+                        Completada
+                    </span>
+                    <button wire:click="marcarComoTerminada" type="button"
+                        class="flex items-center gap-1 text-xs text-gray-400 hover:text-blue-500 transition-colors group"
+                        title="Archivar cita">
+                        <svg class="w-3.5 h-3.5 group-hover:scale-110 transition-transform" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8l1 12a2 2 0 002 2h8a2 2 0 002-2L19 8" />
+                        </svg>
+                        Archivar
+                    </button>
+                </div>
             @elseif($cita->estado == App\Models\Cita::ESTADO_ESPERANDO_PAGO)
                 <span class="bg-purple-100 text-purple-800 text-xs font-medium px-3 py-1 rounded-full">
                     Esperando pago

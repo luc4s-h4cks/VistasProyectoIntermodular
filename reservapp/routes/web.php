@@ -87,6 +87,6 @@ Route::put('citas/{cita}/pagar-taller', [CitaController::class, 'pagarTaller'])-
 Route::put('citas/{cita}/pago-online', [CitaController::class, 'pagoOnline'])->name('cita.pago-online');
 Route::put('citas/{cita}/marcar-pagada', [CitaController::class, 'marcaPagado'])->name('cita.marcar-pagado');
 
-Route::get("/buscador/{taller}", [TallerController::class, 'show'])->name('buscador');
+Route::get("/buscador/{taller}", [TallerController::class, 'show'])->name('ver-taller');
 
 
