@@ -19,11 +19,13 @@ new class extends Component {
     {
         $this->autenticado=auth()->check();
         $this->tallerId = $taller->id_taller;
-        $this->cars = auth()->user()->coches()->get();
         $this->dia_no_disponible = Dia::where('id_taller', $this->tallerId)
             ->where('estado', Dia::ESTADO_OCUPADO)
             ->pluck('fecha')
             ->toArray();
+        if ($this->autenticado) {
+            $this->cars = auth()->user()->coches()->get() ?? [];
+        }
     }
     public function enviar(){
         $this->validate([
@@ -68,7 +70,7 @@ new class extends Component {
         Calendario de citas
     </h2>
 
-    <div id="taller-calendar-data" data-dias-no-disponibles='@json($dia_no_disponible)' class="hidden"></div>
+    <div id="taller-calendar-data" data-dias-no-disponibles='@json($dia_no_disponible)' data-autenticado='@json($autenticado)' class="hidden"></div>
     <div class="bg-zinc-50 dark:bg-zinc-700 p-4 rounded-xl" wire:ignore>
         {{-- Navegación mes --}}
         <div class="flex items-center justify-between mb-4">
@@ -200,6 +202,11 @@ new class extends Component {
 
     // ── Modal Pedir Cita ──
     function abrirModalCita(dia, mes) {
+        const autenticado = JSON.parse(document.getElementById('taller-calendar-data').dataset.autenticado);
+        if (!autenticado) {
+            alert('Debes iniciar sesión para pedir una cita.');
+            return;
+        }
         const modal = document.getElementById('modalPedirCita');
         const contenido = document.getElementById('modalContenido');
         document.getElementById('diaSeleccionado').textContent = `${dia} de ${nombresMeses[mes]}`;
