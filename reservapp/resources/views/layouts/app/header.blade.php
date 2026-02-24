@@ -43,12 +43,12 @@
             <x-desktop-user-menu />
         @else
             <flux:navbar class="me-1.5 space-x-0.5 rtl:space-x-reverse py-0!">
-                <flux:navbar.item icon="user-circle" :href="route('dashboard')"
+                <flux:navbar.item icon="user-circle" :href="route('login')"
                     :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Login') }}
                 </flux:navbar.item>
 
-                <flux:navbar.item icon="inbox-arrow-down" :href="route('dashboard')"
+                <flux:navbar.item icon="inbox-arrow-down" :href="route('register')"
                     :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Register') }}
                 </flux:navbar.item>
