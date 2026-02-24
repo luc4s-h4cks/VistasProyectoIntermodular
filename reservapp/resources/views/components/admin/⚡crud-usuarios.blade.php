@@ -419,6 +419,7 @@ new class extends Component {
                                 <label class="block text-sm text-text/50 dark:text-[#f5f5f5]/50 mb-1">Tipo</label>
                                 <select wire:model.number="tipo"
                                     class="w-full bg-transparent border-0 border-b-2 text-sm text-text dark:text-[#f5f5f5] border-text/20 dark:border-[#f5f5f5]/20 focus:border-primary focus:outline-none focus:ring-0 py-2.5">
+                                    <option value="-1" disabled>Seleccione el tipo de usuario</option>
                                     <option value="0">Usuario</option>
                                     <option value="1">Taller</option>
                                     <option value="2">Admin</option>
