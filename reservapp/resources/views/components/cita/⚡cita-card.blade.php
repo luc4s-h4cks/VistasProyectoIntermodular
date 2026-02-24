@@ -20,12 +20,14 @@ new class extends Component {
         ),
     ]
     public string $nuevaFecha = '';
+    public string $nuevoTramo = 'manana';
 
     public function toggleInputFecha()
     {
         $this->mostrarInputFecha = !$this->mostrarInputFecha;
         if (!$this->mostrarInputFecha) {
             $this->nuevaFecha = '';
+            $this->nuevoTramo = 'manana';
             $this->resetValidation();
         }
     }
@@ -41,6 +43,7 @@ new class extends Component {
 
         $this->cita->update([
             'fecha' => $this->nuevaFecha,
+            'tramo_horario' => $this->nuevoTramo,
             'estado' => Cita::ESTADO_SOLICITADO,
         ]);
 
@@ -48,6 +51,7 @@ new class extends Component {
 
         $this->mostrarInputFecha = false;
         $this->nuevaFecha = '';
+        $this->nuevoTramo = 'manana';
     }
 
     public function confirmarCancelacion()
@@ -308,9 +312,38 @@ new class extends Component {
                             Selecciona la nueva fecha
                         </label>
 
-                        <div class="flex gap-3">
+                        <div class="flex gap-3 mb-3">
                             <input type="date" wire:model="nuevaFecha"
                                 class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                        </div>
+
+                        <label class="block text-sm font-semibold mb-2 text-gray-700">
+                            Tramo horario
+                        </label>
+
+                        <div class="flex gap-3">
+                            <div class="flex gap-2 flex-1">
+                                <label class="flex-1 cursor-pointer">
+                                    <input type="radio" wire:model="nuevoTramo" value="manana"
+                                        class="sr-only peer">
+                                    <div
+                                        class="w-full text-center px-3 py-2 rounded-lg border text-sm font-medium transition
+                                        peer-checked:bg-amber-100 peer-checked:border-amber-400 peer-checked:text-amber-700
+                                        border-gray-200 text-gray-500 hover:border-amber-300">
+                                        🌅 Mañana
+                                    </div>
+                                </label>
+                                <label class="flex-1 cursor-pointer">
+                                    <input type="radio" wire:model="nuevoTramo" value="tarde"
+                                        class="sr-only peer">
+                                    <div
+                                        class="w-full text-center px-3 py-2 rounded-lg border text-sm font-medium transition
+                                        peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-indigo-700
+                                        border-gray-200 text-gray-500 hover:border-indigo-300">
+                                        🌆 Tarde
+                                    </div>
+                                </label>
+                            </div>
 
                             <button wire:click="proponerNuevaFecha" type="button"
                                 class="px-6 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition whitespace-nowrap">

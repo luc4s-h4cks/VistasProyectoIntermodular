@@ -446,7 +446,7 @@
                                         </label>
 
                                         <div class="flex gap-3">
-                                            <select name="nuevo_tramo"
+                                            <select name="tramo_horario" x-model="tramo"
                                                 class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
                                                 <option value="manana">Mañana</option>
                                                 <option value="tarde">Tarde</option>
