@@ -18,6 +18,10 @@ new class extends Component {
     {
         $this->tallerId = $taller->id_taller;
         $this->cars = auth()->user()->coches()->get();
+        $this->dia_no_disponible = Dia::where('id_taller', $this->tallerId)
+            ->where('estado', Dia::ESTADO_OCUPADO)
+            ->pluck('fecha')
+            ->toArray();
     }
     public function enviar(){
         $this->validate([
