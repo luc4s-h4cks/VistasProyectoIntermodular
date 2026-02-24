@@ -156,7 +156,7 @@ class CitaController extends Controller
     }
 
     public function terminarCita(Cita $cita){
-        $cita->estado = Cita::ESTADO_TEMINADO;
+        $cita->estado = Cita::ESTADO_FINALIZADA;
         $cita->save();
 
         return redirect()->back()->with('Seccess', "Cita terminada");
