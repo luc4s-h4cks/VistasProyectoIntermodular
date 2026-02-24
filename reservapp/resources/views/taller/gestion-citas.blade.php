@@ -41,6 +41,13 @@
                         ];
                     })
                     ->values();
+
+                $diasBloqueados = \App\Models\Dia::where('id_taller', $taller->id_taller)
+                    ->where('estado', '=', 1)
+                    ->pluck('fecha')
+                    ->values();
+
+
             @endphp
 
 
@@ -212,10 +219,10 @@
                                                                 class="font-bold text-lg">&times;</button>
                                                         </form>
                                                     @else
-                                                        <form action="" method="POST"
-                                                            class="absolute top-2 right-2">
+                                                        <form action="{{ route('cita.terminar', $cita->id_cita) }}"
+                                                            method="POST" class="absolute top-2 right-2">
                                                             @csrf
-                                                            @method('DELETE')
+                                                            @method('PUT')
                                                             <button type="submit"
                                                                 class="font-bold text-lg">&times;</button>
                                                         </form>
@@ -367,6 +374,7 @@
 
                     <script>
                         const resumenCitas = @json($resumenCitas);
+                        const diasBloqueados = @json($diasBloqueados);
 
                         function iniciarCalendario() {
                             let calendarEl = document.getElementById('calendar');
@@ -384,6 +392,15 @@
                                 allDay: true
                             }));
 
+                            let eventosBloqueados = diasBloqueados.map(fecha => ({
+                                title: '🚫 No disponible',
+                                start: fecha,
+                                allDay: true,
+                                display: 'background',
+                                backgroundColor: '#ef4444',
+                                classNames: ['dia-bloqueado']
+                            }));
+
                             let calendar = new FullCalendar.Calendar(calendarEl, {
                                 initialView: 'dayGridMonth',
                                 locale: 'es',
@@ -393,7 +410,7 @@
                                     center: 'title',
                                     right: ''
                                 },
-                                events: eventosResumen,
+                                events: [...eventosResumen, ...eventosBloqueados],
                                 dateClick: function(info) {
                                     window.dispatchEvent(new CustomEvent('abrir-modal-dia', {
                                         detail: {
