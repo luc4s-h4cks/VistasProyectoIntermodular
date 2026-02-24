@@ -41,12 +41,15 @@ new class extends Component {
             Dia::where('fecha', $this->fechaSeleccionada)
                 ->where('id_taller', auth()->user()->taller->id_taller)
                 ->update(['estado' => $valor]);
+
+            $this->dispatch('calendario-actualizado');
         } else {
             Dia::create([
                 'fecha' => $this->fechaSeleccionada,
                 'id_taller' => auth()->user()->taller->id_taller,
                 'estado' => $valor,
             ]);
+            $this->dispatch('calendario-actualizado');
         }
     }
 
