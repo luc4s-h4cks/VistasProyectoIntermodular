@@ -398,10 +398,15 @@ new class extends Component {
                         </button>
                     </form>
 
-                    <a href="{{ route('cita.pago-online', $cita->id_cita) }}"
-                        class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition text-sm font-medium flex items-center justify-center gap-2">
-                        💳 Pagar por la aplicación
-                    </a>
+                    <form action="{{ route('cita.pago-online', $cita->id_cita) }}" method="POST" class="flex-1">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit"
+                            class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition text-sm font-medium flex items-center justify-center gap-2">
+                            💳 Pagar por la aplicación
+                        </button>
+                    </form>
+
                 </div>
             </div>
         @endif
