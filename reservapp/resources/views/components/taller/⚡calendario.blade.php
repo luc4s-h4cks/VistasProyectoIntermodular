@@ -3,6 +3,8 @@
 use Livewire\Component;
 use App\Models\Cita;
 use App\Models\Taller;
+use App\Models\Dia;
+
 new class extends Component {
     public $cars = [];
     public $tallerId;
@@ -10,6 +12,7 @@ new class extends Component {
     public $tramoHorario = '';
     public $motivo = '';
     public $fecha = '';
+    public $dia_no_disponible = [];
 
     public function mount(Taller $taller)
     {
@@ -24,11 +27,23 @@ new class extends Component {
             'motivo' => 'required',
         ]);
 
+        $dia= Dia::where('id_taller', $this->tallerId)
+            ->where('fecha', $this->fecha)
+            ->first();
+        if (!$dia)
+        //crea el dia en el calendario del taller
+        {
+            $dia = new Dia();
+            $dia->id_taller = $this->tallerId;
+            $dia->fecha = $this->fecha;
+            $dia->estado= Dia::ESTADO_LIBRE;
+            $dia->save();
+        }
         $cita = new Cita();
+        $cita->fecha = $dia->fecha;
         $cita->id_taller = $this->tallerId;
         $cita->id_coche = $this->cocheId;
         $cita->id_usuario = auth()->id();
-        $cita->fecha = $this->fecha;
         $cita->tramo_horario = $this->tramoHorario;
         $cita->motivo = $this->motivo;
         $cita->estado= Cita::ESTADO_SOLICITADO;
