@@ -17,6 +17,8 @@ class Cita extends Model
     const ESTADO_TEMINADO = 2;
     const ESTADO_ESPERANDO_PAGO = 3;
     const ESTADO_PAGADA = 4;
+
+    const ESTADO_ESPARA_PAGO_TALLER = 5;
     const ESTADO_FECHA_PROPUESTA = 10;
     const ESTADO_FECHA_ACEPTADA_CLIENTE = 11;
 

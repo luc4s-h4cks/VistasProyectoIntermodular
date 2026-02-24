@@ -61,5 +61,8 @@ Route::put('/citas/{cita}/aceptar', [CitaController::class, 'aceptarCita'])->nam
 Route::put('/citas/{cita}/proponer-fecha', [CitaController::class, 'proponerNuevaFecha'])->name('cita.proponer-fecha');
 Route::put('citas/{cita}/enviar', [CitaController::class, 'enviarFactura'])->name('cita.enviarFactura');
 Route::put('citas/{cita}/terminar', [CitaController::class, 'terminarCita'])->name('cita.terminar');
+Route::put('citas/{cita}/pagar-taller', [CitaController::class, 'pagarTaller'])->name('cita.pagar-taller');
+Route::put('citas/{cita}/pago-online', [CitaController::class, 'pagoOnline'])->name('cita.pago-online');
+Route::put('citas/{cita}/marcar-pagada', [CitaController::class, 'marcaPagado'])->name('cita.marcar-pagado');
 
 Route::get("/buscador/{taller}", [TallerController::class, 'show'])->name('buscador');

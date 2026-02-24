@@ -76,7 +76,8 @@ new class extends Component {
 };
 ?>
 
-<div class="block p-6 bg-background border border-secondary/20 rounded-lg shadow hover:bg-secondary/5 transition-colors">
+<div class="block p-6 bg-background border border-secondary/20 rounded-lg shadow hover:bg-secondary/5 transition-colors"
+    @if ($cita->estado == App\Models\Cita::ESTADO_FINALIZADA) style="display:none" @endif>
     @php
         // Decodificar el JSON de detalles si es string
         $detalles = is_string($cita->detalles) ? json_decode($cita->detalles, true) : $cita->detalles;
@@ -84,18 +85,24 @@ new class extends Component {
 
     <div class="flex items-start justify-between">
         <div class="flex-1">
-            {{-- Fecha de la cita --}}
+            {{-- Fecha y tramo horario de la cita --}}
             <div class="flex items-center mb-3">
                 <svg class="w-5 h-5 text-gray-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd"
                         d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
                         clip-rule="evenodd" />
                 </svg>
-                <p class="text-sm font-semibold text-text">...</p>
-                {{ \Carbon\Carbon::parse($cita->fecha)->locale('es')->isoFormat('D [de] MMMM [de] YYYY') }}
-                @if ($cita->tramo_horario)
-                    - {{ $cita->tramo_horario }}
-                @endif
+                <p class="text-sm font-semibold text-text">
+                    {{ \Carbon\Carbon::parse($cita->fecha)->locale('es')->isoFormat('D [de] MMMM [de] YYYY') }}
+                    @if ($cita->tramo_horario)
+                        &mdash;
+                        <span
+                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium
+                            {{ strtolower($cita->tramo_horario) === 'mañana' ? 'bg-amber-100 text-amber-700' : 'bg-indigo-100 text-indigo-700' }}">
+                            {{ strtolower($cita->tramo_horario) === 'mañana' ? '🌅' : '🌆' }}
+                            {{ ucfirst($cita->tramo_horario) }}
+                        </span>
+                    @endif
                 </p>
             </div>
 
@@ -217,14 +224,21 @@ new class extends Component {
             @elseif(
                 $cita->estado == App\Models\Cita::ESTADO_RECHAZADO_POR_TALLER ||
                     $cita->estado == App\Models\Cita::ESTADO_RECHAZADO_POR_CLIENTE)
-                <button wire:click="marcarComoTerminada" type="button"
-                    class="w-6 h-6 flex items-center justify-center bg-red-200 hover:bg-red-300 rounded-full text-red-700 text-xs"
-                    title="Marcar como terminada">
-                    ✕
-                </button>
-                <span class="bg-red-100 text-red-800 text-xs font-medium px-3 py-1 rounded-full">
-                    Rechazada
-                </span>
+                <div class="flex flex-col items-end gap-1.5">
+                    <span class="bg-red-100 text-red-700 text-xs font-medium px-3 py-1 rounded-full">
+                        Rechazada
+                    </span>
+                    <button wire:click="marcarComoTerminada" type="button"
+                        class="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors group"
+                        title="Archivar cita">
+                        <svg class="w-3.5 h-3.5 group-hover:scale-110 transition-transform" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8l1 12a2 2 0 002 2h8a2 2 0 002-2L19 8" />
+                        </svg>
+                        Archivar
+                    </button>
+                </div>
             @elseif($cita->estado == App\Models\Cita::ESTADO_TEMINADO)
                 <span class="bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full">
                     Completada
@@ -234,9 +248,21 @@ new class extends Component {
                     Esperando pago
                 </span>
             @elseif($cita->estado == App\Models\Cita::ESTADO_PAGADA)
-                <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-3 py-1 rounded-full">
-                    Pagada
-                </span>
+                <div class="flex flex-col items-end gap-1.5">
+                    <span class="bg-indigo-100 text-indigo-700 text-xs font-medium px-3 py-1 rounded-full">
+                        ✓ Pagada
+                    </span>
+                    <button wire:click="marcarComoTerminada" type="button"
+                        class="flex items-center gap-1 text-xs text-gray-400 hover:text-indigo-500 transition-colors group"
+                        title="Archivar cita">
+                        <svg class="w-3.5 h-3.5 group-hover:scale-110 transition-transform" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8l1 12a2 2 0 002 2h8a2 2 0 002-2L19 8" />
+                        </svg>
+                        Archivar
+                    </button>
+                </div>
             @elseif($cita->estado == App\Models\Cita::ESTADO_FECHA_PROPUESTA)
                 <span class="bg-orange-100 text-orange-800 text-xs font-medium px-3 py-1 rounded-full">
                     Nueva fecha propuesta
@@ -245,6 +271,12 @@ new class extends Component {
                 <span class="bg-teal-100 text-teal-800 text-xs font-medium px-3 py-1 rounded-full">
                     Fecha aceptada
                 </span>
+            @elseif($cita->estado == App\Models\Cita::ESTADO_ESPARA_PAGO_TALLER)
+                <span class="bg-gray-700 text-white text-xs font-medium px-3 py-1 rounded-full">
+                    🏪 Pago en taller
+                </span>
+            @elseif($cita->estado == App\Models\Cita::ESTADO_FINALIZADA)
+                {{-- Estado finalizada (-3): no se muestra nada --}}
             @else
                 <span class="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full">
                     Desconocido
@@ -262,7 +294,7 @@ new class extends Component {
 
     {{-- Botones de acción --}}
     <div class="mt-4 pt-4 border-t border-gray-200">
-        {{-- Solo mostrar cuando el estado es ESTADO_FECHA_PROPUESTA (10) --}}
+        {{-- Solo mostrar cuando el estado es ESTADO_FECHA_PROPUESTA --}}
         @if ($cita->estado == App\Models\Cita::ESTADO_FECHA_PROPUESTA)
             <div class="mb-4">
                 <button wire:click="toggleInputFecha" type="button"
@@ -319,6 +351,26 @@ new class extends Component {
                 class="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-medium">
                 ✗ Cancelar cita
             </button>
+        @elseif($cita->estado == App\Models\Cita::ESTADO_ESPERANDO_PAGO)
+            {{-- Botones de pago --}}
+            <div class="space-y-3">
+                <p class="text-sm text-gray-600 font-medium">¿Cómo deseas realizar el pago?</p>
+                <div class="flex gap-3">
+                    <form action="{{ route('cita.pagar-taller', $cita->id_cita) }}" method="POST" class="flex-1">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit"
+                            class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition text-sm font-medium flex items-center justify-center gap-2">
+                            🏪 Pagar en taller
+                        </button>
+                    </form>
+
+                    <a href="{{ route('cita.pago-online', $cita->id_cita) }}"
+                        class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition text-sm font-medium flex items-center justify-center gap-2">
+                        💳 Pagar por la aplicación
+                    </a>
+                </div>
+            </div>
         @endif
     </div>
 

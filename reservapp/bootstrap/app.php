@@ -9,9 +9,9 @@ use App\Http\Middleware\UsuarioMecanico;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        api: __DIR__.'/../routes/api.php',
-        commands: __DIR__.'/../routes/console.php',
+        web: __DIR__ . '/../routes/web.php',
+        api: __DIR__ . '/../routes/api.php',
+        commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
@@ -21,6 +21,26 @@ return Application::configure(basePath: dirname(__DIR__))
             'logueado' => Logueado::class
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
-        //
+    ->withExceptions(function (Exceptions $exceptions) {
+
+        // 👇 Añade esto dentro del bloque que ya tienes
+        $exceptions->renderable(function (Throwable $e, $request) {
+            $esPDO = $e instanceof \PDOException;
+            $esQuery = $e instanceof \Illuminate\Database\QueryException;
+
+            $enCadena = false;
+            $prev = $e->getPrevious();
+            while ($prev !== null) {
+                if ($prev instanceof \PDOException) {
+                    $enCadena = true;
+                    break;
+                }
+                $prev = $prev->getPrevious();
+            }
+
+            if ($esPDO || $esQuery || $enCadena) {
+                return response()->view('errors.database_error', [], 503);
+            }
+        });
+
     })->create();

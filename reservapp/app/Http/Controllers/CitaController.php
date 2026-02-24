@@ -127,6 +127,7 @@ class CitaController extends Controller
         );
 
         $cita->fecha = $dia->fecha;
+        $cita->tramo_horario = $request->tramo_horario;
         $cita->estado = Cita::ESTADO_FECHA_PROPUESTA;
 
         $cita->save();
@@ -179,6 +180,31 @@ class CitaController extends Controller
         ]);
 
         return $pdf->download('factura_cita_' . $cita->dia->fecha.'-'. $cita->coche->matricula . '.pdf');
+    }
+
+    public function pagoOnline(Cita $cita)
+    {
+
+        $cita->estado = Cita::ESTADO_PAGADA;
+        $cita->save();
+
+        return redirect()->back()->with('success', "Pago realizado con éxito");
+    }
+
+    public function pagarTaller(Cita $cita)
+    {
+        $cita->estado = Cita::ESTADO_ESPARA_PAGO_TALLER;
+        $cita->save();
+
+        return redirect()->back()->with('success', "Pago solicitado al taller");
+    }
+
+    public function marcaPagado(Cita $cita)
+    {
+        $cita->estado = Cita::ESTADO_PAGADA;
+        $cita->save();
+
+        return redirect()->back()->with('success', "Cita marcada como pagada");
     }
 
 
