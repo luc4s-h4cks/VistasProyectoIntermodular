@@ -170,7 +170,7 @@ new class extends Component
                                 Tipo de propulsión
                             </label>
                             <select wire:model="tipo_combustible" id="tipo_combustible"
-                                class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0
+                                class="block py-2.5 px-0 w-full text-sm bg-background border-0 border-b-2 appearance-none focus:outline-none focus:ring-0
                                     text-text border-text/20 focus:border-primary">
                                 <option value="" disabled>Selecciona el tipo de propulsión</option>
                                 @foreach($tiposPropulsion as $tipo)

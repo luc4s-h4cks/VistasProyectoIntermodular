@@ -60,5 +60,6 @@ Route::put('/citas/{cita}/rechazar', [CitaController::class, 'rechazarCita'])->n
 Route::put('/citas/{cita}/aceptar', [CitaController::class, 'aceptarCita'])->name('cita.aceptar');
 Route::put('/citas/{cita}/proponer-fecha', [CitaController::class, 'proponerNuevaFecha'])->name('cita.proponer-fecha');
 Route::put('citas/{cita}/enviar', [CitaController::class, 'enviarFactura'])->name('cita.enviarFactura');
+Route::put('citas/{cita}/terminar', [CitaController::class, 'terminarCita'])->name('cita.terminar');
 
 Route::get("/buscador/{taller}", [TallerController::class, 'show'])->name('buscador');

@@ -40,7 +40,7 @@ class CitaController extends Controller
      */
     public function store(Request $request)
     {
-        
+
     }
 
     /**
@@ -152,6 +152,13 @@ class CitaController extends Controller
         $cita->save();
 
         return redirect()->route('gestion-citas')->with('mensaje', 'Factura enciada');
+    }
+
+    public function terminarCita(Cita $cita){
+        $cita->estado = Cita::ESTADO_TEMINADO;
+        $cita->save();
+
+        return redirect()->back()->with('Seccess', "Cita terminada");
     }
 
     public function descargarFactura(Cita $cita, Request $request)

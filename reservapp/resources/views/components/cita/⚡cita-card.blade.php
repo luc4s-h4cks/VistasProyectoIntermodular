@@ -5,10 +5,10 @@ use Livewire\Attributes\Validate;
 use App\Models\Cita;
 use App\Http\Controllers\DiaController;
 
-
 new class extends Component {
     public Cita $cita;
     public bool $mostrarInputFecha = false;
+    public bool $mostrarModalCancelar = false;
 
     #[
         Validate(
@@ -39,7 +39,6 @@ new class extends Component {
         $diaController = new DiaController();
         $dia = $diaController->existeDia($this->cita->id_taller, $this->nuevaFecha);
 
-        // Actualizar la fecha de la cita
         $this->cita->update([
             'fecha' => $this->nuevaFecha,
             'estado' => Cita::ESTADO_SOLICITADO,
@@ -49,6 +48,21 @@ new class extends Component {
 
         $this->mostrarInputFecha = false;
         $this->nuevaFecha = '';
+    }
+
+    public function confirmarCancelacion()
+    {
+        $this->mostrarModalCancelar = true;
+    }
+
+    public function cancelarCita()
+    {
+        $this->cita->update([
+            'estado' => Cita::ESTADO_RECHAZADO_POR_CLIENTE,
+        ]);
+
+        $this->mostrarModalCancelar = false;
+        session()->flash('mensaje', 'Cita cancelada correctamente');
     }
 };
 ?>
@@ -69,10 +83,10 @@ new class extends Component {
                         clip-rule="evenodd" />
                 </svg>
                 <p class="text-sm font-semibold text-text">...</p>
-                    {{ \Carbon\Carbon::parse($cita->fecha)->locale('es')->isoFormat('D [de] MMMM [de] YYYY') }}
-                    @if ($cita->tramo_horario)
-                        - {{ $cita->tramo_horario }}
-                    @endif
+                {{ \Carbon\Carbon::parse($cita->fecha)->locale('es')->isoFormat('D [de] MMMM [de] YYYY') }}
+                @if ($cita->tramo_horario)
+                    - {{ $cita->tramo_horario }}
+                @endif
                 </p>
             </div>
 
@@ -285,20 +299,48 @@ new class extends Component {
                     </button>
                 </form>
             </div>
-        @elseif($cita->estado == App\Models\Cita::ESTADO_ESPERANDO_PAGO && $cita->total)
-            {{-- Botón para pagar --}}
-            <form action="" method="POST">
-                @csrf
-                <button type="submit"
-                    class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium">
-                    💳 Pagar {{ number_format($cita->total, 2) }}€
-                </button>
-            </form>
-        @else
-            {{-- Botón normal para otras citas --}}
-            <button type="button" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                Ver detalles →
+        @elseif($cita->estado == App\Models\Cita::ESTADO_SOLICITADO)
+            {{-- Botón cancelar cita pendiente --}}
+            <button wire:click="confirmarCancelacion" type="button"
+                class="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-medium">
+                ✗ Cancelar cita
             </button>
         @endif
     </div>
+
+    {{-- Modal confirmación cancelar --}}
+    @if ($mostrarModalCancelar)
+        <div class="fixed inset-0 z-50 flex items-center justify-center">
+            <div class="absolute inset-0 bg-black/50" wire:click="$set('mostrarModalCancelar', false)"></div>
+
+            <div class="relative z-10 bg-white rounded-xl shadow-xl p-6 max-w-sm w-full mx-4">
+                <div class="flex items-center mb-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900">Cancelar cita</h3>
+                </div>
+
+                <p class="text-sm text-gray-600 mb-6">
+                    ¿Estás seguro de que quieres cancelar esta cita? Esta acción no se puede deshacer.
+                </p>
+
+                <div class="flex gap-3">
+                    <button wire:click="$set('mostrarModalCancelar', false)" type="button"
+                        class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition text-sm font-medium">
+                        No, mantener cita
+                    </button>
+                    <button wire:click="cancelarCita" type="button"
+                        class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-medium">
+                        Sí, cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
 </div>

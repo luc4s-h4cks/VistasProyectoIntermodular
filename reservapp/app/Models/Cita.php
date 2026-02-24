@@ -9,6 +9,7 @@ class Cita extends Model
 {
     /** @use HasFactory<\Database\Factories\CitaFactory> */
     use HasFactory;
+    const ESTADO_FINALIZADA = -3;
     const ESTADO_RECHAZADO_POR_CLIENTE = -2;
     const ESTADO_RECHAZADO_POR_TALLER = -1;
     const ESTADO_SOLICITADO = 0;
