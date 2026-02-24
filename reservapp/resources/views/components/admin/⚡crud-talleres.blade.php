@@ -181,7 +181,7 @@ new class extends Component {
     <!-- Buscador y botón crear -->
     <div class="mb-6 flex gap-3">
         <select wire:model.live="campoBuscar"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-3">
+            class="bg-background text-text border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-3">
             <option value="nombre">Nombre</option>
             <option value="handle">Handle</option>
             <option value="ubicacion">Ubicación</option>
@@ -189,7 +189,7 @@ new class extends Component {
             <option value="telefono">Teléfono</option>
         </select>
         <input type="text" wire:model.live="buscar" placeholder="Buscar..."
-            class="flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-3">
+            class="flex-1 bg-background text-text border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-3">
     </div>
 
     <!-- Tabla -->
@@ -303,7 +303,7 @@ new class extends Component {
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
-                    <textarea wire:model.blur="descripcion" class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5"></textarea>
+                    <textarea wire:model.blur="descripcion" class="w-full bg-background text-text border border-gray-300 text-sm rounded-lg p-2.5"></textarea>
                     @error('descripcion')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
@@ -312,7 +312,7 @@ new class extends Component {
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Ubicación</label>
                     <input type="text" wire:model.blur="ubicacion"
-                        class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
+                        class="w-full bg-background text-text border border-gray-300 text-sm rounded-lg p-2.5">
                     @error('ubicacion')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
@@ -322,7 +322,7 @@ new class extends Component {
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
                         <input type="email" wire:model.blur="email"
-                            class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
+                            class="w-full bg-background text-text border border-gray-300 text-sm rounded-lg p-2.5">
                         @error('email')
                             <span class="text-red-500 text-xs">{{ $message }}</span>
                         @enderror
@@ -330,7 +330,7 @@ new class extends Component {
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
                         <input type="text" wire:model.blur="telefono"
-                            class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
+                            class="w-full bg-background text-text border border-gray-300 text-sm rounded-lg p-2.5">
                         @error('telefono')
                             <span class="text-red-500 text-xs">{{ $message }}</span>
                         @enderror
@@ -341,7 +341,7 @@ new class extends Component {
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Propietario</label>
                         <select wire:model="id_usuario"
-                            class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
+                            class="w-full bg-background text-text border border-gray-300 text-sm rounded-lg p-2.5">
                             <option value="">-- Seleccionar usuario --</option>
                             @foreach ($usuarios as $usuario)
                                 <option value="{{ $usuario->id_usuario }}">{{ $usuario->nombre_usuario }}</option>
@@ -355,7 +355,7 @@ new class extends Component {
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Fecha fin suscripción</label>
                         <input type="date" wire:model.blur="fecha_fin_suscripcion"
-                            class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
+                            class="w-full bg-background text-text border border-gray-300 text-sm rounded-lg p-2.5">
                         @error('fecha_fin_suscripcion')
                             <span class="text-red-500 text-xs">{{ $message }}</span>
                         @enderror

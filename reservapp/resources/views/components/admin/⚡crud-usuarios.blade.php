@@ -197,14 +197,13 @@ new class extends Component {
 ?>
 
 <div>
-
     @if (session()->has('message'))
         <div class="mb-4 bg-green-100 text-green-800 p-3 rounded-lg">{{ session('message') }}</div>
     @endif
-
     <div class="mb-6 flex gap-3">
         <select wire:model.live="campoBuscar"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-3">
+            class="bg-background border border-text/20 text-text text-sm rounded-lg focus:ring-primary focus:border-primary p-3
+                   dark:text-[#f5f5f5] dark:border-[#f5f5f5]/20">
             <option value="nombre">Nombre</option>
             <option value="apellidos">Apellidos</option>
             <option value="nombre_usuario">Usuario</option>
@@ -212,315 +211,279 @@ new class extends Component {
             <option value="telefono">Teléfono</option>
         </select>
         <input type="text" wire:model.live="buscar" placeholder="Buscar..."
-            class="flex-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-3">
+            class="flex-1 bg-background border border-text/20 text-text text-sm rounded-lg focus:ring-primary focus:border-primary p-3
+                   dark:text-[#f5f5f5] dark:border-[#f5f5f5]/20">
         <button wire:click="abrirModalCrear"
-            class="px-4 py-2 text-sm text-white bg-green-600 rounded-lg hover:bg-green-700">
+            class="px-4 py-2 text-sm text-white bg-primary rounded-lg hover:bg-primary/80">
             + Nuevo usuario
         </button>
     </div>
-
     <!-- Tabla -->
     <div class="overflow-x-auto rounded-xl shadow">
-        <table class="w-full text-sm text-left text-gray-600">
-            <thead class="bg-zinc-100 text-zinc-700 uppercase text-xs">
+        <table class="w-full text-sm text-left text-text dark:text-[#f5f5f5]">
+            <thead class="bg-primary/10 text-primary uppercase text-xs dark:bg-primary/20">
                 <tr>
                     <th class="px-4 py-3 cursor-pointer" wire:click="ordenar('nombre')">
                         @if ($campoOrden == 'nombre')
-                            <p class="text-blue-600">Nombre {!! $orden == 'asc' ? '↑' : '↓' !!}</p>
+                            <span class="text-secondary">Nombre {!! $orden == 'asc' ? '↑' : '↓' !!}</span>
                         @else
-                            <p>Nombre</p>
+                            Nombre
                         @endif
                     </th>
                     <th class="px-4 py-3 cursor-pointer" wire:click="ordenar('nombre_usuario')">
                         @if ($campoOrden == 'nombre_usuario')
-                            <p class="text-blue-600">Usuario {!! $orden == 'asc' ? '↑' : '↓' !!}</p>
+                            <span class="text-secondary">Usuario {!! $orden == 'asc' ? '↑' : '↓' !!}</span>
                         @else
-                            <p>Usuario</p>
+                            Usuario
                         @endif
                     </th>
                     <th class="px-4 py-3 cursor-pointer" wire:click="ordenar('email')">
                         @if ($campoOrden == 'email')
-                            <p class="text-blue-600">Email {!! $orden == 'asc' ? '↑' : '↓' !!}</p>
+                            <span class="text-secondary">Email {!! $orden == 'asc' ? '↑' : '↓' !!}</span>
                         @else
-                            <p>Email</p>
+                            Email
                         @endif
                     </th>
                     <th class="px-4 py-3 cursor-pointer" wire:click="ordenar('telefono')">
                         @if ($campoOrden == 'telefono')
-                            <p class="text-blue-600">Teléfono {!! $orden == 'asc' ? '↑' : '↓' !!}</p>
+                            <span class="text-secondary">Teléfono {!! $orden == 'asc' ? '↑' : '↓' !!}</span>
                         @else
-                            <p>Teléfono</p>
+                            Teléfono
                         @endif
                     </th>
                     <th class="px-4 py-3 cursor-pointer" wire:click="ordenar('tipo')">
                         @if ($campoOrden == 'tipo')
-                            <p class="text-blue-600">Tipo {!! $orden == 'asc' ? '↑' : '↓' !!}</p>
+                            <span class="text-secondary">Tipo {!! $orden == 'asc' ? '↑' : '↓' !!}</span>
                         @else
-                            <p>Tipo</p>
+                            Tipo
                         @endif
                     </th>
                     <th class="px-4 py-3 cursor-pointer" wire:click="ordenar('fecha_creacion_cuenta')">
                         @if ($campoOrden == 'fecha_creacion_cuenta')
-                            <p class="text-blue-600">Registro {!! $orden == 'asc' ? '↑' : '↓' !!}</p>
+                            <span class="text-secondary">Registro {!! $orden == 'asc' ? '↑' : '↓' !!}</span>
                         @else
-                            <p>Registro</p>
+                            Registro
                         @endif
                     </th>
                     <th class="px-4 py-3 text-center">Acciones</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-100">
+            <tbody class="divide-y divide-text/10 dark:divide-[#f5f5f5]/10">
                 @forelse ($usuarios as $usuario)
-                    <tr class="bg-white hover:bg-gray-50 transition">
-                        <td class="px-4 py-3 font-medium text-gray-900">{{ $usuario->nombre }} {{ $usuario->apellidos }}
-                        </td>
-                        <td class="px-4 py-3 text-gray-500">{{ $usuario->nombre_usuario }}</td>
+                    <tr class="bg-background hover:bg-primary/5 transition dark:hover:bg-primary/10">
+                        <td class="px-4 py-3 font-medium">{{ $usuario->nombre }} {{ $usuario->apellidos }}</td>
+                        <td class="px-4 py-3 text-text/60 dark:text-[#f5f5f5]/60">{{ $usuario->nombre_usuario }}</td>
                         <td class="px-4 py-3">{{ $usuario->email }}</td>
                         <td class="px-4 py-3">{{ $usuario->telefono ?? '—' }}</td>
                         <td class="px-4 py-3">
                             @if ($usuario->tipo == Usuario::ADMIN)
-                                <span
-                                    class="bg-red-100 text-red-700 text-xs font-medium px-2 py-1 rounded-full">Admin</span>
+                                <span class="bg-accent/10 text-accent text-xs font-medium px-2 py-1 rounded-full">Admin</span>
                             @elseif ($usuario->tipo == Usuario::MECANICO)
-                                <span
-                                    class="bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded-full">Taller</span>
+                                <span class="bg-primary/10 text-primary text-xs font-medium px-2 py-1 rounded-full">Taller</span>
                             @else
-                                <span
-                                    class="bg-gray-100 text-gray-700 text-xs font-medium px-2 py-1 rounded-full">Usuario</span>
+                                <span class="bg-secondary/10 text-secondary text-xs font-medium px-2 py-1 rounded-full">Usuario</span>
                             @endif
                         </td>
-                        <td class="px-4 py-3">{{ $usuario->fecha_creacion_cuenta?->format('d/m/Y') ?? '—' }}</td>
+                        <td class="px-4 py-3 text-text/60 dark:text-[#f5f5f5]/60">{{ $usuario->fecha_creacion_cuenta?->format('d/m/Y') ?? '—' }}</td>
                         <td class="px-4 py-3 text-center space-x-2">
                             <button wire:click="abrirModal({{ $usuario->id_usuario }})"
-                                class="text-blue-600 hover:text-blue-800 text-xs font-medium">Editar</button>
+                                class="text-primary hover:text-primary/70 text-xs font-medium">Editar</button>
                             <button wire:click="abrirModalEliminar({{ $usuario->id_usuario }})"
-                                class="text-red-500 hover:text-red-700 text-xs font-medium">Eliminar</button>
+                                class="text-accent hover:text-accent/70 text-xs font-medium">Eliminar</button>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="px-4 py-8 text-center text-gray-400">No se encontraron usuarios</td>
+                        <td colspan="7" class="px-4 py-8 text-center text-text/40 dark:text-[#f5f5f5]/40">No se encontraron usuarios</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
-
     <div class="flex justify-center mt-4">
         {{ $usuarios->links() }}
     </div>
-
     <!-- Modal Editar -->
     @if ($modalAbierto)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div class="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 space-y-4">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-gray-900">Editar usuario</h3>
-                    <button wire:click="cerrarModal" class="text-gray-400 hover:text-gray-600 text-xl">✕</button>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
+        <div class="fixed inset-0 z-50 flex items-center justify-center">
+            <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" wire:click="cerrarModal"></div>
+            <div class="relative z-10 w-full max-w-lg rounded-xl p-6 shadow-2xl bg-background text-text dark:text-[#f5f5f5]">
+                <div class="mb-6 flex items-start justify-between border-b pb-4 border-secondary/30 dark:border-secondary/20">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                        <input type="text" wire:model.blur="nombre"
-                            class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                        @error('nombre')
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
+                        <h3 class="text-lg font-semibold text-primary">Editar usuario</h3>
+                        <p class="text-sm text-text/60 dark:text-[#f5f5f5]/60">Modifica los datos del usuario.</p>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Apellidos</label>
-                        <input type="text" wire:model.blur="apellidos"
-                            class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                        @error('apellidos')
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nombre de usuario</label>
-                    <input type="text" wire:model.blur="nombre_usuario"
-                        class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                    @error('nombre_usuario')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input type="email" wire:model.blur="email"
-                        class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                    @error('email')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
-                    <input type="text" wire:model.blur="telefono"
-                        class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                    @error('telefono')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
-                    <select wire:model="tipo" class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                        <option value="0">Usuario</option>
-                        <option value="1">Taller</option>
-                        <option value="2">Admin</option>
-                    </select>
-                    @error('tipo')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="flex justify-end gap-3 pt-2">
                     <button wire:click="cerrarModal"
-                        class="px-4 py-2 text-sm text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">Cancelar</button>
-                    <button wire:click="guardar"
-                        class="px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700">Guardar</button>
+                        class="rounded-lg p-1.5 transition text-text/40 hover:bg-secondary/10 hover:text-accent dark:text-[#f5f5f5]/40">✕</button>
+                </div>
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm text-text/50 dark:text-[#f5f5f5]/50 mb-1">Nombre</label>
+                            <input type="text" wire:model.blur="nombre"
+                                class="w-full bg-transparent border-0 border-b-2 text-sm text-text dark:text-[#f5f5f5] border-text/20 dark:border-[#f5f5f5]/20 focus:border-primary focus:outline-none focus:ring-0 py-2.5">
+                            @error('nombre') <span class="text-xs text-accent">{{ $message }}</span> @enderror
+                        </div>
+                        <div>
+                            <label class="block text-sm text-text/50 dark:text-[#f5f5f5]/50 mb-1">Apellidos</label>
+                            <input type="text" wire:model.blur="apellidos"
+                                class="w-full bg-transparent border-0 border-b-2 text-sm text-text dark:text-[#f5f5f5] border-text/20 dark:border-[#f5f5f5]/20 focus:border-primary focus:outline-none focus:ring-0 py-2.5">
+                            @error('apellidos') <span class="text-xs text-accent">{{ $message }}</span> @enderror
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-text/50 dark:text-[#f5f5f5]/50 mb-1">Nombre de usuario</label>
+                        <input type="text" wire:model.blur="nombre_usuario"
+                            class="w-full bg-transparent border-0 border-b-2 text-sm text-text dark:text-[#f5f5f5] border-text/20 dark:border-[#f5f5f5]/20 focus:border-primary focus:outline-none focus:ring-0 py-2.5">
+                        @error('nombre_usuario') <span class="text-xs text-accent">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm text-text/50 dark:text-[#f5f5f5]/50 mb-1">Email</label>
+                        <input type="email" wire:model.blur="email"
+                            class="w-full bg-transparent border-0 border-b-2 text-sm text-text dark:text-[#f5f5f5] border-text/20 dark:border-[#f5f5f5]/20 focus:border-primary focus:outline-none focus:ring-0 py-2.5">
+                        @error('email') <span class="text-xs text-accent">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm text-text/50 dark:text-[#f5f5f5]/50 mb-1">Teléfono</label>
+                        <input type="text" wire:model.blur="telefono"
+                            class="w-full bg-transparent border-0 border-b-2 text-sm text-text dark:text-[#f5f5f5] border-text/20 dark:border-[#f5f5f5]/20 focus:border-primary focus:outline-none focus:ring-0 py-2.5">
+                        @error('telefono') <span class="text-xs text-accent">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-sm text-text/50 dark:text-[#f5f5f5]/50 mb-1">Tipo</label>
+                        <select wire:model="tipo"
+                            class="w-full bg-transparent border-0 border-b-2 text-sm text-text dark:text-[#f5f5f5] border-text/20 dark:border-[#f5f5f5]/20 focus:border-primary focus:outline-none focus:ring-0 py-2.5">
+                            <option value="0">Usuario</option>
+                            <option value="1">Taller</option>
+                            <option value="2">Admin</option>
+                        </select>
+                        @error('tipo') <span class="text-xs text-accent">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="flex justify-end gap-3 pt-4 border-t border-secondary/20">
+                        <flux:button type="button" wire:click="cerrarModal" variant="ghost">Cancelar</flux:button>
+                        <flux:button type="button" wire:click="guardar" variant="primary">Guardar</flux:button>
+                    </div>
                 </div>
             </div>
         </div>
     @endif
-
     <!-- Modal Crear -->
     @if ($modalCrear)
         <form action="">
-            <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                <div class="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 space-y-4">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-semibold text-gray-900">Nuevo usuario</h3>
+            <div class="fixed inset-0 z-50 flex items-center justify-center">
+                <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" wire:click="cerrarModalCrear"></div>
+                <div class="relative z-10 w-full max-w-lg rounded-xl p-6 shadow-2xl bg-background text-text dark:text-[#f5f5f5]">
+                    <div class="mb-6 flex items-start justify-between border-b pb-4 border-secondary/30 dark:border-secondary/20">
+                        <div>
+                            <h3 class="text-lg font-semibold text-primary">Nuevo usuario</h3>
+                            <p class="text-sm text-text/60 dark:text-[#f5f5f5]/60">Rellena los datos del nuevo usuario.</p>
+                        </div>
                         <button wire:click="cerrarModalCrear"
-                            class="text-gray-400 hover:text-gray-600 text-xl">✕</button>
+                            class="rounded-lg p-1.5 transition text-text/40 hover:bg-secondary/10 hover:text-accent dark:text-[#f5f5f5]/40">✕</button>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                            <input type="text" wire:model.blur="nombre"
-                                class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                            @error('nombre')
-                                <span class="text-red-500 text-xs">{{ $message }}</span>
-                            @enderror
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm text-text/50 dark:text-[#f5f5f5]/50 mb-1">Nombre</label>
+                                <input type="text" wire:model.blur="nombre"
+                                    class="w-full bg-transparent border-0 border-b-2 text-sm text-text dark:text-[#f5f5f5] border-text/20 dark:border-[#f5f5f5]/20 focus:border-primary focus:outline-none focus:ring-0 py-2.5">
+                                @error('nombre') <span class="text-xs text-accent">{{ $message }}</span> @enderror
+                            </div>
+                            <div>
+                                <label class="block text-sm text-text/50 dark:text-[#f5f5f5]/50 mb-1">Apellidos</label>
+                                <input type="text" wire:model.blur="apellidos"
+                                    class="w-full bg-transparent border-0 border-b-2 text-sm text-text dark:text-[#f5f5f5] border-text/20 dark:border-[#f5f5f5]/20 focus:border-primary focus:outline-none focus:ring-0 py-2.5">
+                                @error('apellidos') <span class="text-xs text-accent">{{ $message }}</span> @enderror
+                            </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Apellidos</label>
-                            <input type="text" wire:model.blur="apellidos"
-                                class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                            @error('apellidos')
-                                <span class="text-red-500 text-xs">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Nombre de usuario</label>
-                        <input type="text" wire:model.blur="nombre_usuario"
-                            class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                        @error('nombre_usuario')
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                        <input type="email" wire:model.blur.live="email"
-                            class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                        @error('email')
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
-                            <input type="text" wire:model.blur="telefono"
-                                class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                            @error('telefono')
-                                <span class="text-red-500 text-xs">{{ $message }}</span>
-                            @enderror
+                            <label class="block text-sm text-text/50 dark:text-[#f5f5f5]/50 mb-1">Nombre de usuario</label>
+                            <input type="text" wire:model.blur="nombre_usuario"
+                                class="w-full bg-transparent border-0 border-b-2 text-sm text-text dark:text-[#f5f5f5] border-text/20 dark:border-[#f5f5f5]/20 focus:border-primary focus:outline-none focus:ring-0 py-2.5">
+                            @error('nombre_usuario') <span class="text-xs text-accent">{{ $message }}</span> @enderror
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
-                            <select wire:model.number="tipo"
-                                class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-
-                                <option value="0">Usuario</option>
-                                <option value="1">Taller</option>
-                                <option value="2">Admin</option>
-                            </select>
-                            @error('tipo')
-                                <span class="text-red-500 text-xs">{{ $message }}</span>
-                            @enderror
+                            <label class="block text-sm text-text/50 dark:text-[#f5f5f5]/50 mb-1">Email</label>
+                            <input type="email" wire:model.blur.live="email"
+                                class="w-full bg-transparent border-0 border-b-2 text-sm text-text dark:text-[#f5f5f5] border-text/20 dark:border-[#f5f5f5]/20 focus:border-primary focus:outline-none focus:ring-0 py-2.5">
+                            @error('email') <span class="text-xs text-accent">{{ $message }}</span> @enderror
                         </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
-                        <input type="password" wire:model.blur="pass"
-                            class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                        @error('pass')
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de nacimiento</label>
-                        <input type="date" wire:model.blur="fecha_nacimiento"
-                            class="w-full bg-gray-50 border border-gray-300 text-sm rounded-lg p-2.5">
-                        @error('fecha_nacimiento')
-                            <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="flex justify-end gap-3 pt-2">
-                        <button wire:click="cerrarModalCrear"
-                            class="px-4 py-2 text-sm text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">Cancelar</button>
-                        <button wire:click="crear"
-                            class="px-4 py-2 text-sm text-white bg-green-600 rounded-lg hover:bg-green-700">Crear</button>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm text-text/50 dark:text-[#f5f5f5]/50 mb-1">Teléfono</label>
+                                <input type="text" wire:model.blur="telefono"
+                                    class="w-full bg-transparent border-0 border-b-2 text-sm text-text dark:text-[#f5f5f5] border-text/20 dark:border-[#f5f5f5]/20 focus:border-primary focus:outline-none focus:ring-0 py-2.5">
+                                @error('telefono') <span class="text-xs text-accent">{{ $message }}</span> @enderror
+                            </div>
+                            <div>
+                                <label class="block text-sm text-text/50 dark:text-[#f5f5f5]/50 mb-1">Tipo</label>
+                                <select wire:model.number="tipo"
+                                    class="w-full bg-transparent border-0 border-b-2 text-sm text-text dark:text-[#f5f5f5] border-text/20 dark:border-[#f5f5f5]/20 focus:border-primary focus:outline-none focus:ring-0 py-2.5">
+                                    <option value="0">Usuario</option>
+                                    <option value="1">Taller</option>
+                                    <option value="2">Admin</option>
+                                </select>
+                                @error('tipo') <span class="text-xs text-accent">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-text/50 dark:text-[#f5f5f5]/50 mb-1">Contraseña</label>
+                            <input type="password" wire:model.blur="pass"
+                                class="w-full bg-transparent border-0 border-b-2 text-sm text-text dark:text-[#f5f5f5] border-text/20 dark:border-[#f5f5f5]/20 focus:border-primary focus:outline-none focus:ring-0 py-2.5">
+                            @error('pass') <span class="text-xs text-accent">{{ $message }}</span> @enderror
+                        </div>
+                        <div>
+                            <label class="block text-sm text-text/50 dark:text-[#f5f5f5]/50 mb-1">Fecha de nacimiento</label>
+                            <input type="date" wire:model.blur="fecha_nacimiento"
+                                class="w-full bg-transparent border-0 border-b-2 text-sm text-text dark:text-[#f5f5f5] border-text/20 dark:border-[#f5f5f5]/20 focus:border-primary focus:outline-none focus:ring-0 py-2.5">
+                            @error('fecha_nacimiento') <span class="text-xs text-accent">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="flex justify-end gap-3 pt-4 border-t border-secondary/20">
+                            <flux:button type="button" wire:click="cerrarModalCrear" variant="ghost">Cancelar</flux:button>
+                            <flux:button type="button" wire:click="crear" variant="primary">Crear</flux:button>
+                        </div>
                     </div>
                 </div>
             </div>
         </form>
     @endif
-
     <!-- Modal Eliminar -->
     @if ($modalEliminar)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6 space-y-4">
-
+        <div class="fixed inset-0 z-50 flex items-center justify-center">
+            <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" wire:click="cerrarModalEliminar"></div>
+            <div class="relative z-10 w-full max-w-md rounded-xl p-6 shadow-2xl bg-background text-text dark:text-[#f5f5f5] space-y-4">
                 <div class="flex items-center gap-3">
-                    <div class="bg-red-100 p-2 rounded-full">
-                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="bg-accent/10 p-2 rounded-full">
+                        <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
                         </svg>
                     </div>
-                    <h3 class="text-lg font-semibold text-gray-900">Eliminar usuario</h3>
+                    <h3 class="text-lg font-semibold text-primary">Eliminar usuario</h3>
                 </div>
-
-                <p class="text-gray-600 text-sm">
-                    Vas a eliminar a <span class="font-semibold">{{ $usuarioAEliminar->nombre }}
-                        {{ $usuarioAEliminar->apellidos }}</span>
-                    (<span class="text-gray-500">{{ $usuarioAEliminar->nombre_usuario }}</span>).
+                <p class="text-sm text-text/70 dark:text-[#f5f5f5]/70">
+                    Vas a eliminar a <span class="font-semibold">{{ $usuarioAEliminar->nombre }} {{ $usuarioAEliminar->apellidos }}</span>
+                    (<span class="text-text/50 dark:text-[#f5f5f5]/50">{{ $usuarioAEliminar->nombre_usuario }}</span>).
                 </p>
-
                 @if ($usuarioAEliminar->taller)
-                    <div class="bg-orange-50 border border-orange-200 rounded-lg p-3 text-sm text-orange-800">
+                    <div class="bg-secondary/10 border border-secondary/30 rounded-lg p-3 text-sm text-text/70 dark:text-[#f5f5f5]/70">
                         <p class="font-semibold mb-1">⚠️ Este usuario tiene un taller asociado</p>
                         <p>Taller: <span class="font-medium">{{ $usuarioAEliminar->taller->nombre }}</span></p>
                         <p class="mt-1">Al eliminar el usuario se eliminarán también el taller y todas sus citas.</p>
                     </div>
                 @else
-                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-sm text-gray-600">
+                    <div class="bg-secondary/10 border border-secondary/30 rounded-lg p-3 text-sm text-text/70 dark:text-[#f5f5f5]/70">
                         <p>Este usuario no tiene taller asociado. Se eliminarán sus datos y citas.</p>
                     </div>
                 @endif
-
-                <div class="flex justify-end gap-3 pt-2">
-                    <button wire:click="cerrarModalEliminar"
-                        class="px-4 py-2 text-sm text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">
-                        Cancelar
-                    </button>
-                    <button wire:click="confirmarEliminar"
-                        class="px-4 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-700">
-                        Sí, eliminar
-                    </button>
+                <div class="flex justify-end gap-3 pt-2 border-t border-secondary/20">
+                    <flux:button type="button" wire:click="cerrarModalEliminar" variant="ghost">Cancelar</flux:button>
+                    <flux:button type="button" wire:click="confirmarEliminar" variant="danger">
+                        <span wire:loading.remove wire:target="confirmarEliminar">Sí, eliminar</span>
+                        <span wire:loading wire:target="confirmarEliminar">Eliminando…</span>
+                    </flux:button>
                 </div>
-
             </div>
         </div>
     @endif
-
 </div>
