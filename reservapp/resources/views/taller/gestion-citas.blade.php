@@ -47,7 +47,6 @@
                     ->pluck('fecha')
                     ->values();
 
-
             @endphp
 
 
@@ -95,6 +94,7 @@
                         nuevaFecha: '',
                         permitirCitas: 'si',
                         cantidadCitas: {{ isset($citas) ? count($citas) : 0 }},
+                        tramo: '';
                     }">
 
                         {{-- Calendario --}}
@@ -168,7 +168,8 @@
                                                     fecha='{{ $cita->fecha }}';
                                                     usuario='{{ $cita->coche->usuario->nombre }}';
                                                     detalles='{{ $cita->motivo }}';
-                                                    citaId='{{ $cita->id_cita }}';"
+                                                    citaId='{{ $cita->id_cita }}';
+                                                    tramo='{{ $cita->tramo_horario }}';"
                                                             class="inline-block px-6 py-1 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
                                                             Detalles
                                                         </button>
@@ -290,6 +291,9 @@
                                             <p><span class="font-semibold text-gray-700">Modelo:</span>
                                                 <span x-text="modelo"></span>
                                             </p>
+                                            <p><span class="font-semibold text-gray-700">Tramo:</span>
+                                                <span x-text="tramo === 'manana' ? 'Mañana' : 'Tarde'"></span>
+                                            </p>
                                         </div>
                                     </div>
 
@@ -343,9 +347,21 @@
                                                 Nueva fecha propuesta
                                             </label>
 
-                                            <div class="flex gap-3">
+                                            <div class="flex gap-3 mb-3">
                                                 <input type="date" name="nueva_fecha" x-model="nuevaFecha"
                                                     class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                                            </div>
+
+                                            <label class="block text-sm font-semibold mb-2 text-gray-700">
+                                                Tramo horario
+                                            </label>
+
+                                            <div class="flex gap-3">
+                                                <select name="nuevo_tramo"
+                                                    class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                                                    <option value="manana">Mañana</option>
+                                                    <option value="tarde">Tarde</option>
+                                                </select>
 
                                                 <button type="submit"
                                                     class="px-6 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition whitespace-nowrap">
