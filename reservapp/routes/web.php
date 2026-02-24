@@ -38,6 +38,28 @@ Route::post('/suscripcion/contratar', [TipoSuscripcionController::class, 'contra
 Route::middleware(['mecanico', 'verified'])->group(function () {
     Route::post('/mi-taller', [TallerController::class, 'guardar'])->name('taller.guardar');
     Route::get('/citas/por-fecha', [CitaController::class, 'getCitasPorFecha'])->name('citas.por-fecha');
+
+    Route::get('/taller/calendario-datos', function () {
+        $taller = auth()->user()->taller;
+
+        $diasBloqueados = \App\Models\Dia::where('id_taller', $taller->id_taller)
+            ->where('estado', 1)
+            ->pluck('fecha')
+            ->values();
+
+        $resumenCitas = \App\Models\Cita::where('id_taller', $taller->id_taller)
+            ->where('estado', \App\Models\Cita::ESTADO_ACEPTADO)
+            ->get()
+            ->groupBy('fecha')
+            ->map(fn($citas, $fecha) => ['fecha' => $fecha, 'total' => $citas->count()])
+            ->values();
+
+        return response()->json([
+            'diasBloqueados' => $diasBloqueados,
+            'resumenCitas' => $resumenCitas,
+        ]);
+    });
+
     Route::resource('taller', TallerController::class);
     Route::get('gestion-citas', [TallerController::class, 'gestionCitas'])->name('gestion-citas');
     Route::get('mi-taller', [TallerController::class, 'miTaller'])->name('mi-taller');
@@ -64,4 +86,7 @@ Route::put('citas/{cita}/terminar', [CitaController::class, 'terminarCita'])->na
 Route::put('citas/{cita}/pagar-taller', [CitaController::class, 'pagarTaller'])->name('cita.pagar-taller');
 Route::put('citas/{cita}/pago-online', [CitaController::class, 'pagoOnline'])->name('cita.pago-online');
 Route::put('citas/{cita}/marcar-pagada', [CitaController::class, 'marcaPagado'])->name('cita.marcar-pagado');
+
+Route::get("/buscador/{taller}", [TallerController::class, 'show'])->name('buscador');
+
 
