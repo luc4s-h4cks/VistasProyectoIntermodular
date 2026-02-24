@@ -17,6 +17,13 @@ new class extends Component {
         $this->cars = auth()->user()->coches()->get();
     }
     public function enviar(){
+        $this->validate([
+            'cocheId' => 'required',
+            'fecha' => 'required|date|after_or_equal:today',
+            'tramoHorario' => 'required',
+            'motivo' => 'required',
+        ]);
+
         $cita = new Cita();
         $cita->id_taller = $this->tallerId;
         $cita->id_coche = $this->cocheId;
@@ -24,7 +31,11 @@ new class extends Component {
         $cita->fecha = $this->fecha;
         $cita->tramo_horario = $this->tramoHorario;
         $cita->motivo = $this->motivo;
+        $cita->estado= Cita::ESTADO_SOLICITADO;
         $cita->save();
+
+        $this->reset(['cocheId', 'tramoHorario', 'motivo', 'fecha']);
+        $this->dispatch('cita-guardada');
     }
 };
 ?>
@@ -36,7 +47,7 @@ new class extends Component {
         Calendario de citas
     </h2>
 
-    <div class="bg-zinc-50 dark:bg-zinc-700 p-4 rounded-xl">
+    <div class="bg-zinc-50 dark:bg-zinc-700 p-4 rounded-xl" wire:ignore>
         {{-- Navegación mes --}}
         <div class="flex items-center justify-between mb-4">
             <button id="prevMonth" class="px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium">
@@ -72,10 +83,11 @@ new class extends Component {
         <h2 class="text-2xl font-bold text-center text-primary mb-2">Pedir Cita</h2>
         <h3 id="diaSeleccionado" class="text-lg text-center text-zinc-500 dark:text-zinc-400 mb-6"></h3>
 
-        <form id="formPedirCita" class="space-y-4">
+        <form id="formPedirCita" class="space-y-4" wire:submit.prevent="enviar">
+            <input type="hidden" id="fechaInput" wire:model="fecha">
             <div>
                 <flux:label>Vehículo</flux:label>
-                <flux:select wire:model="cocheId">
+                <flux:select wire:model.live="cocheId">
                     <option value="">Selecciona tu vehículo</option>
                     @foreach($cars as $car)
                         <option value="{{ $car->id_coche }}">{{ $car->marca }} {{ $car->modelo }}</option>
@@ -98,7 +110,7 @@ new class extends Component {
             </div>
 
             <div class="text-center pt-2">
-                <flux:button type="submit" variant="primary" class="w-full" wire:click="enviar">
+                <flux:button type="submit" variant="primary" class="w-full">
                     Solicitar cita
                 </flux:button>
             </div>
@@ -140,14 +152,19 @@ new class extends Component {
 
         for (let dia = 1; dia <= diasEnMes; dia++) {
             const celdaDia = document.createElement('div');
-            celdaDia.className = 'p-2 rounded-lg cursor-pointer transition-colors text-text dark:text-zinc-200 hover:bg-primary/10 dark:hover:bg-primary/20';
-            celdaDia.textContent = dia;
+            const esPasado = new Date(anio, mes, dia) < new Date(anioHoy, mesHoy, diaHoy);
 
-            if (dia === diaHoy && mes === mesHoy && anio === anioHoy) {
+            if (esPasado) {
+                celdaDia.className = 'p-2 rounded-lg text-zinc-300 dark:text-zinc-600 cursor-not-allowed';
+            } else if (dia === diaHoy && mes === mesHoy && anio === anioHoy) {
                 celdaDia.className = 'p-2 rounded-lg cursor-pointer bg-primary text-white font-bold shadow-sm';
+                celdaDia.addEventListener('click', () => abrirModalCita(dia, mes));
+            } else {
+                celdaDia.className = 'p-2 rounded-lg cursor-pointer transition-colors text-text dark:text-zinc-200 hover:bg-primary/10 dark:hover:bg-primary/20';
+                celdaDia.addEventListener('click', () => abrirModalCita(dia, mes));
             }
 
-            celdaDia.addEventListener('click', () => abrirModalCita(dia, mes));
+            celdaDia.textContent = dia;
             diasMesContainer.appendChild(celdaDia);
         }
     }
@@ -157,6 +174,11 @@ new class extends Component {
         const modal = document.getElementById('modalPedirCita');
         const contenido = document.getElementById('modalContenido');
         document.getElementById('diaSeleccionado').textContent = `${dia} de ${nombresMeses[mes]}`;
+
+        const fechaFormateada = `${anioActual}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+        const fechaInput = document.getElementById('fechaInput');
+        fechaInput.value = fechaFormateada;
+        fechaInput.dispatchEvent(new Event('input'));
 
         modal.classList.remove('hidden');
         modal.classList.add('flex');
@@ -188,11 +210,8 @@ new class extends Component {
         if (e.target.id === 'modalPedirCita') cerrarModalCita();
     });
 
-    document.getElementById('formPedirCita').addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert('Solicitud de cita enviada correctamente!');
+    window.addEventListener('cita-guardada', () => {
         cerrarModalCita();
-        e.target.reset();
     });
 
     // ── Navegación meses ──
