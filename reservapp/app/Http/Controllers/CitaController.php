@@ -23,7 +23,7 @@ class CitaController extends Controller
     public function misCitas()
     {
         $user = Auth::user();
-        $miscitas = $user->citas()->paginate(4);
+        $miscitas = $user->citas()->where('estado', '!=', Cita::ESTADO_FINALIZADA)->where('estado', '!=', Cita::ESTADO_RECHAZADO_POR_CLIENTE)->paginate(4);
         return view('zona_privada.mis_citas', compact('miscitas'));
     }
 

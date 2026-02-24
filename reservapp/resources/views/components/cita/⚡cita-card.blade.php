@@ -64,6 +64,15 @@ new class extends Component {
         $this->mostrarModalCancelar = false;
         session()->flash('mensaje', 'Cita cancelada correctamente');
     }
+
+    public function marcarComoTerminada()
+    {
+        $this->cita->update([
+            'estado' => Cita::ESTADO_FINALIZADA,
+        ]);
+
+        session()->flash('mensaje', 'Cita marcada como terminada correctamente');
+    }
 };
 ?>
 
@@ -208,6 +217,11 @@ new class extends Component {
             @elseif(
                 $cita->estado == App\Models\Cita::ESTADO_RECHAZADO_POR_TALLER ||
                     $cita->estado == App\Models\Cita::ESTADO_RECHAZADO_POR_CLIENTE)
+                <button wire:click="marcarComoTerminada" type="button"
+                    class="w-6 h-6 flex items-center justify-center bg-red-200 hover:bg-red-300 rounded-full text-red-700 text-xs"
+                    title="Marcar como terminada">
+                    ✕
+                </button>
                 <span class="bg-red-100 text-red-800 text-xs font-medium px-3 py-1 rounded-full">
                     Rechazada
                 </span>
