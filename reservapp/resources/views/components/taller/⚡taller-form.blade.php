@@ -166,7 +166,7 @@ new class extends Component {
         <div>
             <label class="block mb-2 text-lg font-medium text-text">Handle (URL)</label>
             <div class="flex items-center gap-2">
-                <span class="text-text/50 text-sm">talleres/</span>
+                <span class="text-text/50 text-sm">buscador/</span>
                 <input type="text" wire:model.blur.live='handle'
                     class="bg-secondary/5 border border-text/20 text-text text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-3"
                     placeholder="mi-taller">
