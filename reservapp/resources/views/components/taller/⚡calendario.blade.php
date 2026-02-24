@@ -106,10 +106,10 @@ new class extends Component {
         <h3 id="diaSeleccionado" class="text-lg text-center text-zinc-500 dark:text-zinc-400 mb-6"></h3>
 
         <form id="formPedirCita" class="space-y-4" wire:submit.prevent="enviar">
-            <input type="hidden" id="fechaInput" wire:model="fecha">
+            <input type="hidden" id="fechaInput" wire:model.defer="fecha">
             <div>
                 <flux:label>Vehículo</flux:label>
-                <flux:select wire:model.live="cocheId">
+                <flux:select wire:model="cocheId">
                     <option value="">Selecciona tu vehículo</option>
                     @foreach($cars as $car)
                         <option value="{{ $car->id_coche }}">{{ $car->marca }} {{ $car->modelo }}</option>
