@@ -13,9 +13,9 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('dashboard', [TallerController::class, 'buscador'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::get('buscador', [TallerController::class, 'buscador'])
+->name('buscador');
+Route::get("/buscador/{taller}", [TallerController::class, 'show'])->name('ver-taller');
 
 require __DIR__ . '/settings.php';
 
@@ -87,6 +87,9 @@ Route::put('citas/{cita}/pagar-taller', [CitaController::class, 'pagarTaller'])-
 Route::put('citas/{cita}/pago-online', [CitaController::class, 'pagoOnline'])->name('cita.pago-online');
 Route::put('citas/{cita}/marcar-pagada', [CitaController::class, 'marcaPagado'])->name('cita.marcar-pagado');
 
+<<<<<<< HEAD
 Route::get("/buscador/{taller}", [TallerController::class, 'show'])->name('buscador');
 
 
+=======
+>>>>>>> 8e742da6ae3a962f4575a89b26e5fe75de7c4a3c

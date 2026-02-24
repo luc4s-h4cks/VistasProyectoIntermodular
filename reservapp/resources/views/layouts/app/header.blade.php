@@ -14,8 +14,8 @@
         <x-app-logo href="{{ route('home') }}" wire:navigate />
 
         <flux:navbar class="-mb-px max-md:hidden">
-            <flux:navbar.item icon="magnifying-glass" :href="route('dashboard')"
-                :current="request()->routeIs('dashboard')" wire:navigate>
+            <flux:navbar.item icon="magnifying-glass" :href="route('buscador')"
+                :current="request()->routeIs('buscador')" wire:navigate>
                 {{ __('Buscador') }}
             </flux:navbar.item>
         </flux:navbar>
@@ -23,8 +23,8 @@
 
         {{-- Solo en movil --}}
         <flux:navbar class="md:hidden me-1.5 space-x-0.5 rtl:space-x-reverse py-0!">
-            <flux:navbar.item icon="magnifying-glass" :href="route('dashboard')"
-                :current="request()->routeIs('dashboard')" wire:navigate />
+            <flux:navbar.item icon="magnifying-glass" :href="route('buscador')"
+                :current="request()->routeIs('buscador')" wire:navigate />
         </flux:navbar>
 
         <flux:spacer />
