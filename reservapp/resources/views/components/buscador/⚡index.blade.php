@@ -81,7 +81,7 @@ new class extends Component
         {{-- Lista de talleres --}}
         <div class="flex-1 flex flex-col gap-4">
             @foreach ($this->talleres as $taller)
-                <a href ="{{ route("buscador",$taller->handle)}}">
+                <a href ="{{ route("ver-taller",$taller->handle)}}">
                 <div class="w-full flex gap-4 bg-background border-l-4 border-primary rounded-xl shadow-sm p-4">
 
                     {{-- Imagen --}}

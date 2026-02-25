@@ -38,6 +38,7 @@ class Taller extends Model
     ];
 
     protected $casts = [
+        'fecha_fin_suscripcion' => 'date',
         'tipo_vehiculo' => 'array',
         'tipo_servicio' => 'array',
     ];

@@ -23,7 +23,7 @@ class CitaController extends Controller
     public function misCitas()
     {
         $user = Auth::user();
-        $miscitas = $user->citas()->paginate(4);
+        $miscitas = $user->citas()->where('estado', '!=', Cita::ESTADO_FINALIZADA)->where('estado', '!=', Cita::ESTADO_RECHAZADO_POR_CLIENTE)->paginate(4);
         return view('zona_privada.mis_citas', compact('miscitas'));
     }
 
@@ -40,7 +40,7 @@ class CitaController extends Controller
      */
     public function store(Request $request)
     {
-        
+
     }
 
     /**
@@ -127,6 +127,7 @@ class CitaController extends Controller
         );
 
         $cita->fecha = $dia->fecha;
+        $cita->tramo_horario = $request->tramo_horario;
         $cita->estado = Cita::ESTADO_FECHA_PROPUESTA;
 
         $cita->save();
@@ -154,6 +155,13 @@ class CitaController extends Controller
         return redirect()->route('gestion-citas')->with('mensaje', 'Factura enciada');
     }
 
+    public function terminarCita(Cita $cita){
+        $cita->estado = Cita::ESTADO_FINALIZADA;
+        $cita->save();
+
+        return redirect()->back()->with('Seccess', "Cita terminada");
+    }
+
     public function descargarFactura(Cita $cita, Request $request)
     {
         $items = $request->input('items', []);
@@ -172,6 +180,31 @@ class CitaController extends Controller
         ]);
 
         return $pdf->download('factura_cita_' . $cita->dia->fecha.'-'. $cita->coche->matricula . '.pdf');
+    }
+
+    public function pagoOnline(Cita $cita)
+    {
+
+        $cita->estado = Cita::ESTADO_PAGADA;
+        $cita->save();
+
+        return redirect()->back()->with('success', "Pago realizado con éxito");
+    }
+
+    public function pagarTaller(Cita $cita)
+    {
+        $cita->estado = Cita::ESTADO_ESPARA_PAGO_TALLER;
+        $cita->save();
+
+        return redirect()->back()->with('success', "Pago solicitado al taller");
+    }
+
+    public function marcaPagado(Cita $cita)
+    {
+        $cita->estado = Cita::ESTADO_PAGADA;
+        $cita->save();
+
+        return redirect()->back()->with('success', "Cita marcada como pagada");
     }
 
 

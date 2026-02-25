@@ -5,10 +5,10 @@ use Livewire\Attributes\Validate;
 use App\Models\Cita;
 use App\Http\Controllers\DiaController;
 
-
 new class extends Component {
     public Cita $cita;
     public bool $mostrarInputFecha = false;
+    public bool $mostrarModalCancelar = false;
 
     #[
         Validate(
@@ -20,12 +20,14 @@ new class extends Component {
         ),
     ]
     public string $nuevaFecha = '';
+    public string $nuevoTramo = 'manana';
 
     public function toggleInputFecha()
     {
         $this->mostrarInputFecha = !$this->mostrarInputFecha;
         if (!$this->mostrarInputFecha) {
             $this->nuevaFecha = '';
+            $this->nuevoTramo = 'manana';
             $this->resetValidation();
         }
     }
@@ -39,9 +41,9 @@ new class extends Component {
         $diaController = new DiaController();
         $dia = $diaController->existeDia($this->cita->id_taller, $this->nuevaFecha);
 
-        // Actualizar la fecha de la cita
         $this->cita->update([
             'fecha' => $this->nuevaFecha,
+            'tramo_horario' => $this->nuevoTramo,
             'estado' => Cita::ESTADO_SOLICITADO,
         ]);
 
@@ -49,11 +51,37 @@ new class extends Component {
 
         $this->mostrarInputFecha = false;
         $this->nuevaFecha = '';
+        $this->nuevoTramo = 'manana';
+    }
+
+    public function confirmarCancelacion()
+    {
+        $this->mostrarModalCancelar = true;
+    }
+
+    public function cancelarCita()
+    {
+        $this->cita->update([
+            'estado' => Cita::ESTADO_RECHAZADO_POR_CLIENTE,
+        ]);
+
+        $this->mostrarModalCancelar = false;
+        session()->flash('mensaje', 'Cita cancelada correctamente');
+    }
+
+    public function marcarComoTerminada()
+    {
+        $this->cita->update([
+            'estado' => Cita::ESTADO_FINALIZADA,
+        ]);
+
+        session()->flash('mensaje', 'Cita marcada como terminada correctamente');
     }
 };
 ?>
 
-<div class="block p-6 bg-background border border-secondary/20 rounded-lg shadow hover:bg-secondary/5 transition-colors">
+<div class="block p-6 bg-background border border-secondary/20 rounded-lg shadow hover:bg-secondary/5 transition-colors"
+    @if ($cita->estado == App\Models\Cita::ESTADO_FINALIZADA) style="display:none" @endif>
     @php
         // Decodificar el JSON de detalles si es string
         $detalles = is_string($cita->detalles) ? json_decode($cita->detalles, true) : $cita->detalles;
@@ -61,17 +89,23 @@ new class extends Component {
 
     <div class="flex items-start justify-between">
         <div class="flex-1">
-            {{-- Fecha de la cita --}}
+            {{-- Fecha y tramo horario de la cita --}}
             <div class="flex items-center mb-3">
                 <svg class="w-5 h-5 text-gray-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd"
                         d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
                         clip-rule="evenodd" />
                 </svg>
-                <p class="text-sm font-semibold text-text">...</p>
+                <p class="text-sm font-semibold text-text">
                     {{ \Carbon\Carbon::parse($cita->fecha)->locale('es')->isoFormat('D [de] MMMM [de] YYYY') }}
                     @if ($cita->tramo_horario)
-                        - {{ $cita->tramo_horario }}
+                        &mdash;
+                        <span
+                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium
+                            {{ strtolower($cita->tramo_horario) === 'mañana' ? 'bg-amber-100 text-amber-700' : 'bg-indigo-100 text-indigo-700' }}">
+                            {{ strtolower($cita->tramo_horario) === 'mañana' ? '🌅' : '🌆' }}
+                            {{ ucfirst($cita->tramo_horario) }}
+                        </span>
                     @endif
                 </p>
             </div>
@@ -194,21 +228,57 @@ new class extends Component {
             @elseif(
                 $cita->estado == App\Models\Cita::ESTADO_RECHAZADO_POR_TALLER ||
                     $cita->estado == App\Models\Cita::ESTADO_RECHAZADO_POR_CLIENTE)
-                <span class="bg-red-100 text-red-800 text-xs font-medium px-3 py-1 rounded-full">
-                    Rechazada
-                </span>
+                <div class="flex flex-col items-end gap-1.5">
+                    <span class="bg-red-100 text-red-700 text-xs font-medium px-3 py-1 rounded-full">
+                        Rechazada
+                    </span>
+                    <button wire:click="marcarComoTerminada" type="button"
+                        class="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors group"
+                        title="Archivar cita">
+                        <svg class="w-3.5 h-3.5 group-hover:scale-110 transition-transform" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8l1 12a2 2 0 002 2h8a2 2 0 002-2L19 8" />
+                        </svg>
+                        Archivar
+                    </button>
+                </div>
             @elseif($cita->estado == App\Models\Cita::ESTADO_TEMINADO)
-                <span class="bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full">
-                    Completada
-                </span>
+                <div class="flex flex-col items-end gap-1.5">
+                    <span class="bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full">
+                        Completada
+                    </span>
+                    <button wire:click="marcarComoTerminada" type="button"
+                        class="flex items-center gap-1 text-xs text-gray-400 hover:text-blue-500 transition-colors group"
+                        title="Archivar cita">
+                        <svg class="w-3.5 h-3.5 group-hover:scale-110 transition-transform" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8l1 12a2 2 0 002 2h8a2 2 0 002-2L19 8" />
+                        </svg>
+                        Archivar
+                    </button>
+                </div>
             @elseif($cita->estado == App\Models\Cita::ESTADO_ESPERANDO_PAGO)
                 <span class="bg-purple-100 text-purple-800 text-xs font-medium px-3 py-1 rounded-full">
                     Esperando pago
                 </span>
             @elseif($cita->estado == App\Models\Cita::ESTADO_PAGADA)
-                <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-3 py-1 rounded-full">
-                    Pagada
-                </span>
+                <div class="flex flex-col items-end gap-1.5">
+                    <span class="bg-indigo-100 text-indigo-700 text-xs font-medium px-3 py-1 rounded-full">
+                        ✓ Pagada
+                    </span>
+                    <button wire:click="marcarComoTerminada" type="button"
+                        class="flex items-center gap-1 text-xs text-gray-400 hover:text-indigo-500 transition-colors group"
+                        title="Archivar cita">
+                        <svg class="w-3.5 h-3.5 group-hover:scale-110 transition-transform" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8l1 12a2 2 0 002 2h8a2 2 0 002-2L19 8" />
+                        </svg>
+                        Archivar
+                    </button>
+                </div>
             @elseif($cita->estado == App\Models\Cita::ESTADO_FECHA_PROPUESTA)
                 <span class="bg-orange-100 text-orange-800 text-xs font-medium px-3 py-1 rounded-full">
                     Nueva fecha propuesta
@@ -217,6 +287,12 @@ new class extends Component {
                 <span class="bg-teal-100 text-teal-800 text-xs font-medium px-3 py-1 rounded-full">
                     Fecha aceptada
                 </span>
+            @elseif($cita->estado == App\Models\Cita::ESTADO_ESPARA_PAGO_TALLER)
+                <span class="bg-gray-700 text-white text-xs font-medium px-3 py-1 rounded-full">
+                    🏪 Pago en taller
+                </span>
+            @elseif($cita->estado == App\Models\Cita::ESTADO_FINALIZADA)
+                {{-- Estado finalizada (-3): no se muestra nada --}}
             @else
                 <span class="bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full">
                     Desconocido
@@ -234,7 +310,7 @@ new class extends Component {
 
     {{-- Botones de acción --}}
     <div class="mt-4 pt-4 border-t border-gray-200">
-        {{-- Solo mostrar cuando el estado es ESTADO_FECHA_PROPUESTA (10) --}}
+        {{-- Solo mostrar cuando el estado es ESTADO_FECHA_PROPUESTA --}}
         @if ($cita->estado == App\Models\Cita::ESTADO_FECHA_PROPUESTA)
             <div class="mb-4">
                 <button wire:click="toggleInputFecha" type="button"
@@ -248,9 +324,38 @@ new class extends Component {
                             Selecciona la nueva fecha
                         </label>
 
-                        <div class="flex gap-3">
+                        <div class="flex gap-3 mb-3">
                             <input type="date" wire:model="nuevaFecha"
                                 class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                        </div>
+
+                        <label class="block text-sm font-semibold mb-2 text-gray-700">
+                            Tramo horario
+                        </label>
+
+                        <div class="flex gap-3">
+                            <div class="flex gap-2 flex-1">
+                                <label class="flex-1 cursor-pointer">
+                                    <input type="radio" wire:model="nuevoTramo" value="manana"
+                                        class="sr-only peer">
+                                    <div
+                                        class="w-full text-center px-3 py-2 rounded-lg border text-sm font-medium transition
+                                        peer-checked:bg-amber-100 peer-checked:border-amber-400 peer-checked:text-amber-700
+                                        border-gray-200 text-gray-500 hover:border-amber-300">
+                                        🌅 Mañana
+                                    </div>
+                                </label>
+                                <label class="flex-1 cursor-pointer">
+                                    <input type="radio" wire:model="nuevoTramo" value="tarde"
+                                        class="sr-only peer">
+                                    <div
+                                        class="w-full text-center px-3 py-2 rounded-lg border text-sm font-medium transition
+                                        peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-indigo-700
+                                        border-gray-200 text-gray-500 hover:border-indigo-300">
+                                        🌆 Tarde
+                                    </div>
+                                </label>
+                            </div>
 
                             <button wire:click="proponerNuevaFecha" type="button"
                                 class="px-6 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition whitespace-nowrap">
@@ -285,20 +390,73 @@ new class extends Component {
                     </button>
                 </form>
             </div>
-        @elseif($cita->estado == App\Models\Cita::ESTADO_ESPERANDO_PAGO && $cita->total)
-            {{-- Botón para pagar --}}
-            <form action="" method="POST">
-                @csrf
-                <button type="submit"
-                    class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium">
-                    💳 Pagar {{ number_format($cita->total, 2) }}€
-                </button>
-            </form>
-        @else
-            {{-- Botón normal para otras citas --}}
-            <button type="button" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                Ver detalles →
+        @elseif($cita->estado == App\Models\Cita::ESTADO_SOLICITADO)
+            {{-- Botón cancelar cita pendiente --}}
+            <button wire:click="confirmarCancelacion" type="button"
+                class="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-medium">
+                ✗ Cancelar cita
             </button>
+        @elseif($cita->estado == App\Models\Cita::ESTADO_ESPERANDO_PAGO)
+            {{-- Botones de pago --}}
+            <div class="space-y-3">
+                <p class="text-sm text-gray-600 font-medium">¿Cómo deseas realizar el pago?</p>
+                <div class="flex gap-3">
+                    <form action="{{ route('cita.pagar-taller', $cita->id_cita) }}" method="POST" class="flex-1">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit"
+                            class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition text-sm font-medium flex items-center justify-center gap-2">
+                            🏪 Pagar en taller
+                        </button>
+                    </form>
+
+                    <form action="{{ route('cita.pago-online', $cita->id_cita) }}" method="POST" class="flex-1">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit"
+                            class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition text-sm font-medium flex items-center justify-center gap-2">
+                            💳 Pagar por la aplicación
+                        </button>
+                    </form>
+
+                </div>
+            </div>
         @endif
     </div>
+
+    {{-- Modal confirmación cancelar --}}
+    @if ($mostrarModalCancelar)
+        <div class="fixed inset-0 z-50 flex items-center justify-center">
+            <div class="absolute inset-0 bg-black/50" wire:click="$set('mostrarModalCancelar', false)"></div>
+
+            <div class="relative z-10 bg-white rounded-xl shadow-xl p-6 max-w-sm w-full mx-4">
+                <div class="flex items-center mb-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900">Cancelar cita</h3>
+                </div>
+
+                <p class="text-sm text-gray-600 mb-6">
+                    ¿Estás seguro de que quieres cancelar esta cita? Esta acción no se puede deshacer.
+                </p>
+
+                <div class="flex gap-3">
+                    <button wire:click="$set('mostrarModalCancelar', false)" type="button"
+                        class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition text-sm font-medium">
+                        No, mantener cita
+                    </button>
+                    <button wire:click="cancelarCita" type="button"
+                        class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-medium">
+                        Sí, cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
 </div>

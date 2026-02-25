@@ -9,8 +9,8 @@ body *:not(html):not(style):not(br):not(tr):not(code) {
 
 body {
     -webkit-text-size-adjust: none;
-    background-color: #eef1f4; /* gris muy suave */
-    color: #2f3a45; /* gris oscuro profesional */
+    background-color: #eef1f4;
+    color: #2f3a45;
     height: 100%;
     line-height: 1.6;
     margin: 0;
@@ -21,13 +21,13 @@ body {
 /* Typography */
 
 h1 {
-    color: #0f3557; /* azul petróleo */
+    color: #0f3557;
     font-size: 20px;
     font-weight: 700;
 }
 
 h2 {
-    color: #13446b; /* azul más claro */
+    color: #13446b;
     font-size: 17px;
     font-weight: 600;
 }

@@ -3,6 +3,8 @@
 use Livewire\Component;
 use App\Models\Cita;
 use App\Models\Taller;
+use App\Models\Dia;
+
 new class extends Component {
     public $cars = [];
     public $tallerId;
@@ -10,21 +12,53 @@ new class extends Component {
     public $tramoHorario = '';
     public $motivo = '';
     public $fecha = '';
+    public $dia_no_disponible = [];
+    public $autenticado = false;
 
     public function mount(Taller $taller)
     {
+        $this->autenticado=auth()->check();
         $this->tallerId = $taller->id_taller;
-        $this->cars = auth()->user()->coches()->get();
+        $this->dia_no_disponible = Dia::where('id_taller', $this->tallerId)
+            ->where('estado', Dia::ESTADO_OCUPADO)
+            ->pluck('fecha')
+            ->toArray();
+        if ($this->autenticado) {
+            $this->cars = auth()->user()->coches()->get() ?? [];
+        }
     }
     public function enviar(){
+        $this->validate([
+            'cocheId' => 'required',
+            'fecha' => 'required|date|after_or_equal:today',
+            'tramoHorario' => 'required',
+            'motivo' => 'required',
+        ]);
+
+        $dia= Dia::where('id_taller', $this->tallerId)
+            ->where('fecha', $this->fecha)
+            ->first();
+        if (!$dia)
+        //crea el dia en el calendario del taller
+        {
+            $dia = new Dia();
+            $dia->id_taller = $this->tallerId;
+            $dia->fecha = $this->fecha;
+            $dia->estado= Dia::ESTADO_LIBRE;
+            $dia->save();
+        }
         $cita = new Cita();
+        $cita->fecha = $dia->fecha;
         $cita->id_taller = $this->tallerId;
         $cita->id_coche = $this->cocheId;
         $cita->id_usuario = auth()->id();
-        $cita->fecha = $this->fecha;
         $cita->tramo_horario = $this->tramoHorario;
         $cita->motivo = $this->motivo;
+        $cita->estado= Cita::ESTADO_SOLICITADO;
         $cita->save();
+
+        $this->reset(['cocheId', 'tramoHorario', 'motivo', 'fecha']);
+        $this->dispatch('cita-guardada');
     }
 };
 ?>
@@ -36,7 +70,8 @@ new class extends Component {
         Calendario de citas
     </h2>
 
-    <div class="bg-zinc-50 dark:bg-zinc-700 p-4 rounded-xl">
+    <div id="taller-calendar-data" data-dias-no-disponibles='@json($dia_no_disponible)' data-autenticado='@json($autenticado)' class="hidden"></div>
+    <div class="bg-zinc-50 dark:bg-zinc-700 p-4 rounded-xl" wire:ignore>
         {{-- Navegación mes --}}
         <div class="flex items-center justify-between mb-4">
             <button id="prevMonth" class="px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity text-sm font-medium">
@@ -72,7 +107,8 @@ new class extends Component {
         <h2 class="text-2xl font-bold text-center text-primary mb-2">Pedir Cita</h2>
         <h3 id="diaSeleccionado" class="text-lg text-center text-zinc-500 dark:text-zinc-400 mb-6"></h3>
 
-        <form id="formPedirCita" class="space-y-4">
+        <form id="formPedirCita" class="space-y-4" wire:submit.prevent="enviar">
+            <input type="hidden" id="fechaInput" wire:model.defer="fecha">
             <div>
                 <flux:label>Vehículo</flux:label>
                 <flux:select wire:model="cocheId">
@@ -98,7 +134,7 @@ new class extends Component {
             </div>
 
             <div class="text-center pt-2">
-                <flux:button type="submit" variant="primary" class="w-full" wire:click="enviar">
+                <flux:button type="submit" variant="primary" class="w-full">
                     Solicitar cita
                 </flux:button>
             </div>
@@ -108,6 +144,7 @@ new class extends Component {
 
 <script>
     // ── Calendario ──
+    window.diasNoDisponibles = JSON.parse(document.getElementById('taller-calendar-data').dataset.diasNoDisponibles || '[]');
     let mesActual = new Date().getMonth();
     let anioActual = new Date().getFullYear();
 
@@ -117,6 +154,7 @@ new class extends Component {
     ];
 
     function generarCalendario(mes, anio) {
+        console.log(window.diasNoDisponibles)
         const diasMesContainer = document.getElementById('diasMes');
         const mesAnioTitulo = document.getElementById('mesAnio');
 
@@ -140,23 +178,43 @@ new class extends Component {
 
         for (let dia = 1; dia <= diasEnMes; dia++) {
             const celdaDia = document.createElement('div');
-            celdaDia.className = 'p-2 rounded-lg cursor-pointer transition-colors text-text dark:text-zinc-200 hover:bg-primary/10 dark:hover:bg-primary/20';
-            celdaDia.textContent = dia;
+            const esPasado = new Date(anio, mes, dia) < new Date(anioHoy, mesHoy, diaHoy);
+            const noDisponible = window.diasNoDisponibles.includes(`${anio}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`);
 
-            if (dia === diaHoy && mes === mesHoy && anio === anioHoy) {
+            if (esPasado) {
+                celdaDia.className = 'p-2 rounded-lg text-zinc-300 dark:text-zinc-600 cursor-not-allowed';
+            } else if (noDisponible) {
+                celdaDia.className = 'p-2 rounded-lg text-zinc-400 dark:text-zinc-500 bg-red-100 dark:bg-red-900/30 cursor-not-allowed line-through';
+                celdaDia.title = 'Día no disponible';
+                celdaDia.addEventListener('click', () => alert('Este día no está disponible para citas.'));
+            } else if (dia === diaHoy && mes === mesHoy && anio === anioHoy) {
                 celdaDia.className = 'p-2 rounded-lg cursor-pointer bg-primary text-white font-bold shadow-sm';
+                celdaDia.addEventListener('click', () => abrirModalCita(dia, mes));
+            } else {
+                celdaDia.className = 'p-2 rounded-lg cursor-pointer transition-colors text-text dark:text-zinc-200 hover:bg-primary/10 dark:hover:bg-primary/20';
+                celdaDia.addEventListener('click', () => abrirModalCita(dia, mes));
             }
 
-            celdaDia.addEventListener('click', () => abrirModalCita(dia, mes));
+            celdaDia.textContent = dia;
             diasMesContainer.appendChild(celdaDia);
         }
     }
 
     // ── Modal Pedir Cita ──
     function abrirModalCita(dia, mes) {
+        const autenticado = JSON.parse(document.getElementById('taller-calendar-data').dataset.autenticado);
+        if (!autenticado) {
+            alert('Debes iniciar sesión para pedir una cita.');
+            return;
+        }
         const modal = document.getElementById('modalPedirCita');
         const contenido = document.getElementById('modalContenido');
         document.getElementById('diaSeleccionado').textContent = `${dia} de ${nombresMeses[mes]}`;
+
+        const fechaFormateada = `${anioActual}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+        const fechaInput = document.getElementById('fechaInput');
+        fechaInput.value = fechaFormateada;
+        fechaInput.dispatchEvent(new Event('input'));
 
         modal.classList.remove('hidden');
         modal.classList.add('flex');
@@ -169,7 +227,7 @@ new class extends Component {
         }, 10);
     }
 
-    function cerrarModalCita() {
+    window.cerrarModalCita = function cerrarModalCita() {
         const modal = document.getElementById('modalPedirCita');
         const contenido = document.getElementById('modalContenido');
 
@@ -188,11 +246,8 @@ new class extends Component {
         if (e.target.id === 'modalPedirCita') cerrarModalCita();
     });
 
-    document.getElementById('formPedirCita').addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert('Solicitud de cita enviada correctamente!');
+    window.addEventListener('cita-guardada', () => {
         cerrarModalCita();
-        e.target.reset();
     });
 
     // ── Navegación meses ──

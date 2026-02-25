@@ -16,7 +16,7 @@
                     Conectamos a los mejores mecánicos con miles de clientes. Agenda tu cita de forma rápida y segura.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{{ route('dashboard') }}" class="bg-white text-[var(--color-primary)] px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-50 transition-colors shadow-lg">
+                    <a href="{{ route('buscador') }}" class="bg-white text-[var(--color-primary)] px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-50 transition-colors shadow-lg">
                         Buscar Talleres
                     </a>
                     <!-- POR DEFINIR LA URL -->

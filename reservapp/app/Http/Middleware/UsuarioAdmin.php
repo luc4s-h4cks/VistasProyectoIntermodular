@@ -21,7 +21,7 @@ class UsuarioAdmin
         }
 
         if (auth()->user()->tipo != Usuario::ADMIN) {
-            return redirect('/');
+            return abort(403);
         }
 
         return $next($request);

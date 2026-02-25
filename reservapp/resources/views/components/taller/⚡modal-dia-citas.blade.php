@@ -33,13 +33,24 @@ new class extends Component {
 
     public function updatedEstadoDia($valor)
     {
-        Dia::updateOrCreate(
-            [
+        $existe = Dia::where('fecha', $this->fechaSeleccionada)
+            ->where('id_taller', auth()->user()->taller->id_taller)
+            ->exists();
+
+        if ($existe) {
+            Dia::where('fecha', $this->fechaSeleccionada)
+                ->where('id_taller', auth()->user()->taller->id_taller)
+                ->update(['estado' => $valor]);
+
+            $this->dispatch('calendario-actualizado');
+        } else {
+            Dia::create([
                 'fecha' => $this->fechaSeleccionada,
                 'id_taller' => auth()->user()->taller->id_taller,
-            ],
-            ['estado' => $valor],
-        );
+                'estado' => $valor,
+            ]);
+            $this->dispatch('calendario-actualizado');
+        }
     }
 
     public function cerrarModal()
@@ -95,7 +106,8 @@ new class extends Component {
                         <div class="border-2 border-secondary/20 rounded-lg p-4">
                             <div class="flex gap-4">
                                 <div class="flex-shrink-0">
-                                    <div class="w-24 h-24 bg-secondary/10 rounded-full flex items-center justify-center text-text/40">
+                                    <div
+                                        class="w-24 h-24 bg-secondary/10 rounded-full flex items-center justify-center text-text/40">
                                         img
                                     </div>
                                 </div>
@@ -110,7 +122,8 @@ new class extends Component {
                                     </div>
                                     <div>
                                         <p class="text-sm font-semibold mb-1">Motivo</p>
-                                        <div class="text-xs bg-secondary/5 border border-secondary/20 text-text/70 p-2 rounded h-16 overflow-y-auto">
+                                        <div
+                                            class="text-xs bg-secondary/5 border border-secondary/20 text-text/70 p-2 rounded h-16 overflow-y-auto">
                                             {{ $cita->motivo }}
                                         </div>
                                     </div>

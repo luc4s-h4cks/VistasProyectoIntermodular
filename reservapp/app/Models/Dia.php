@@ -16,6 +16,8 @@ class Dia extends Model
     protected $table = 'dia';
     protected $primaryKey = 'fecha';
     public $timestamps = false;
+    public $incrementing = false;
+    protected $keyType = 'string';
     protected $fillable = [
         'fecha',
         'estado',
