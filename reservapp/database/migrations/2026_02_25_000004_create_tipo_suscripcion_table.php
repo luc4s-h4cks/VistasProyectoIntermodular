@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tipo_suscripcion', function (Blueprint $table) {
-            $table->uuid('id_estado')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('id_estado')->primary()->default(DB::raw('UUID()'));
             $table->string('nombre', 32);
             $table->decimal('precio', 10, 2);
             $table->text('descripcion')->nullable();

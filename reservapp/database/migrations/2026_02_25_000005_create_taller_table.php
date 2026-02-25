@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('taller', function (Blueprint $table) {
-            $table->uuid('id_taller')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('id_taller')->primary()->default(DB::raw('UUID()'));
             $table->unsignedInteger('id_usuario');
             $table->string('handle', 255)->unique()->nullable();
             $table->string('nombre', 255)->nullable();
